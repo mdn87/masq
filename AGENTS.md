@@ -2,7 +2,7 @@
 
 ## Repository
 
-Masque is a dependency-free Claude Code plugin that composes persistent persona profiles as an ordered stack.
+Masq is a dependency-free Claude Code plugin that composes persistent persona profiles as an ordered stack.
 
 ## Required Checks
 

@@ -10,7 +10,7 @@ Report security issues privately to the repository owner rather than opening a p
 
 ## Security Boundaries
 
-Masque treats profile and state files as local input but still validates them defensively:
+Masq treats profile and state files as local input but still validates them defensively:
 
 - state and profile files must be regular files, not symlinks
 - state size and profile size are capped

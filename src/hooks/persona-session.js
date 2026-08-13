@@ -53,13 +53,13 @@ try {
     else clearStack();
   }
 
-  if (source === 'startup' && truthy(process.env.MASQUE_RESET_ON_START)) {
+  if (source === 'startup' && truthy(process.env.MASQ_RESET_ON_START)) {
     clearStack();
     stack = [];
   }
 
   if (source === 'startup' && stack.length === 0) {
-    const defaults = tokenizeProfileList(process.env.MASQUE_DEFAULT_STACK || '');
+    const defaults = tokenizeProfileList(process.env.MASQ_DEFAULT_STACK || '');
     const resolvedDefaults = resolveTokens(defaults, catalog);
     if (resolvedDefaults.length && writeStack(resolvedDefaults)) stack = resolvedDefaults;
   }

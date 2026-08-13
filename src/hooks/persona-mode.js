@@ -36,8 +36,8 @@ function commandEnvelope(rawPrompt) {
   const commandName = /<command-name>\s*([^<\s]+)\s*<\/command-name>/.exec(prompt);
   if (commandName) {
     const name = commandName[1];
-    const isPersona = name === '/persona' || name === '/masque:persona';
-    const isAfterdark = name === '/afterdark' || name === '/masque:afterdark';
+    const isPersona = name === '/persona' || name === '/masq:persona';
+    const isAfterdark = name === '/afterdark' || name === '/masq:afterdark';
 
     if (isPersona || isAfterdark) {
       const argsMatch = /<command-args>\s*([^<]*?)\s*<\/command-args>/.exec(prompt);
@@ -92,11 +92,11 @@ function parsePersonaArgs(args) {
     case 'stack':
     case 'only':
     case 'order':
-      return tokens.length ? { op: 'set', tokens } : { op: 'error', error: `${action} requires at least one profile; use /masque:persona clear to empty the stack` };
+      return tokens.length ? { op: 'set', tokens } : { op: 'error', error: `${action} requires at least one profile; use /masq:persona clear to empty the stack` };
     case 'move': {
       const moveParts = tokenizeProfileList(rest);
       if (moveParts.length !== 2 || !['first', 'last'].includes(moveParts[1])) {
-        return { op: 'error', error: 'move syntax: /masque:persona move <profile> first|last' };
+        return { op: 'error', error: 'move syntax: /masq:persona move <profile> first|last' };
       }
       return { op: 'move', token: moveParts[0], position: moveParts[1] };
     }
@@ -106,10 +106,10 @@ function parsePersonaArgs(args) {
 }
 
 function parseCommand(prompt, foreignCommand) {
-  const persona = /^\/(?:persona|masque:persona)(?:\s+(.*))?$/.exec(prompt);
+  const persona = /^\/(?:persona|masq:persona)(?:\s+(.*))?$/.exec(prompt);
   if (persona) return parsePersonaArgs(persona[1] || '');
 
-  const afterdark = /^\/(?:afterdark|masque:afterdark)(?:\s+(flirty|suggestive|direct|off))?\s*$/.exec(prompt);
+  const afterdark = /^\/(?:afterdark|masq:afterdark)(?:\s+(flirty|suggestive|direct|off))?\s*$/.exec(prompt);
   if (afterdark) {
     if (afterdark[1] === 'off') return { op: 'off', tokens: ['afterdark'], legacy: true };
     return { op: 'on', tokens: [`afterdark:${afterdark[1] || 'suggestive'}`], legacy: true };
@@ -119,7 +119,7 @@ function parseCommand(prompt, foreignCommand) {
 
   if (
     /^(?:what|which) (?:personas?|masks?)(?: are| is)? active\??$/.test(prompt) ||
-    /^show (?:the )?active (?:persona|masque|mask) stack\.?$/.test(prompt)
+    /^show (?:the )?active (?:persona|masq|mask) stack\.?$/.test(prompt)
   ) {
     return { op: 'status' };
   }
@@ -130,7 +130,7 @@ function parseCommand(prompt, foreignCommand) {
     return { op: 'clear' };
   }
 
-  const stack = /^(?:set|use) (?:the )?(?:persona|masque|mask) stack (?:to )?(.+)$/.exec(prompt);
+  const stack = /^(?:set|use) (?:the )?(?:persona|masq|mask) stack (?:to )?(.+)$/.exec(prompt);
   if (stack) return { op: 'set', tokens: tokenizeProfileList(stack[1]) };
 
   const turnOn = /^(?:turn on|enable|activate|use|put on) (?:the )?([a-z0-9][a-z0-9-]*(?::[a-z0-9][a-z0-9-]*)?) (?:persona|profile|mask)(?: mode)?\.?$/.exec(prompt);
@@ -223,15 +223,15 @@ function applyCommand(command, current, catalog) {
 
 function helpText() {
   return [
-    'Masque commands:',
-    '/masque:persona status',
-    '/masque:persona list',
-    '/masque:persona on <profile[:variant]> [...]',
-    '/masque:persona off <profile> [...]',
-    '/masque:persona toggle <profile[:variant]> [...]',
-    '/masque:persona set <profile[:variant]> [...]',
-    '/masque:persona move <profile> first|last',
-    '/masque:persona clear',
+    'Masq commands:',
+    '/masq:persona status',
+    '/masq:persona list',
+    '/masq:persona on <profile[:variant]> [...]',
+    '/masq:persona off <profile> [...]',
+    '/masq:persona toggle <profile[:variant]> [...]',
+    '/masq:persona set <profile[:variant]> [...]',
+    '/masq:persona move <profile> first|last',
+    '/masq:persona clear',
     'Later profiles in the stack win direct style conflicts.'
   ].join('\n');
 }
@@ -252,16 +252,16 @@ function resultText(result, catalog) {
 function commandContext(result, catalog) {
   const activeContext = result.stack.length
     ? composeFullContext(result.stack, catalog)
-    : 'MASQUE OFF. Apply no persona profile until one is activated.';
+    : 'MASQ OFF. Apply no persona profile until one is activated.';
   const report = resultText(result, catalog);
 
   return [
     activeContext,
     '',
-    'MASQUE MANAGEMENT COMMAND',
+    'MASQ MANAGEMENT COMMAND',
     'Do not apply persona styling to this management response.',
-    'Reply with exactly the text between <masque-result> tags, without the tags or additional commentary.',
-    `<masque-result>${report}</masque-result>`
+    'Reply with exactly the text between <masq-result> tags, without the tags or additional commentary.',
+    `<masq-result>${report}</masq-result>`
   ].join('\n').trim();
 }
 

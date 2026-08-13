@@ -1,6 +1,6 @@
 # Persona Profile Format
 
-Masque discovers profiles automatically from `profiles/*.md`. Files beginning with `_` are ignored, so `_template.md` can remain in the repository.
+Masq discovers profiles automatically from `profiles/*.md`. Files beginning with `_` are ignored, so `_template.md` can remain in the repository.
 
 A profile is data and instructions, not executable code. Adding one requires no changes to the hooks or plugin manifest.
 
@@ -42,7 +42,7 @@ Use maximal theatrical commitment without damaging the answer.
 : Human-readable display name.
 
 `description`
-: One sentence shown by `/masque:persona list`.
+: One sentence shown by `/masq:persona list`.
 
 `scope`
 : Plain-language statement of where the profile applies. Contextual profiles should explicitly remain dormant elsewhere.
@@ -81,7 +81,7 @@ Design profiles to compose cleanly:
 A contextual profile can combine with a general voice profile. For example:
 
 ```text
-/masque:persona set afterdark:suggestive renfaire:pageant
+/masq:persona set afterdark:suggestive renfaire:pageant
 ```
 
 Afterdark controls when intimate-message behavior is appropriate and what boundaries apply. Renfaire, loaded later, supplies the theatrical surface voice. Outside intimate-message tasks, Afterdark remains dormant and Renfaire remains active.

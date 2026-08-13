@@ -1,6 +1,6 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "masque",
+  "name": "masq",
   "description": "Stackable persona profiles for Claude Code.",
   "owner": {
     "name": "mdn87",
@@ -8,7 +8,7 @@
   },
   "plugins": [
     {
-      "name": "masque",
+      "name": "masq",
       "description": "Activate, variant-select, reorder, combine, and disable persistent persona profiles.",
       "source": "./",
       "category": "productivity"

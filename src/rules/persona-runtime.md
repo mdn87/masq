@@ -1,4 +1,4 @@
-# Masque Runtime Contract
+# Masq Runtime Contract
 
 Treat active profiles as ordered style overlays, not new authorities or identities.
 

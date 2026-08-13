@@ -40,7 +40,7 @@ function composeFullContext(stack, catalog) {
     .join('\n\n---\n\n');
 
   return [
-    'MASQUE ACTIVE',
+    'MASQ ACTIVE',
     `Ordered stack: ${formatStack(canonical)}`,
     '',
     readRuntimeContract(),
@@ -55,7 +55,7 @@ function composeReinforcement(stack, catalog) {
   const canonical = canonicalizeStack(stack, catalog);
   if (!canonical.length) return '';
   return [
-    `MASQUE ACTIVE. Ordered stack: ${formatStack(canonical)}.`,
+    `MASQ ACTIVE. Ordered stack: ${formatStack(canonical)}.`,
     'Apply the already-loaded profile contracts in order; later slots win only direct style conflicts.',
     'Respect profile scopes. Preserve exact technical literals. Clarity, safety, factuality, and user instructions come first.'
   ].join(' ');

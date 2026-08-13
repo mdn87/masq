@@ -2,7 +2,7 @@
 
 ## Runtime Model
 
-Masque has two Claude Code hooks and a filesystem profile catalog.
+Masq has two Claude Code hooks and a filesystem profile catalog.
 
 ```text
 SessionStart
@@ -49,7 +49,7 @@ The array order is precedence order. Re-activating a profile replaces its varian
 
 ## Persistence
 
-The plugin manifest passes `${CLAUDE_PLUGIN_DATA}` to both hooks through `--data-dir`. Tests can override storage with `MASQUE_DATA_DIR`. A fallback directory exists only for direct local execution outside plugin loading.
+The plugin manifest passes `${CLAUDE_PLUGIN_DATA}` to both hooks through `--data-dir`. Tests can override storage with `MASQ_DATA_DIR`. A fallback directory exists only for direct local execution outside plugin loading.
 
 Writes are normalized, size-limited, written to a new temporary file, and atomically renamed. Reads reject symlinks, non-files, oversized data, unsupported versions, malformed JSON, invalid IDs, and invalid variants.
 

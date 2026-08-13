@@ -1,12 +1,12 @@
-# CLAUDE.md - Masque
+# CLAUDE.md - Masq
 
 ## Project Intent
 
-Masque is a Claude Code plugin for ordered, composable persona profiles. Profiles alter user-visible presentation only. They must not change facts, permissions, tool behavior, safety boundaries, or exact technical literals.
+Masq is a Claude Code plugin for ordered, composable persona profiles. Profiles alter user-visible presentation only. They must not change facts, permissions, tool behavior, safety boundaries, or exact technical literals.
 
 ## Invariants
 
-1. The default installation is quiet. Do not activate a profile without an explicit command, a supported natural-language activation, or `MASQUE_DEFAULT_STACK` on an empty state.
+1. The default installation is quiet. Do not activate a profile without an explicit command, a supported natural-language activation, or `MASQ_DEFAULT_STACK` on an empty state.
 2. Profiles load from `profiles/*.md`. Files beginning with `_` are ignored. Adding a profile must not require a registry edit.
 3. State contains canonical `{ id, variant }` entries only and is stored under `${CLAUDE_PLUGIN_DATA}/state.json`.
 4. Apply the stack from first to last. Later profiles win only direct style conflicts.
@@ -49,4 +49,4 @@ After changing profile format, update:
 
 ## Change Discipline
 
-Prefer narrow changes with tests. Do not duplicate the profile catalog in code. Do not hardcode included profile IDs into the generic runtime except for intentionally documented compatibility commands such as `/masque:afterdark`.
+Prefer narrow changes with tests. Do not duplicate the profile catalog in code. Do not hardcode included profile IDs into the generic runtime except for intentionally documented compatibility commands such as `/masq:afterdark`.

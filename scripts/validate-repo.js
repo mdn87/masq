@@ -23,16 +23,16 @@ const pkg = readJson('package.json');
 const plugin = readJson('.claude-plugin/plugin.json');
 const marketplace = readJson('.claude-plugin/marketplace.json');
 
-assert(pkg.name === 'masque', 'package.json name must be masque');
-assert(plugin.name === 'masque', 'plugin.json name must be masque');
-assert(marketplace.name === 'masque', 'marketplace.json name must be masque');
+assert(pkg.name === 'masq', 'package.json name must be masq');
+assert(plugin.name === 'masq', 'plugin.json name must be masq');
+assert(marketplace.name === 'masq', 'marketplace.json name must be masq');
 assert(pkg.version === plugin.version, 'package and plugin versions must match');
 assert(plugin.license === 'MIT' && pkg.license === 'MIT', 'license metadata must be MIT');
 
 const listing = Array.isArray(marketplace.plugins)
-  ? marketplace.plugins.find(entry => entry && entry.name === 'masque')
+  ? marketplace.plugins.find(entry => entry && entry.name === 'masq')
   : null;
-assert(listing, 'marketplace must contain the masque plugin');
+assert(listing, 'marketplace must contain the masq plugin');
 assert(listing.source === './', 'marketplace plugin source must be ./');
 
 for (const event of ['SessionStart', 'UserPromptSubmit']) {

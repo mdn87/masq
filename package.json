@@ -1,12 +1,12 @@
 {
-  "name": "masque",
+  "name": "masq",
   "version": "0.1.0",
   "private": true,
   "description": "Stackable persona profiles for Claude Code.",
   "type": "commonjs",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mdn87/masque.git"
+    "url": "git+https://github.com/mdn87/masq.git"
   },
   "scripts": {
     "syntax": "node --check src/hooks/persona-context.js && node --check src/hooks/persona-mode.js && node --check src/hooks/persona-profiles.js && node --check src/hooks/persona-session.js && node --check src/hooks/persona-state.js && node --check scripts/new-profile.js && node --check scripts/validate-profiles.js && node --check scripts/validate-repo.js && node --check tests/test-hooks.js",

@@ -22,7 +22,7 @@ function getCliDataDir() {
 }
 
 function getDataDir() {
-  const explicit = String(process.env.MASQUE_DATA_DIR || '').trim();
+  const explicit = String(process.env.MASQ_DATA_DIR || '').trim();
   if (explicit) return path.resolve(explicit);
 
   const cli = getCliDataDir();
@@ -31,7 +31,7 @@ function getDataDir() {
   const pluginData = String(process.env.CLAUDE_PLUGIN_DATA || '').trim();
   if (pluginData) return path.resolve(pluginData);
 
-  return path.join(getClaudeDir(), 'plugins', 'data', 'masque-local');
+  return path.join(getClaudeDir(), 'plugins', 'data', 'masq-local');
 }
 
 function getStatePath() {

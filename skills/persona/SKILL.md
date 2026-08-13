@@ -1,12 +1,12 @@
 ---
 name: persona
-description: This skill should be used when the user invokes "/masque:persona", asks to "turn on a persona", "disable a persona profile", "stack personas", "list persona profiles", "show active personas", or requests a persistent composable response style. It manages ordered persona overlays without changing technical facts or tool behavior.
+description: This skill should be used when the user invokes "/masq:persona", asks to "turn on a persona", "disable a persona profile", "stack personas", "list persona profiles", "show active personas", or requests a persistent composable response style. It manages ordered persona overlays without changing technical facts or tool behavior.
 version: 0.1.0
 disable-model-invocation: true
 argument-hint: <status|list|on|off|toggle|set|move|clear> [profile[:variant] ...]
 ---
 
-# Masque
+# Masq
 
 Manage reusable persona profiles as an ordered stack of style overlays. Permit several profiles to remain active at once. Keep persona behavior separate from factual reasoning, safety constraints, tools, code, and project instructions.
 
@@ -15,28 +15,28 @@ The hooks perform state changes and inject the active profile contracts. For a m
 ## Commands
 
 ```text
-/masque:persona status
-/masque:persona list
-/masque:persona on <profile[:variant]> [...]
-/masque:persona off <profile> [...]
-/masque:persona toggle <profile[:variant]> [...]
-/masque:persona set <profile[:variant]> [...]
-/masque:persona move <profile> first|last
-/masque:persona clear
-/masque:persona help
+/masq:persona status
+/masq:persona list
+/masq:persona on <profile[:variant]> [...]
+/masq:persona off <profile> [...]
+/masq:persona toggle <profile[:variant]> [...]
+/masq:persona set <profile[:variant]> [...]
+/masq:persona move <profile> first|last
+/masq:persona clear
+/masq:persona help
 ```
 
-Treat `/masque:persona <profile[:variant]>` as shorthand for `/masque:persona on <profile[:variant]>`.
+Treat `/masq:persona <profile[:variant]>` as shorthand for `/masq:persona on <profile[:variant]>`.
 
 Examples:
 
 ```text
-/masque:persona on renfaire
-/masque:persona on afterdark:suggestive
-/masque:persona set afterdark:suggestive renfaire:pageant
-/masque:persona off afterdark
-/masque:persona move renfaire last
-/masque:persona clear
+/masq:persona on renfaire
+/masq:persona on afterdark:suggestive
+/masq:persona set afterdark:suggestive renfaire:pageant
+/masq:persona off afterdark
+/masq:persona move renfaire last
+/masq:persona clear
 ```
 
 ## Stack Semantics
@@ -54,7 +54,7 @@ Apply active profiles from first to last.
 Example:
 
 ```text
-/masque:persona set afterdark:suggestive renfaire:pageant
+/masq:persona set afterdark:suggestive renfaire:pageant
 ```
 
 For an adult intimate-message task, apply Afterdark's scope and consent rules, then render the sendable language through the Renfaire voice. For a coding explanation, Afterdark remains dormant and Renfaire alone affects the surrounding prose.
@@ -89,16 +89,16 @@ When a persona would make a critical instruction harder to follow, state the dec
 
 ## Persistence Behavior
 
-Store the ordered stack in Claude Code's persistent `CLAUDE_PLUGIN_DATA` directory. Keep it active through new sessions, resume, `/clear`, and context compaction until the user changes or clears it. All Claude Code sessions using the same Masque installation share the stack and pick up changes on their next prompt.
+Store the ordered stack in Claude Code's persistent `CLAUDE_PLUGIN_DATA` directory. Keep it active through new sessions, resume, `/clear`, and context compaction until the user changes or clears it. All Claude Code sessions using the same Masq installation share the stack and pick up changes on their next prompt.
 
-Use `MASQUE_DEFAULT_STACK` to seed an empty stack:
+Use `MASQ_DEFAULT_STACK` to seed an empty stack:
 
 ```powershell
-$env:MASQUE_DEFAULT_STACK = "renfaire:pageant,afterdark:suggestive"
+$env:MASQ_DEFAULT_STACK = "renfaire:pageant,afterdark:suggestive"
 claude --plugin-dir .
 ```
 
-Use `MASQUE_RESET_ON_START=1` to restore session-reset behavior. When both variables are set, startup clears the old stack and then loads the default stack.
+Use `MASQ_RESET_ON_START=1` to restore session-reset behavior. When both variables are set, startup clears the old stack and then loads the default stack.
 
 ## Adding Profiles
 

@@ -2,11 +2,11 @@
 
 ## Setup
 
-Masque requires Node 18 or newer and has no external npm dependencies.
+Masq requires Node 18 or newer and has no external npm dependencies.
 
 ```bash
-git clone https://github.com/mdn87/masque.git
-cd masque
+git clone https://github.com/mdn87/masq.git
+cd masq
 npm test
 ```
 

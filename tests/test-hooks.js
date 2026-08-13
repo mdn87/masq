@@ -8,7 +8,7 @@ const { spawnSync } = require('child_process');
 
 const root = path.resolve(__dirname, '..');
 const hooks = path.join(root, 'src', 'hooks');
-const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'masque-test-'));
+const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'masq-test-'));
 const statePath = path.join(temp, 'state.json');
 
 function run(script, payload, extraEnv = {}) {
@@ -20,9 +20,9 @@ function run(script, payload, extraEnv = {}) {
       ...process.env,
       CLAUDE_CONFIG_DIR: temp,
       CLAUDE_PLUGIN_ROOT: root,
-      MASQUE_DATA_DIR: temp,
-      MASQUE_DEFAULT_STACK: '',
-      MASQUE_RESET_ON_START: '',
+      MASQ_DATA_DIR: temp,
+      MASQ_DEFAULT_STACK: '',
+      MASQ_RESET_ON_START: '',
       ...extraEnv
     }
   });
@@ -51,13 +51,13 @@ try {
   assert.strictEqual(startup, '');
   assertStack([]);
 
-  let output = hookContext(run('persona-mode.js', { prompt: '/masque:persona on renfaire' }));
+  let output = hookContext(run('persona-mode.js', { prompt: '/masq:persona on renfaire' }));
   assertStack([{ id: 'renfaire', variant: 'pageant' }]);
   assert.match(output, /Ordered stack: renfaire:pageant/);
   assert.match(output, /Slot 1: Renfaire Herald/);
   assert.match(output, /Active personas: renfaire:pageant/);
 
-  output = hookContext(run('persona-mode.js', { prompt: '/masque:persona on afterdark:direct' }));
+  output = hookContext(run('persona-mode.js', { prompt: '/masq:persona on afterdark:direct' }));
   assertStack([
     { id: 'renfaire', variant: 'pageant' },
     { id: 'afterdark', variant: 'direct' }
@@ -69,41 +69,41 @@ try {
   assert.match(output, /renfaire:pageant \+ afterdark:direct/);
   assert.match(output, /already-loaded profile contracts/);
 
-  hookContext(run('persona-mode.js', { prompt: '/masque:persona on renfaire:courtly' }));
+  hookContext(run('persona-mode.js', { prompt: '/masq:persona on renfaire:courtly' }));
   assertStack([
     { id: 'afterdark', variant: 'direct' },
     { id: 'renfaire', variant: 'courtly' }
   ]);
 
-  hookContext(run('persona-mode.js', { prompt: '/masque:persona off afterdark' }));
+  hookContext(run('persona-mode.js', { prompt: '/masq:persona off afterdark' }));
   assertStack([{ id: 'renfaire', variant: 'courtly' }]);
 
-  hookContext(run('persona-mode.js', { prompt: '/masque:persona toggle afterdark:flirty' }));
+  hookContext(run('persona-mode.js', { prompt: '/masq:persona toggle afterdark:flirty' }));
   assertStack([
     { id: 'renfaire', variant: 'courtly' },
     { id: 'afterdark', variant: 'flirty' }
   ]);
 
-  hookContext(run('persona-mode.js', { prompt: '/masque:persona set renfaire:full afterdark:suggestive' }));
+  hookContext(run('persona-mode.js', { prompt: '/masq:persona set renfaire:full afterdark:suggestive' }));
   assertStack([
     { id: 'renfaire', variant: 'full' },
     { id: 'afterdark', variant: 'suggestive' }
   ]);
 
-  hookContext(run('persona-mode.js', { prompt: '/masque:persona move renfaire last' }));
+  hookContext(run('persona-mode.js', { prompt: '/masq:persona move renfaire last' }));
   assertStack([
     { id: 'afterdark', variant: 'suggestive' },
     { id: 'renfaire', variant: 'full' }
   ]);
 
-  output = hookContext(run('persona-mode.js', { prompt: '/masque:persona status' }));
+  output = hookContext(run('persona-mode.js', { prompt: '/masq:persona status' }));
   assert.match(output, /Active personas: afterdark:suggestive \+ renfaire:full/);
   assertStack([
     { id: 'afterdark', variant: 'suggestive' },
     { id: 'renfaire', variant: 'full' }
   ]);
 
-  output = hookContext(run('persona-mode.js', { prompt: '/masque:persona list' }));
+  output = hookContext(run('persona-mode.js', { prompt: '/masq:persona list' }));
   assert.match(output, /Persona profiles:/);
   assert.match(output, /afterdark \[flirty\|suggestive\|direct\]/);
   assert.match(output, /renfaire \[courtly\|full\|pageant\]/);
@@ -111,25 +111,25 @@ try {
   output = hookContext(run('persona-mode.js', {
     prompt: '<command-message>review</command-message><command-name>/review</command-name><command-args>clear all personas</command-args>'
   }));
-  assert.match(output, /MASQUE ACTIVE/);
+  assert.match(output, /MASQ ACTIVE/);
   assertStack([
     { id: 'afterdark', variant: 'suggestive' },
     { id: 'renfaire', variant: 'full' }
   ]);
 
   hookContext(run('persona-mode.js', {
-    prompt: '<command-message>afterdark</command-message><command-name>/masque:afterdark</command-name><command-args>direct</command-args>'
+    prompt: '<command-message>afterdark</command-message><command-name>/masq:afterdark</command-name><command-args>direct</command-args>'
   }));
   assertStack([
     { id: 'renfaire', variant: 'full' },
     { id: 'afterdark', variant: 'direct' }
   ]);
 
-  hookContext(run('persona-mode.js', { prompt: '/masque:afterdark off' }));
+  hookContext(run('persona-mode.js', { prompt: '/masq:afterdark off' }));
   assertStack([{ id: 'renfaire', variant: 'full' }]);
 
   const resume = run('persona-session.js', { source: 'resume' });
-  assert.match(resume, /MASQUE ACTIVE/);
+  assert.match(resume, /MASQ ACTIVE/);
   assert.match(resume, /renfaire:full/);
   assert.match(resume, /Active variant: full/i);
 
@@ -140,7 +140,7 @@ try {
   const reset = run(
     'persona-session.js',
     { source: 'startup' },
-    { MASQUE_RESET_ON_START: '1' }
+    { MASQ_RESET_ON_START: '1' }
   );
   assert.strictEqual(reset, '');
   assertStack([]);
@@ -148,7 +148,7 @@ try {
   const defaults = run(
     'persona-session.js',
     { source: 'startup' },
-    { MASQUE_DEFAULT_STACK: 'afterdark:suggestive,renfaire:pageant' }
+    { MASQ_DEFAULT_STACK: 'afterdark:suggestive,renfaire:pageant' }
   );
   assertStack([
     { id: 'afterdark', variant: 'suggestive' },
@@ -157,11 +157,11 @@ try {
   assert.match(defaults, /afterdark:suggestive \+ renfaire:pageant/);
 
   const beforeUnknown = readState();
-  output = hookContext(run('persona-mode.js', { prompt: '/masque:persona on dragon-lawyer' }));
+  output = hookContext(run('persona-mode.js', { prompt: '/masq:persona on dragon-lawyer' }));
   assert.match(output, /Persona command failed: unknown profile: dragon-lawyer/);
   assert.deepStrictEqual(readState(), beforeUnknown);
 
-  hookContext(run('persona-mode.js', { prompt: '/masque:persona clear' }));
+  hookContext(run('persona-mode.js', { prompt: '/masq:persona clear' }));
   assertStack([]);
 
   hookContext(run('persona-mode.js', { prompt: 'turn on the medieval persona' }));
@@ -182,7 +182,7 @@ try {
   assert.strictEqual(scheduled, '');
   assertStack([{ id: 'renfaire', variant: 'pageant' }]);
 
-  console.log('masque hook tests passed');
+  console.log('masq hook tests passed');
 } finally {
   fs.rmSync(temp, { recursive: true, force: true });
 }
