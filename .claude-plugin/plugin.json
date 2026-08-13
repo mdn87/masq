@@ -1,0 +1,41 @@
+{
+  "name": "masque",
+  "version": "0.1.0",
+  "description": "Stackable Claude Code persona profiles with variants, ordered composition, and persistent activation.",
+  "author": {
+    "name": "mdn87",
+    "url": "https://github.com/mdn87"
+  },
+  "license": "MIT",
+  "keywords": [
+    "persona",
+    "writing-style",
+    "profiles",
+    "tone",
+    "composition"
+  ],
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/src/hooks/persona-session.js\" --data-dir \"${CLAUDE_PLUGIN_DATA}\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/src/hooks/persona-mode.js\" --data-dir \"${CLAUDE_PLUGIN_DATA}\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
