@@ -99,6 +99,18 @@ afterdark:direct
 
 Afterdark remains non-graphic, consent-aware, and dormant outside adult intimate-message drafting or revision.
 
+### Plain Language
+
+Clear human-facing prose: concrete subjects and verbs, statuses explained rather than left bare, exact technical names preserved, and no invented project shorthand.
+
+```text
+plain:light
+plain:default
+plain:strict
+```
+
+The default is `plain:default`.
+
 ## Composition Contract
 
 Masq treats profiles as presentation layers, not new authorities or identities.
