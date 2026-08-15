@@ -53,8 +53,7 @@ try {
 
   let output = hookContext(run('persona-mode.js', { prompt: '/masq:persona on renfaire' }));
   assertStack([{ id: 'renfaire', variant: 'pageant' }]);
-  assert.match(output, /Ordered stack: renfaire:pageant/);
-  assert.match(output, /Slot 1: Renfaire Herald/);
+  assert.doesNotMatch(output, /Slot 1: Renfaire Herald/);
   assert.match(output, /Active personas: renfaire:pageant/);
 
   output = hookContext(run('persona-mode.js', { prompt: '/masq:persona on afterdark:direct' }));
@@ -62,12 +61,12 @@ try {
     { id: 'renfaire', variant: 'pageant' },
     { id: 'afterdark', variant: 'direct' }
   ]);
-  assert.match(output, /Slot 1: Renfaire Herald/);
-  assert.match(output, /Slot 2: Afterdark/);
+  assert.doesNotMatch(output, /Slot 1: Renfaire Herald/);
 
   output = hookContext(run('persona-mode.js', { prompt: 'explain why the tests failed' }));
   assert.match(output, /renfaire:pageant \+ afterdark:direct/);
-  assert.match(output, /already-loaded profile contracts/);
+  assert.match(output, /Slot 1: Renfaire Herald/);
+  assert.match(output, /Slot 2: Afterdark/);
 
   hookContext(run('persona-mode.js', { prompt: '/masq:persona on renfaire:courtly' }));
   assertStack([
@@ -106,6 +105,7 @@ try {
   output = hookContext(run('persona-mode.js', { prompt: '/masq:persona list' }));
   assert.match(output, /Persona profiles:/);
   assert.match(output, /afterdark \[flirty\|suggestive\|direct\]/);
+  assert.match(output, /caveman \[lite\|full\|ultra\|wenyan-lite\|wenyan-full\|wenyan-ultra\]/);
   assert.match(output, /renfaire \[courtly\|full\|pageant\]/);
 
   output = hookContext(run('persona-mode.js', {
@@ -171,6 +171,15 @@ try {
   assert.match(output, /Active personas: renfaire:pageant/);
 
   hookContext(run('persona-mode.js', { prompt: 'take off the renfaire mask' }));
+  assertStack([]);
+
+  hookContext(run('persona-mode.js', { prompt: '/masq:persona on cave:ultra' }));
+  assertStack([{ id: 'caveman', variant: 'ultra' }]);
+
+  output = hookContext(run('persona-mode.js', { prompt: '/masq:persona status' }));
+  assert.match(output, /Active personas: caveman:ultra/);
+
+  hookContext(run('persona-mode.js', { prompt: '/masq:persona clear' }));
   assertStack([]);
 
   hookContext(run('persona-mode.js', { prompt: 'put on the herald mask' }));

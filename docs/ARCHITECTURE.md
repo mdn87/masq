@@ -2,12 +2,12 @@
 
 ## Runtime Model
 
-Masq has two Claude Code hooks and a filesystem profile catalog.
+Masq has three Claude Code hooks and a filesystem profile catalog.
 
 ```text
 SessionStart
     |
-    +-- read state.json
+    +-- resolve global, project, and session state
     +-- optionally reset or seed defaults
     +-- load profiles/*.md
     +-- inject full ordered profile contracts
@@ -15,9 +15,13 @@ SessionStart
 UserPromptSubmit
     |
     +-- detect management command or supported natural-language control
-    +-- mutate state.json when needed
+    +-- mutate the selected scope or preset store when needed
     +-- inject full contracts after a management change
     +-- otherwise inject a compact per-turn reinforcement
+
+SessionEnd
+    |
+    +-- remove the current session's temporary stack
 ```
 
 ## Profile Catalog
@@ -45,13 +49,29 @@ State schema:
 }
 ```
 
-The array order is precedence order. Re-activating a profile replaces its variant and moves it to the final slot. The runtime currently caps the stack at 12 active profiles.
+The array order is precedence order. Re-activating a profile replaces its
+variant and moves it to the final slot. The runtime currently caps each
+effective stack at 12 active profiles.
+
+The global stack remains `state.json` for 0.1 compatibility. Project overrides
+live under `projects/` using the SHA-256 of the canonical hook working
+directory. Temporary stacks live under `sessions/` using the SHA-256 of the
+Claude session ID. `presets.json` maps validated names to canonical stacks.
+
+An existing project override replaces global state, including when the
+override is deliberately empty. Temporary state overlays that persistent
+stack; a duplicate temporary profile moves to the final precedence slot.
 
 ## Persistence
 
-The plugin manifest passes `${CLAUDE_PLUGIN_DATA}` to both hooks through `--data-dir`. Tests can override storage with `MASQ_DATA_DIR`. A fallback directory exists only for direct local execution outside plugin loading.
+The plugin manifest passes `${CLAUDE_PLUGIN_DATA}` to all hooks through
+`--data-dir`. Tests can override storage with `MASQ_DATA_DIR`. A fallback
+directory exists only for direct local execution outside plugin loading.
 
 Writes are normalized, size-limited, written to a new temporary file, and atomically renamed. Reads reject symlinks, non-files, oversized data, unsupported versions, malformed JSON, invalid IDs, and invalid variants.
+
+Doctor uses the same readers but is read-only. It reports malformed or unsafe
+state rather than repairing it.
 
 ## Context Composition
 
@@ -63,6 +83,11 @@ Writes are normalized, size-limited, written to a new temporary file, and atomic
 4. only the selected variant body
 
 It does not load inactive variants into prompt context.
+
+Management turns inject only an exact, unstyled receipt. When a command
+changes the effective stack, the next ordinary prompt detects that the stack
+snapshot changed and injects the full profile contracts before composing the
+reply. Later ordinary turns use the compact reinforcement.
 
 ## Failure Behavior
 

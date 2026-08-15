@@ -13,8 +13,9 @@ Report security issues privately to the repository owner rather than opening a p
 Masq treats profile and state files as local input but still validates them defensively:
 
 - state and profile files must be regular files, not symlinks
-- state size and profile size are capped
+- state, preset, and profile sizes are capped
 - profile IDs, aliases, and variants are restricted to lowercase kebab-case
 - state writes use a temporary file and atomic rename
+- project and session keys are SHA-256 hashes; no repository file receives plugin state
 - hooks fail closed and do not interrupt Claude Code
 - profile content is presentation guidance and cannot grant tool authority

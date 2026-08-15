@@ -27,6 +27,7 @@ Claude Code namespaces plugin skills with the plugin name:
 ```text
 /masq:persona status
 /masq:persona list
+/masq:persona doctor
 /masq:persona on <profile[:variant]> [...]
 /masq:persona off <profile> [...]
 /masq:persona toggle <profile[:variant]> [...]
@@ -34,6 +35,18 @@ Claude Code namespaces plugin skills with the plugin name:
 /masq:persona move <profile> first|last
 /masq:persona clear
 /masq:persona help
+```
+
+Scope and preset commands:
+
+```text
+/masq:persona global <status|on|off|toggle|set|move|clear> [...]
+/masq:persona project <status|on|off|toggle|set|move|clear|unset> [...]
+/masq:persona temp <status|on|off|toggle|set|move|clear> [...]
+/masq:persona preset list
+/masq:persona preset export <name> [effective|global|project|temp]
+/masq:persona preset import <name> [active|global|project|temp]
+/masq:persona preset delete <name>
 ```
 
 Shorthand activation:
@@ -52,6 +65,10 @@ Examples:
 /masq:persona move afterdark last
 /masq:persona off renfaire
 /masq:persona clear
+/masq:persona project set plain:strict caveman:lite
+/masq:persona temp on renfaire:courtly
+/masq:persona preset export concise effective
+/masq:persona preset import concise project
 ```
 
 Simple natural-language controls are also recognized:
@@ -111,6 +128,25 @@ plain:strict
 
 The default is `plain:default`.
 
+### Caveman
+
+Token-conscious terse prose adapted from the MIT-licensed
+[Caveman skill](https://github.com/JuliusBrussee/caveman). Caveman removes
+filler and repetition while preserving technical substance, exact literals,
+negations, and clarity around consequential actions.
+
+```text
+caveman:lite
+caveman:full
+caveman:ultra
+caveman:wenyan-lite
+caveman:wenyan-full
+caveman:wenyan-ultra
+```
+
+The default is `caveman:full`. See [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)
+for attribution and license terms.
+
 ## Composition Contract
 
 Masq treats profiles as presentation layers, not new authorities or identities.
@@ -123,15 +159,40 @@ Masq treats profiles as presentation layers, not new authorities or identities.
 - Keep safety, factuality, project instructions, and the current user request above persona styling.
 - State destructive, security, medical, legal, and financial warnings plainly when styling could obscure them.
 
-## Persistence
+## State Scopes
 
-The ordered stack is stored in Claude Code's persistent plugin-data directory:
+Masq resolves one effective stack from three scopes:
+
+1. The user-global stack is the fallback for every project.
+2. A project override, when present for the current canonical working
+   directory, replaces the global stack.
+3. Temporary session profiles overlay the persistent stack and win duplicate
+   profile precedence.
+
+Unqualified mutation commands edit the project override when one exists and
+otherwise edit the global stack. `project unset` removes the override and
+restores global fallback. `project clear` deliberately creates an empty
+override. Temporary profiles expire at SessionEnd and remain isolated from
+other Claude Code sessions.
+
+All state remains inside Claude Code's private plugin-data directory:
 
 ```text
 ${CLAUDE_PLUGIN_DATA}/state.json
+${CLAUDE_PLUGIN_DATA}/projects/<project-hash>.json
+${CLAUDE_PLUGIN_DATA}/sessions/<session-hash>.json
+${CLAUDE_PLUGIN_DATA}/presets.json
 ```
 
-The stack survives new sessions, resume, `/clear`, and context compaction until it is changed or cleared. Concurrent Claude Code sessions using the same Masq installation share the stack.
+Global and project stacks survive new sessions, resume, `/clear`, and context
+compaction. Temporary stacks persist while the session remains live and
+through compaction; Claude Code's SessionEnd hook removes them on exit,
+`/clear`, or a session switch. Named presets store canonical stacks and never
+read or write an arbitrary path.
+
+Run `/masq:persona doctor` to inspect the catalog, manifest hooks, data
+directory, current scopes, effective stack, and preset count. Doctor is
+read-only.
 
 Seed an empty installation with a default stack:
 
@@ -146,7 +207,8 @@ Reset the saved stack at each true startup:
 $env:MASQ_RESET_ON_START = "1"
 ```
 
-When both variables are set, startup clears the prior stack and then loads the defaults.
+When both variables are set, startup clears the prior global stack and then
+loads the defaults. Project overrides remain explicit and unchanged.
 
 ## Add a Profile
 

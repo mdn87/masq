@@ -1,6 +1,6 @@
 {
   "name": "masq",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Stackable Claude Code persona profiles with variants, ordered composition, and persistent activation.",
   "author": {
     "name": "mdn87",
@@ -32,6 +32,17 @@
           {
             "type": "command",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/src/hooks/persona-mode.js\" --data-dir \"${CLAUDE_PLUGIN_DATA}\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/src/hooks/persona-session-end.js\" --data-dir \"${CLAUDE_PLUGIN_DATA}\"",
             "timeout": 5
           }
         ]
