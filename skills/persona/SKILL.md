@@ -3,7 +3,7 @@ name: persona
 description: This skill should be used when the user invokes "/masq:persona", asks to "turn on a persona", "disable a persona profile", "stack personas", "list persona profiles", "show active personas", or requests a persistent composable response style. It manages ordered persona overlays without changing technical facts or tool behavior.
 version: 0.2.0
 disable-model-invocation: true
-argument-hint: <status|list|doctor|on|off|toggle|set|move|clear|global|project|temp|preset> [...]
+argument-hint: <status|list|doctor|preview|on|off|toggle|set|move|clear|global|project|temp|preset> [...]
 ---
 
 # Masq
@@ -18,6 +18,7 @@ The hooks perform state changes and inject the active profile contracts. For a m
 /masq:persona status
 /masq:persona list
 /masq:persona doctor
+/masq:persona preview [profile[:variant] ...]
 /masq:persona on <profile[:variant]> [...]
 /masq:persona off <profile> [...]
 /masq:persona toggle <profile[:variant]> [...]
@@ -49,8 +50,14 @@ Examples:
 /masq:persona set afterdark:suggestive renfaire:pageant
 /masq:persona off afterdark
 /masq:persona move renfaire last
+/masq:persona preview afterdark:suggestive renfaire:pageant
 /masq:persona clear
 ```
+
+`preview` uses the current effective stack when no profiles are supplied. With
+profile arguments, it renders that ordered combination instead. The hook
+supplies a standardized sample so combinations can be compared consistently.
+Preview is one-turn-only and must not update persona state.
 
 ## Stack Semantics
 

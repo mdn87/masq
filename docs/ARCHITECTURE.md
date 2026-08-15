@@ -16,6 +16,7 @@ UserPromptSubmit
     |
     +-- detect management command or supported natural-language control
     +-- mutate the selected scope or preset store when needed
+    +-- inject a one-turn, non-persistent preview when requested
     +-- inject full contracts after a management change
     +-- otherwise inject a compact per-turn reinforcement
 
@@ -84,10 +85,12 @@ state rather than repairing it.
 
 It does not load inactive variants into prompt context.
 
-Management turns inject only an exact, unstyled receipt. When a command
-changes the effective stack, the next ordinary prompt detects that the stack
-snapshot changed and injects the full profile contracts before composing the
-reply. Later ordinary turns use the compact reinforcement.
+Management turns inject only an exact, unstyled receipt. Preview is the sole
+exception: it injects the requested stack plus a standardized sample task for
+one response and does not update any state. When a command changes the
+effective stack, the next ordinary prompt detects that the stack snapshot
+changed and injects the full profile contracts before composing the reply.
+Later ordinary turns use the compact reinforcement.
 
 ## Failure Behavior
 

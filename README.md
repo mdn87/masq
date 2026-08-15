@@ -28,6 +28,7 @@ Claude Code namespaces plugin skills with the plugin name:
 /masq:persona status
 /masq:persona list
 /masq:persona doctor
+/masq:persona preview [profile[:variant] ...]
 /masq:persona on <profile[:variant]> [...]
 /masq:persona off <profile> [...]
 /masq:persona toggle <profile[:variant]> [...]
@@ -69,7 +70,12 @@ Examples:
 /masq:persona temp on renfaire:courtly
 /masq:persona preset export concise effective
 /masq:persona preset import concise project
+/masq:persona preview renfaire:pageant caveman:lite
 ```
+
+`preview` renders a standardized release-status sample through either the
+current effective stack or an explicitly supplied ordered combination. It is a
+one-turn comparison and does not change saved or temporary persona state.
 
 Simple natural-language controls are also recognized:
 

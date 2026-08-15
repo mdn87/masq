@@ -14,6 +14,7 @@ All notable changes will be documented here.
 - Per-project stack overrides stored privately in plugin data
 - Session-scoped temporary profiles with SessionEnd cleanup
 - Named stack preset export, import, listing, and deletion
+- One-turn previews for comparing an effective voice or explicit ordered combination without changing state
 
 ## [0.1.0] - 2026-08-12
 

@@ -108,6 +108,15 @@ try {
   assert.match(output, /caveman \[lite\|full\|ultra\|wenyan-lite\|wenyan-full\|wenyan-ultra\]/);
   assert.match(output, /renfaire \[courtly\|full\|pageant\]/);
 
+  const beforePreview = readState();
+  output = hookContext(run('persona-mode.js', { prompt: '/masq:persona preview renfaire:courtly caveman:lite' }));
+  assert.match(output, /^MASQ PREVIEW/m);
+  assert.match(output, /Preview stack: renfaire:courtly \+ caveman:lite/);
+  assert.deepStrictEqual(readState(), beforePreview);
+
+  output = hookContext(run('persona-mode.js', { prompt: '/masq:persona help' }));
+  assert.match(output, /\/masq:persona preview \[profile\[:variant\] \.\.\.\]/);
+
   output = hookContext(run('persona-mode.js', {
     prompt: '<command-message>review</command-message><command-name>/review</command-name><command-args>clear all personas</command-args>'
   }));

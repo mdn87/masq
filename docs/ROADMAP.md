@@ -14,6 +14,7 @@
 - Per-project stack override in addition to the user-global stack
 - Optional temporary profiles that expire at session end
 - Import and export of named stack presets
+- One-turn voice previews for the effective stack or an explicit combination
 
 ## 0.3 - Composition Controls
 

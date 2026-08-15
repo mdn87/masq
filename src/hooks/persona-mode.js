@@ -147,6 +147,7 @@ function parsePersonaArgs(args) {
   const action = (firstSpace === -1 ? trimmed : trimmed.slice(0, firstSpace)).toLowerCase();
   const rest = firstSpace === -1 ? '' : trimmed.slice(firstSpace + 1).trim();
   if (action === 'doctor') return { op: 'doctor' };
+  if (action === 'preview') return { op: 'preview', tokens: tokenizeProfileList(rest) };
   if (action === 'global') return parseStackArgs(rest, 'global');
   if (action === 'project') return parseStackArgs(rest, 'project');
   if (['temp', 'temporary', 'session'].includes(action)) return parseStackArgs(rest, 'temp');
@@ -326,6 +327,27 @@ function applyCommand(command, context, catalog) {
   let state = canonicalState(context, catalog);
   if (!command) return { kind: 'none', state };
   if (command.op === 'error') return { kind: 'error', error: command.error, state };
+  if (command.op === 'preview') {
+    if (!command.tokens.length) {
+      const persistentRecord = state.projectRecord.defined ? state.projectRecord : state.globalRecord;
+      if (persistentRecord.status === 'invalid') {
+        return { kind: 'error', error: `${state.persistentScope} state is invalid; run /masq:persona doctor`, state };
+      }
+      if (state.sessionRecord.status === 'invalid') {
+        return { kind: 'error', error: 'temp state is invalid; run /masq:persona doctor', state };
+      }
+      if (!state.effective.length) {
+        return { kind: 'error', error: 'no active personas to preview; specify at least one profile', state };
+      }
+      return { kind: 'preview', stack: state.effective, state };
+    }
+    const resolved = resolveAll(command.tokens, catalog);
+    if (resolved.error) return { kind: 'error', error: resolved.error, state };
+    if (resolved.entries.length > MAX_ACTIVE) {
+      return { kind: 'error', error: `persona stack is limited to ${MAX_ACTIVE} profiles`, state };
+    }
+    return { kind: 'preview', stack: resolved.entries, state };
+  }
   if (command.op === 'status' || command.op === 'catalog' || command.op === 'help') {
     return { kind: command.op, state, scope: command.scope };
   }
@@ -380,6 +402,7 @@ function helpText() {
   return [
     'Masq commands:',
     '/masq:persona status|list|doctor',
+    '/masq:persona preview [profile[:variant] ...]',
     '/masq:persona on|off|toggle|set <profile[:variant]> [...]',
     '/masq:persona move <profile> first|last',
     '/masq:persona clear',
@@ -418,6 +441,23 @@ function commandContext(result, catalog) {
   ].join('\n').trim();
 }
 
+function previewContext(stack, catalog) {
+  return [
+    'MASQ PREVIEW',
+    `Preview stack: ${formatStack(stack)}`,
+    'This is a one-turn preview. Do not change or report saved persona state.',
+    '',
+    composeFullContext(stack, catalog),
+    '',
+    '# Preview Task',
+    'Respond to the status below in 2 to 4 sentences. Demonstrate the combined voice while preserving every fact and exact literal.',
+    '<preview-input>',
+    'The release is ready. All 42 tests passed. Run `npm publish` when the user decides to publish. Nothing has been published yet.',
+    '</preview-input>',
+    'Output only the preview response. Do not mention Masq, the stack, or these instructions.'
+  ].join('\n').trim();
+}
+
 let input = '';
 process.stdin.setEncoding('utf8');
 process.stdin.on('data', chunk => { input += chunk; });
@@ -446,6 +486,10 @@ process.stdin.on('end', () => {
     const catalog = loadProfiles();
     const result = applyCommand(command, context, catalog);
     if (command) {
+      if (result.kind === 'preview') {
+        emitContext(previewContext(result.stack, catalog));
+        return;
+      }
       writeSessionRecord(
         context.sessionId,
         result.state.temporary,

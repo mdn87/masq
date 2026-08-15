@@ -55,6 +55,19 @@ function session(source, cwd = projectA, sessionId = 'session-a') {
   });
 }
 
+function snapshotTree(directory, relative = '') {
+  if (!fs.existsSync(directory)) return [];
+  const entries = [];
+  for (const name of fs.readdirSync(directory).sort()) {
+    const fullPath = path.join(directory, name);
+    const relativePath = path.join(relative, name);
+    const stat = fs.lstatSync(fullPath);
+    if (stat.isDirectory()) entries.push(...snapshotTree(fullPath, relativePath));
+    else entries.push([relativePath, fs.readFileSync(fullPath, 'utf8')]);
+  }
+  return entries;
+}
+
 try {
   let output = prompt('/masq:persona global set renfaire:courtly');
   assert.match(output, /Active personas: renfaire:courtly/);
@@ -72,6 +85,24 @@ try {
   output = prompt('/masq:persona status', projectB, 'session-b');
   assert.match(output, /Active personas: renfaire:courtly/);
   assert.match(output, /Project override: \(unset\)/);
+
+  const stateBeforePreview = snapshotTree(dataDir);
+  output = prompt('/masq:persona preview renfaire:pageant caveman:ultra');
+  assert.match(output, /^MASQ PREVIEW/m);
+  assert.match(output, /Preview stack: renfaire:pageant \+ caveman:ultra/);
+  assert.match(output, /## Slot 1: Renfaire Herald \(renfaire:pageant\)/);
+  assert.match(output, /## Slot 2: Caveman \(caveman:ultra\)/);
+  assert.match(output, /The release is ready\. All 42 tests passed\./);
+  assert.match(output, /`npm publish`/);
+  assert.deepStrictEqual(snapshotTree(dataDir), stateBeforePreview);
+
+  output = prompt('/masq:persona preview');
+  assert.match(output, /Preview stack: plain:strict/);
+  assert.deepStrictEqual(snapshotTree(dataDir), stateBeforePreview);
+
+  output = prompt('/masq:persona preview unknown-voice');
+  assert.match(output, /Persona command failed: unknown profile: unknown-voice/);
+  assert.deepStrictEqual(snapshotTree(dataDir), stateBeforePreview);
 
   output = prompt('/masq:persona on caveman:lite');
   assert.match(output, /Active personas: plain:strict \+ caveman:lite/);
