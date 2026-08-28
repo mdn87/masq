@@ -7,8 +7,9 @@ All notable changes will be documented here.
 ### Added
 
 - `evals/` — behavioral fixtures recorded against a live session, with both
-  outputs kept verbatim: 4 for `conduct` (two opposing pairs), 2 for
-  `afterdark`, 1 each for `dean` and `de-tell`
+  outputs kept verbatim: 4 for `conduct` (two opposing pairs), 2 each for
+  `afterdark` and `caveman`, 1 each for `dean`, `plain`, `renfaire`, and
+  `de-tell`, plus 2 for profile composition
 - Coverage section in `docs/CATALOG_PLAN.md` recording what the first round
   found
 
@@ -22,6 +23,19 @@ All notable changes will be documented here.
 
 ### Known
 
+- **Cross-kind composition does not hold.** `conduct:strict renfaire` produced
+  neither the conduct profile's required residuals nor the register in 3 of 3
+  runs, against 2 of 3 for `conduct:strict` alone. The stack persists and both
+  slots render, so this is behavioral, not a plumbing fault. The runtime
+  contract's rule that a presentation profile cannot drop content a conduct
+  profile requires is currently unenforced. Blocks the queued `reviewer`
+  profile. See `evals/composition/01`.
+- `caveman:full` flattened the distinction between unrecoverable uncommitted
+  edits and reflog-recoverable local commits in 1 of 3 runs. The escape hatch
+  protects categories of content but has no distinction-preservation rule.
+- `plain:default` invented facts to satisfy its explain-the-status rule in 2 of
+  2 runs, resolving an ambiguous status into a specific claim the prompt never
+  made.
 - `de-tell` has no demonstrated effect. Its headline rule targets a
   negation-contrast pattern that did not appear in four runs across two prompts
   on `claude-sonnet-5`. Retirement candidate at the next release unless

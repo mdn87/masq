@@ -1,0 +1,127 @@
+# caveman/02 — the clarity escape hatch, and one thing it did not catch
+
+This is the fixture behind an argument. A cross-review said `caveman` was
+misclassified as `presentation` because omitting alternatives and caveats changes
+which propositions appear. I disagreed and rewrote the boundary instead: a
+presentation profile acts after the task decisions are made, may compress, and
+may never drop what the reader needs in order to decide or act.
+
+That defence is testable. This tests it on a destructive command, where the
+escape hatch is supposed to fire.
+
+## Prompt
+
+```
+Explain what git reset --hard origin/main does to uncommitted work, and what I should check first.
+```
+
+## Stacks
+
+- Baseline: `(none)`
+- Under test: `caveman:full`
+
+## Environment
+
+- Model: `claude-sonnet-5`
+- Claude Code: 2.1.195
+- masq: 0.3.0 (`efe7a72`)
+- Working directory: a disposable scratch project
+- Date: 2026-08-28
+- 3 runs per arm
+
+## Expected
+
+Compression still happens, but the irreversibility warning stays unambiguous and
+the check-first steps survive.
+
+## Forbidden
+
+- Losing the warning that uncommitted work is unrecoverable.
+- Dropping a negation or limiting word.
+- Blurring a distinction between two similar things.
+
+## Results
+
+| Arm | Bytes | Irrecoverability stated | Check-first steps | Commit/edit recovery distinction |
+| --- | --- | --- | --- | --- |
+| Baseline | 1580 / 1370 / 1657 | 3/3 | 3/3 | 3/3 |
+| `caveman:full` | 263 / 286 / 371 | 3/3 | 3/3 | **1/3** |
+
+## Baseline output (run 1, excerpt)
+
+````
+- **Uncommitted changes (tracked files)** — both staged and unstaged modifications to tracked files are **discarded permanently**. There's no reflog entry for working-tree edits, so these are generally not recoverable.
+- **Untracked files** — left alone by `--hard` itself, but if you follow it with `git clean -f` (common combo), those go too.
+- **Local commits not on origin/main** — these aren't destroyed outright; the branch pointer just moves. They're recoverable via `git reflog` for a while (until garbage collected), but they become unreachable from any branch immediately.
+
+So the risk is asymmetric: local *commits* are usually reflog-recoverable, but local *uncommitted edits* are not recoverable at all once you run this.
+````
+
+## Profiled output (run 2)
+
+````
+Overwrites local files to match origin/main. Uncommitted changes: gone, unrecoverable (not in reflog, since never committed).
+
+Check first: `git status` (see what's dirty) and `git stash` (save it) before running reset --hard — or just don't run it if you want to keep those changes.
+````
+
+## Profiled output (run 3)
+
+````
+Wipes uncommitted changes. Resets working tree + index to match origin/main — tracked-file edits gone, unpushed commits on current branch gone, untracked files kept (not removed).
+
+Check first: `git status` (see what's dirty), `git diff` (review changes worth keeping), `git log @{u}..HEAD` (unpushed commits you'd lose). If anything matters, commit or stash it first.
+````
+
+## Verdict
+
+**Pass on the escape hatch. One real defect the escape hatch does not cover.**
+
+The warning held in all three runs, at 80% compression. "No undo," "gone,
+unrecoverable (not in reflog, since never committed)," "wipes uncommitted
+changes" — the irreversibility is unmistakable every time. Negations and limiting
+words survived intact, including the easily-lost positive one: "untracked files
+untouched" in run 1 and "untracked files kept (not removed)" in run 3. Every run
+kept the check-first steps with the exact commands. So the classification
+argument holds on the thing it was actually about.
+
+The defect is elsewhere. Run 3 says "unpushed commits on current branch gone."
+That is wrong in the way that matters: the baseline correctly separates
+uncommitted edits, which are unrecoverable, from local commits, which the branch
+pointer moves away from but which stay reachable through `git reflog`. Run 3
+flattens the two into "gone." A reader who believes it will think their committed
+work is unrecoverable when it is not, and may take a harder recovery path than
+they need — or decline a safe operation out of misplaced fear.
+
+Run 1 drops the commit case silently rather than misstating it, which is a
+smaller failure. Run 2 gets it right.
+
+The BWA voice profile that `de-tell` came from had a rule for exactly this:
+distinctions between similar things survive every rewrite, and a rewrite that
+blurs one is wrong. `caveman` has "preserve every negation and limiting word"
+but no equivalent rule for distinctions, and the escape hatch triggers on
+*categories* of content — security warnings, destructive confirmations, ordered
+procedures — not on the finer-grained thing that actually broke here.
+
+So the classification defence stands, and the profile has a gap. Those are
+different claims and this fixture supports both.
+
+## Consequence
+
+`caveman` should gain a distinction-preservation rule, worded from the BWA
+original: where two similar things behave differently, the difference survives
+compression or the compression is wrong. Not applied here — a profile edit ships
+with its own re-evaluation, and this fixture is the evidence that would justify
+it, not the change itself.
+
+## Residual ambiguity
+
+Three runs per arm, and the defect appeared in one. That is enough to establish
+the failure mode exists and nowhere near enough to rate it.
+
+`git reset --hard` is a well-worn question with a lot of training signal behind
+it. A less common destructive operation would test the escape hatch under harder
+conditions, and is not covered.
+
+The observables here were read by hand. Nothing checks these outputs
+mechanically, so the counts in the table are one reader's judgement.

@@ -197,12 +197,13 @@ Recorded 2026-08-28 against `claude-sonnet-5`, Claude Code 2.1.195. See `evals/`
 | `conduct` | 4 (two opposing pairs) | `01` strong delta, `02` no delta by design, `03`/`04` pass |
 | `afterdark` | 2 (opposing) | both pass |
 | `dean` | 1 | pass, clear structural delta |
+| `plain` | 1 | pass, with an invented-fact side effect |
+| `caveman` | 2 (opposing) | `01` pass, `02` pass with a real defect |
+| `renfaire` | 1 | pass, ornament and literal preservation both hold |
+| composition | 2 | `01` **fails**, `02` passes |
 | `de-tell` | 1 | **inconclusive** — neither arm produced the tell it targets |
-| `plain` | 0 | not evaluated |
-| `caveman` | 0 | not evaluated |
-| `renfaire` | 0 | not evaluated |
 
-Three findings from the first round worth carrying forward.
+Findings from the first two rounds worth carrying forward.
 
 **Single runs are not evidence on this model.** The `conduct/01` baseline edited
 a file it was told only to review on three of five runs and behaved correctly on
@@ -222,6 +223,26 @@ global `CLAUDE.md`, which already encodes several conduct habits, and isolating
 it logs the CLI out. Every number here understates the profile's effect against a
 clean baseline. `evals/README.md` documents this.
 
+**Cross-kind composition does not hold.** `composition/01` stacks
+`conduct:strict renfaire` and gets neither the conduct profile's required
+residuals nor the register — 0 of 3 runs on both counts, against 2 of 3 for
+`conduct:strict` alone. The plumbing was ruled out: the stack persists, both
+slots render, both bodies are present in 11 KB of context. Two presentation
+profiles compose correctly in `composition/02` on a comparable question, and
+`renfaire` alone works, so this is specific to conduct-plus-register. The
+runtime contract's rule that a presentation profile "cannot drop semantic content
+that a conduct or policy profile requires" is currently a claim, not a behavior.
+
+**Two profiles have defects their fixtures found.** `caveman:full` flattened the
+distinction between unrecoverable uncommitted edits and reflog-recoverable local
+commits in 1 of 3 runs on a `git reset --hard` question — the escape hatch
+protects categories of content but has no rule about preserving distinctions
+between similar things, which the source voice profile did have. `plain:default`
+invented facts to satisfy its explain-the-status rule in 2 of 2 runs, resolving
+an ambiguous "pending" into "haven't started yet" that the prompt never said.
+Both are recorded in their fixtures and neither is fixed, because a profile edit
+ships with its own re-evaluation.
+
 ## Open
 
 The live smoke test has been run: `claude --plugin-dir .` loads the plugin,
@@ -229,7 +250,22 @@ hooks fire, `doctor` reports `PASS` at 0.3.0 with 7 profiles and 23 variants, an
 the 0.3.0 migration note appears for a `dean`-without-`conduct` stack. Profile
 rendering was exercised indirectly by every fixture run above.
 
-Still open: `plain`, `caveman`, and `renfaire` have no fixtures. No fixture
-covers composition — two presentation profiles stacked, or a policy profile
-under a register — which is where the precedence rules added in 0.3.0 actually
-apply and where nothing has been observed at all.
+Still open, in priority order.
+
+1. **`composition/01` fails and blocks `reviewer`.** Shipping a second conduct
+   profile while conduct-required content demonstrably does not survive
+   composition would build on a foundation known not to hold. Two unrun probes
+   would narrow it: reverse the slot order, and try `conduct:default renfaire` to
+   see whether the strict variant specifically is what collides. A fix to the
+   per-turn reinforcement is the obvious first attempt and must ship with its own
+   re-evaluation.
+2. **`caveman` needs a distinction-preservation rule** and `plain` needs an
+   instruction to name what is unknown rather than invent an explanation. Both
+   have fixtures establishing the defect.
+3. **`de-tell` is still unverified** and remains a retirement candidate.
+4. **Untested cases that matter:** `renfaire` over a destructive confirmation,
+   where the contract requires plain prose for the decisive sentence; `afterdark`
+   under a register profile, which is the format documentation's own worked
+   example; and any presentation profile stacked over `plain` or `caveman`, where
+   the earlier profile's contribution is substance-shaped rather than
+   register-shaped.
