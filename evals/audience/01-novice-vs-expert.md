@@ -44,7 +44,7 @@ same three kinds, the same limits, and the same literals.
 | --- | --- | --- | --- |
 | Bytes | 1315 / 1277 | 1792 / 1748 / 1797 | 1244 / 1431 / 1262 |
 | Mean | 1296 | 1779 | 1312 |
-| Inline glosses of project vocabulary | none | 3/3 | 0/3 |
+| Definitional glosses (adjudicated) | none | 2/2 yes, 1 unclear | 0/2 no, 1 unclear |
 | Three kinds named with limits | 2/2 | 3/3 | 3/3 |
 | Announced the active stack | 0/2 | **3/3** | **1/3** |
 
@@ -90,7 +90,16 @@ The two ends separate cleanly and in the right direction. `novice` runs average
 1779 bytes against `expert`'s 1312, with the baseline at 1296 — so `expert` sits
 essentially at the untouched default and `novice` adds 37%.
 
-The added length is glossing, not padding. `novice` explains "register" inline as
+**The 3/3 versus 0/3 originally reported here did not survive adjudication.** It
+came from reading run 1 of each arm and generalising. Scored per run against a
+stated criterion — does the answer *define* a term for a reader who would not know
+it, as opposed to enumerating instances — it is 2/2 against 0/2 with three of the
+nine runs *unclear*, and Fisher exact p = 0.333. The direction holds; the strength
+does not, and the criterion is too blunt to separate `peer` from either end. See
+`evals/labels.json` for the per-run rationales.
+
+The length difference is the sounder observable. The added length is glossing,
+not padding. `novice` explains "register" inline as
 "how formal/casual the tone is," names `profiles/*.md` as where profiles live,
 translates each limit into consequence language ("grant extra tool access,"
 "skip a confirmation step"), and closes by restating the whole thing in one

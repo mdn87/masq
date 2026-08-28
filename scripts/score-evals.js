@@ -62,7 +62,7 @@ function fisher(a, b, c, d) {
 const groups = new Map();
 const problems = [];
 const labelled = new Set();
-const validLabels = new Set(['yes', 'no', 'void']);
+const validLabels = new Set(['yes', 'no', 'void', 'unclear']);
 
 for (const [run, record] of Object.entries(labels.runs)) {
   labelled.add(run);
@@ -81,16 +81,18 @@ const rates = new Map();
 
 for (const cohort of labels.cohorts) {
   const members = groups.get(cohort.id) || [];
-  const counted = members.filter(m => m.label !== 'void');
+  const counted = members.filter(m => m.label === 'yes' || m.label === 'no');
   const hit = counted.filter(m => m.label === 'yes').length;
   const [lo, hi] = wilson(hit, counted.length);
   rates.set(cohort.id, { hit, n: counted.length });
-  const voids = members.length - counted.length;
+  const voids = members.filter(m => m.label === 'void').length;
+  const unclear = members.filter(m => m.label === 'unclear').length;
   lines.push(
     cohort.id + NL +
     `    ${hit}/${counted.length}` +
     `   95% CI ${(lo * 100).toFixed(0)}-${(hi * 100).toFixed(0)}%` +
-    (voids ? `   (${voids} void, excluded)` : '') + NL +
+    (voids ? `   (${voids} void)` : '') +
+    (unclear ? `   (${unclear} UNCLEAR -- criterion too blunt here)` : '') + NL +
     `    ${cohort.description}`
   );
   // A cohort can be entirely void by design -- the truncated runs are kept as a

@@ -281,6 +281,12 @@ rendering was exercised indirectly by every fixture run above.
 
 Still open, in priority order.
 
+0. **No profile has been shown to change behavior at p < 0.05.** All 108
+   adjudicated runs are scored in `evals/labels.json`; only the two transport
+   comparisons reach significance (p = 0.018). Every profile result in this
+   directory is a point estimate at n=2-3 pointing the right way. Several are
+   probably real, and none is demonstrated. `evals/FRAMES.md` has the table.
+
 1. **The eval program's own method is the weakest part.** A cross-review found
    that the composition result measured Claude Code's hook context limit rather
    than composition: every composed arm was over the limit, the control was the

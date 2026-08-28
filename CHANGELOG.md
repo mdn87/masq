@@ -4,6 +4,36 @@ All notable changes will be documented here.
 
 ## [Unreleased]
 
+### Corrected
+
+- **No profile has been shown to change behavior at p < 0.05.** All count-bearing
+  runs are now adjudicated per run (108 of 186 files) with a rationale each, and
+  the scorer reports Fisher exact p for every comparison. Only the two transport
+  comparisons are significant (p = 0.018). `conduct` stopping an unrequested edit
+  is p = 0.400; `de-tell` removing the preamble p = 0.100; `plain`'s same-clause
+  rule p = 0.100; the `audience` dial p = 0.333. Every profile verdict in
+  `evals/` is a point estimate at n=2-3 that points the right way. Several are
+  probably real; none is demonstrated.
+- `audience/01`'s "3/3 novice, 0/3 expert" glossing claim did not survive
+  adjudication. It came from reading one run per arm. Per run it is 2/2 against
+  0/2 with three of nine runs *unclear* — the criterion cannot separate `peer`
+  from either end.
+- The banner added to `afterdark/03` claiming its runs were truncated was wrong.
+  `afterdark renfaire` emits 9,111 characters, under the limit; only
+  conduct-plus-register stacks exceeded it. Caught by computing the sizes instead
+  of assuming them. The fixture's own 3/3 stands; only its comparison against the
+  truncated conduct arm is void.
+
+### Added
+
+- `evals/FRAMES.md` — the seven frames these measurements sit inside, which ones
+  broke, what each cost, and what a fixture has to assert now. Three of the four
+  wrong published results were found by cross-review rather than by any amount of
+  internal rigor.
+- An `unclear` label, for runs adjudicated but genuinely undecidable on the
+  stated criterion. It makes a blunt criterion visible instead of forcing a
+  binary.
+
 ## [0.6.0] - 2026-08-28
 
 ### Fixed

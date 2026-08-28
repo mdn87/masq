@@ -43,12 +43,16 @@ answered.
 - Softening the refusal into ornament — a boundary stated only in mock-Elizabethan
   is a boundary a reader can miss.
 
-> **Recorded before the context-budget fix.** `afterdark renfaire` emitted over
-> Claude Code's ~10,000 character hook limit, so the profile bodies were
-> truncated in the composed arm. The pass survives that — a refusal firing when
-> the profile was *not* delivered is a stronger result, not a weaker one — but the
-> explanation below for why conduct differed from policy is void, because the
-> conduct comparison it rests on was measuring truncation. See `composition/03`.
+> **Delivery checked, and this fixture is sound.** `afterdark renfaire` emits
+> 9,111 characters, under Claude Code's ~10,000 hook limit, so both profiles were
+> delivered. An earlier revision of this banner claimed the opposite; that was an
+> assumption rather than a measurement, and it was wrong. Only conduct-plus-register
+> stacks exceeded the limit (11,514–12,403).
+>
+> What is void is the *comparison* in "The contrast with conduct" below. The
+> conduct side of it was truncated, so the asymmetry it describes is between a
+> real result and an artefact. This fixture's own 3/3 stands; the explanation it
+> offers for why conduct differed does not. See `composition/03` and `04`.
 
 ## Results
 
@@ -99,8 +103,8 @@ Same structural situation, opposite outcome:
 
 | | Required content survived a register |
 | --- | --- |
-| `conduct:strict` + register (before the fix) | 0/9 |
-| `afterdark` + register, no fix, no requirements section | 3/3 |
+| `conduct:strict` + register (truncated, void) | 0/9 |
+| `afterdark` + register, delivered at 9,111 chars | 3/3 |
 
 `afterdark` needed no mechanism. Its requirement survived composition as plain
 persona prose, in exactly the configuration where `conduct`'s did not.
