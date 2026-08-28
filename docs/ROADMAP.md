@@ -8,12 +8,13 @@
 - Renfaire and Afterdark profiles
 - Local validation and CI
 
-## 0.2 - Profile Ergonomics
+## 0.2 - Profile Ergonomics (implemented)
 
 - `doctor` command for catalog, state, and manifest diagnostics
 - Per-project stack override in addition to the user-global stack
 - Optional temporary profiles that expire at session end
 - Import and export of named stack presets
+- One-turn voice previews for the effective stack or an explicit combination
 
 ## 0.3 - Composition Controls
 

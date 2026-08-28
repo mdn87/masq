@@ -9,8 +9,12 @@ const {
   tokenizeProfileList
 } = require('./persona-profiles');
 const {
+  clearSessionStack,
   clearStack,
-  readStack,
+  mergeStacks,
+  resolveState,
+  writeProjectStack,
+  writeSessionRecord,
   writeStack
 } = require('./persona-state');
 const { composeFullContext } = require('./persona-context');
@@ -44,27 +48,35 @@ function truthy(value) {
 try {
   const payload = readPayload();
   const source = typeof payload.source === 'string' ? payload.source : 'startup';
+  const cwd = payload.cwd || process.cwd();
+  const sessionId = payload.session_id || 'unknown';
   const catalog = loadProfiles();
-  const stored = readStack();
-  let stack = canonicalizeStack(stored, catalog);
 
-  if (JSON.stringify(stored) !== JSON.stringify(stack)) {
-    if (stack.length) writeStack(stack);
-    else clearStack();
-  }
+  if (source === 'startup' || source === 'clear') clearSessionStack(sessionId);
+  if (source === 'startup' && truthy(process.env.MASQ_RESET_ON_START)) clearStack();
 
-  if (source === 'startup' && truthy(process.env.MASQ_RESET_ON_START)) {
-    clearStack();
-    stack = [];
-  }
+  let state = resolveState({ cwd, sessionId });
+  let global = canonicalizeStack(state.global, catalog);
+  let project = canonicalizeStack(state.project, catalog);
+  let temporary = canonicalizeStack(state.temporary, catalog);
 
-  if (source === 'startup' && stack.length === 0) {
+  if (state.globalRecord.defined && JSON.stringify(global) !== JSON.stringify(state.global)) writeStack(global);
+  if (state.projectRecord.defined && JSON.stringify(project) !== JSON.stringify(state.project)) writeProjectStack(cwd, project);
+  if (source === 'startup' && global.length === 0) {
     const defaults = tokenizeProfileList(process.env.MASQ_DEFAULT_STACK || '');
     const resolvedDefaults = resolveTokens(defaults, catalog);
-    if (resolvedDefaults.length && writeStack(resolvedDefaults)) stack = resolvedDefaults;
+    if (resolvedDefaults.length && writeStack(resolvedDefaults)) global = resolvedDefaults;
   }
 
-  const context = composeFullContext(stack, catalog);
+  state = resolveState({ cwd, sessionId });
+  global = canonicalizeStack(state.global, catalog);
+  project = canonicalizeStack(state.project, catalog);
+  temporary = canonicalizeStack(state.temporary, catalog);
+  const persistent = state.projectRecord.defined ? project : global;
+  const effective = canonicalizeStack(mergeStacks(persistent, temporary), catalog);
+
+  writeSessionRecord(sessionId, temporary, effective);
+  const context = composeFullContext(effective, catalog);
   if (context) process.stdout.write(context);
 } catch (_) {
   // Session hooks must never block Claude Code startup.

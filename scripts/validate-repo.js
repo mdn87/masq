@@ -35,12 +35,16 @@ const listing = Array.isArray(marketplace.plugins)
 assert(listing, 'marketplace must contain the masq plugin');
 assert(listing.source === './', 'marketplace plugin source must be ./');
 
-for (const event of ['SessionStart', 'UserPromptSubmit']) {
+for (const event of ['SessionStart', 'UserPromptSubmit', 'SessionEnd']) {
   const registrations = plugin.hooks && plugin.hooks[event];
   assert(Array.isArray(registrations) && registrations.length > 0, `plugin hook missing: ${event}`);
   const command = registrations[0]?.hooks?.[0]?.command || '';
   assert(command.includes('${CLAUDE_PLUGIN_ROOT}'), `${event} hook must use CLAUDE_PLUGIN_ROOT`);
   assert(command.includes('${CLAUDE_PLUGIN_DATA}'), `${event} hook must pass CLAUDE_PLUGIN_DATA`);
+}
+
+for (const source of ['persona-doctor.js', 'persona-session-end.js']) {
+  assert(fs.existsSync(path.join(root, 'src', 'hooks', source)), `missing hook source: ${source}`);
 }
 
 for (const skill of ['persona', 'afterdark']) {
@@ -49,6 +53,7 @@ for (const skill of ['persona', 'afterdark']) {
   const text = fs.readFileSync(skillPath, 'utf8');
   assert(text.startsWith('---\n'), `skill frontmatter missing: ${skill}`);
   assert(new RegExp(`^name:\\s*${skill}\\s*$`, 'm').test(text), `skill name mismatch: ${skill}`);
+  assert(new RegExp(`^version:\\s*${plugin.version.replace(/\./g, '\\.')}\\s*$`, 'm').test(text), `skill version mismatch: ${skill}`);
 }
 
 console.log('manifest and skill metadata validation passed');

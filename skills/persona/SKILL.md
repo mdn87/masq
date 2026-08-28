@@ -1,9 +1,9 @@
 ---
 name: persona
 description: This skill should be used when the user invokes "/masq:persona", asks to "turn on a persona", "disable a persona profile", "stack personas", "list persona profiles", "show active personas", or requests a persistent composable response style. It manages ordered persona overlays without changing technical facts or tool behavior.
-version: 0.1.0
+version: 0.2.0
 disable-model-invocation: true
-argument-hint: <status|list|on|off|toggle|set|move|clear> [profile[:variant] ...]
+argument-hint: <status|list|doctor|preview|on|off|toggle|set|move|clear|global|project|temp|preset> [...]
 ---
 
 # Masq
@@ -17,6 +17,8 @@ The hooks perform state changes and inject the active profile contracts. For a m
 ```text
 /masq:persona status
 /masq:persona list
+/masq:persona doctor
+/masq:persona preview [profile[:variant] ...]
 /masq:persona on <profile[:variant]> [...]
 /masq:persona off <profile> [...]
 /masq:persona toggle <profile[:variant]> [...]
@@ -24,6 +26,18 @@ The hooks perform state changes and inject the active profile contracts. For a m
 /masq:persona move <profile> first|last
 /masq:persona clear
 /masq:persona help
+```
+
+Scoped state and presets:
+
+```text
+/masq:persona global <status|on|off|toggle|set|move|clear> [...]
+/masq:persona project <status|on|off|toggle|set|move|clear|unset> [...]
+/masq:persona temp <status|on|off|toggle|set|move|clear> [...]
+/masq:persona preset list
+/masq:persona preset export <name> [effective|global|project|temp]
+/masq:persona preset import <name> [active|global|project|temp]
+/masq:persona preset delete <name>
 ```
 
 Treat `/masq:persona <profile[:variant]>` as shorthand for `/masq:persona on <profile[:variant]>`.
@@ -36,8 +50,14 @@ Examples:
 /masq:persona set afterdark:suggestive renfaire:pageant
 /masq:persona off afterdark
 /masq:persona move renfaire last
+/masq:persona preview afterdark:suggestive renfaire:pageant
 /masq:persona clear
 ```
+
+`preview` uses the current effective stack when no profiles are supplied. With
+profile arguments, it renders that ordered combination instead. The hook
+supplies a standardized sample so combinations can be compared consistently.
+Preview is one-turn-only and must not update persona state.
 
 ## Stack Semantics
 
@@ -89,7 +109,18 @@ When a persona would make a critical instruction harder to follow, state the dec
 
 ## Persistence Behavior
 
-Store the ordered stack in Claude Code's persistent `CLAUDE_PLUGIN_DATA` directory. Keep it active through new sessions, resume, `/clear`, and context compaction until the user changes or clears it. All Claude Code sessions using the same Masq installation share the stack and pick up changes on their next prompt.
+Store all state in Claude Code's persistent `CLAUDE_PLUGIN_DATA` directory.
+The global stack is the fallback. A project override replaces it for the
+canonical current working directory. A temporary stack overlays the selected
+persistent stack and expires at SessionEnd, including normal exit, `/clear`,
+or a session switch. It remains active through compaction while that session
+continues. Unqualified mutations target the project override when one exists
+and otherwise target global state.
+
+`project clear` creates an explicit empty override. `project unset` removes the
+override. Named presets are stored in plugin data; export saves a stack under a
+name and import replaces a selected scope. Doctor reads diagnostics without
+repairing or mutating state.
 
 Use `MASQ_DEFAULT_STACK` to seed an empty stack:
 
@@ -98,7 +129,9 @@ $env:MASQ_DEFAULT_STACK = "renfaire:pageant,afterdark:suggestive"
 claude --plugin-dir .
 ```
 
-Use `MASQ_RESET_ON_START=1` to restore session-reset behavior. When both variables are set, startup clears the old stack and then loads the default stack.
+Use `MASQ_RESET_ON_START=1` to reset global state at startup. When both
+variables are set, startup clears the old global stack and then loads the
+default stack. Project overrides are not reset.
 
 ## Adding Profiles
 

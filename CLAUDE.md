@@ -8,7 +8,9 @@ Masq is a Claude Code plugin for ordered, composable persona profiles. Profiles 
 
 1. The default installation is quiet. Do not activate a profile without an explicit command, a supported natural-language activation, or `MASQ_DEFAULT_STACK` on an empty state.
 2. Profiles load from `profiles/*.md`. Files beginning with `_` are ignored. Adding a profile must not require a registry edit.
-3. State contains canonical `{ id, variant }` entries only and is stored under `${CLAUDE_PLUGIN_DATA}/state.json`.
+3. State contains canonical `{ id, variant }` entries only and remains under
+   `${CLAUDE_PLUGIN_DATA}`. Project and session scopes must never write into a
+   user's repository.
 4. Apply the stack from first to last. Later profiles win only direct style conflicts.
 5. Contextual profiles remain dormant outside their declared scope.
 6. Hooks must fail closed, emit no untrusted state bytes, and never block Claude Code startup or prompt submission.
@@ -21,6 +23,8 @@ Masq is a Claude Code plugin for ordered, composable persona profiles. Profiles 
 - `src/rules/persona-runtime.md` - global composition contract
 - `src/hooks/persona-mode.js` - commands, natural-language activation, and stack mutation
 - `src/hooks/persona-session.js` - startup persistence and default-stack behavior
+- `src/hooks/persona-session-end.js` - temporary session cleanup
+- `src/hooks/persona-doctor.js` - read-only catalog, manifest, and state diagnostics
 - `src/hooks/persona-state.js` - state normalization and safe persistence
 - `src/hooks/persona-profiles.js` - profile parsing, validation, resolution, and rendering
 - `docs/PROFILE_FORMAT.md` - public profile authoring contract
@@ -38,6 +42,7 @@ After changing commands, update all of:
 - `skills/persona/SKILL.md`
 - `src/hooks/persona-mode.js`
 - `tests/test-hooks.js`
+- `tests/test-v02.js`
 
 After changing profile format, update:
 

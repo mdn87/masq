@@ -1,6 +1,6 @@
 {
   "name": "masq",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "description": "Stackable persona profiles for Claude Code.",
   "type": "commonjs",
@@ -9,8 +9,8 @@
     "url": "git+https://github.com/mdn87/masq.git"
   },
   "scripts": {
-    "syntax": "node --check src/hooks/persona-context.js && node --check src/hooks/persona-mode.js && node --check src/hooks/persona-profiles.js && node --check src/hooks/persona-session.js && node --check src/hooks/persona-state.js && node --check scripts/new-profile.js && node --check scripts/validate-profiles.js && node --check scripts/validate-repo.js && node --check tests/test-hooks.js",
-    "test": "npm run syntax && node scripts/validate-repo.js && node scripts/validate-profiles.js && node tests/test-hooks.js",
+    "syntax": "node --check src/hooks/persona-context.js && node --check src/hooks/persona-doctor.js && node --check src/hooks/persona-mode.js && node --check src/hooks/persona-profiles.js && node --check src/hooks/persona-session.js && node --check src/hooks/persona-session-end.js && node --check src/hooks/persona-state.js && node --check scripts/new-profile.js && node --check scripts/validate-profiles.js && node --check scripts/validate-repo.js && node --check tests/test-hooks.js && node --check tests/test-v02.js",
+    "test": "npm run syntax && node scripts/validate-repo.js && node scripts/validate-profiles.js && node tests/test-hooks.js && node tests/test-v02.js",
     "validate": "node scripts/validate-repo.js && node scripts/validate-profiles.js",
     "new-profile": "node scripts/new-profile.js"
   },
