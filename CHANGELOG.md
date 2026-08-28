@@ -23,13 +23,15 @@ All notable changes will be documented here.
 
 ### Known
 
-- **Cross-kind composition does not hold.** `conduct:strict renfaire` produced
-  neither the conduct profile's required residuals nor the register in 3 of 3
-  runs, against 2 of 3 for `conduct:strict` alone. The stack persists and both
-  slots render, so this is behavioral, not a plumbing fault. The runtime
-  contract's rule that a presentation profile cannot drop content a conduct
-  profile requires is currently unenforced. Blocks the queued `reviewer`
-  profile. See `evals/composition/01`.
+- **Cross-kind composition does not hold, and the failure is general.** A
+  conduct profile alone produced its required content in 4 of 5 valid runs;
+  stacked with any presentation profile, in either slot order, at either
+  variant, in 0 of 9. Not a plumbing fault — the stack persists and both slots
+  render. One fix was tried (restating the cross-kind rule beside the rendered
+  slots) and reverted after it changed nothing in 4 runs. The runtime contract's
+  rule that a presentation profile cannot drop content a conduct profile
+  requires is unenforced. Blocks the queued `reviewer` profile. See
+  `evals/composition/01`.
 - `caveman:full` flattened the distinction between unrecoverable uncommitted
   edits and reflog-recoverable local commits in 1 of 3 runs. The escape hatch
   protects categories of content but has no distinction-preservation rule.

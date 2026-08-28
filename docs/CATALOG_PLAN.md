@@ -223,15 +223,22 @@ global `CLAUDE.md`, which already encodes several conduct habits, and isolating
 it logs the CLI out. Every number here understates the profile's effect against a
 clean baseline. `evals/README.md` documents this.
 
-**Cross-kind composition does not hold.** `composition/01` stacks
-`conduct:strict renfaire` and gets neither the conduct profile's required
-residuals nor the register — 0 of 3 runs on both counts, against 2 of 3 for
-`conduct:strict` alone. The plumbing was ruled out: the stack persists, both
-slots render, both bodies are present in 11 KB of context. Two presentation
-profiles compose correctly in `composition/02` on a comparable question, and
-`renfaire` alone works, so this is specific to conduct-plus-register. The
-runtime contract's rule that a presentation profile "cannot drop semantic content
-that a conduct or policy profile requires" is currently a claim, not a behavior.
+**Cross-kind composition does not hold, and it is general.** A conduct profile
+alone produced its required residuals in 4 of 5 valid runs. Stacked with any
+presentation profile — either slot order, either conduct variant, `renfaire` or
+`dean` — it produced them in **0 of 9**. The plumbing was ruled out: the stack
+persists, both slots render, both bodies sit in 11 KB of context. Two
+presentation profiles compose correctly in `composition/02`, so the failure is
+specific to mixing kinds, not to composition or to any one profile.
+
+One fix was tried and reverted: restating the cross-kind rule beside the
+rendered slots, naming the binding profiles, emitted only for mixed stacks. It
+changed nothing (0 of 4) and was removed rather than shipped as a fix that
+looks like one. Two failed approaches — the rule in the contract, then the rule
+at the composition point — suggest the problem is structural rather than one of
+emphasis. A conduct profile's requirements may need to be carried separately
+from persona prose, or the contract should stop promising something the
+composition cannot deliver.
 
 **Two profiles have defects their fixtures found.** `caveman:full` flattened the
 distinction between unrecoverable uncommitted edits and reflog-recoverable local
@@ -252,13 +259,12 @@ rendering was exercised indirectly by every fixture run above.
 
 Still open, in priority order.
 
-1. **`composition/01` fails and blocks `reviewer`.** Shipping a second conduct
-   profile while conduct-required content demonstrably does not survive
-   composition would build on a foundation known not to hold. Two unrun probes
-   would narrow it: reverse the slot order, and try `conduct:default renfaire` to
-   see whether the strict variant specifically is what collides. A fix to the
-   per-turn reinforcement is the obvious first attempt and must ship with its own
-   re-evaluation.
+1. **`composition/01` fails and blocks `reviewer`.** Probed to the point where
+   the shape is clear — general to mixed-kind stacks, not specific to a profile,
+   variant, or slot order — and one fix has been tried and reverted. The next
+   attempt should change the mechanism rather than the wording. `policy` in
+   composition is still unobserved, and `afterdark` under a register is the
+   format documentation's own worked example.
 2. **`caveman` needs a distinction-preservation rule** and `plain` needs an
    instruction to name what is unknown rather than invent an explanation. Both
    have fixtures establishing the defect.

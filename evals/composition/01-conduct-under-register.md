@@ -103,42 +103,81 @@ comparable factual question about this same repository, with literals preserved.
 `composition/02` stacks `dean renfaire` and gets the ornate voice with dean's
 traits intact underneath, on a question of similar shape and length.
 
-So this is specific to conduct-plus-register, not to `renfaire`, not to short
-factual prompts, and not to composition in general.
+## Probes: it is broader than it first looked
 
-## Hypotheses, untested
+Three probes, three runs each, same prompt, plus a control.
 
-Composed context is 11,182 bytes here against 9,819 for `dean renfaire` — 14%
-larger, which is a thin basis for a length explanation but is the one measured
-difference.
+| Stack | Runs | Residuals present |
+| --- | --- | --- |
+| `conduct:strict` (control, batch 4) | 3 | 2 |
+| `conduct:strict` (control, re-run) | 2 valid | 2 |
+| `conduct:strict renfaire` | 3 | 0 |
+| `renfaire conduct:strict` (order reversed) | 3 | 0 |
+| `conduct renfaire` (default, not strict) | 3 | 0 |
+| `conduct:strict dean` (a mild register) | 3 | 0 |
 
-More plausibly, `conduct:strict` installs a clinical, evidence-first working
-posture, and an ornate register is in tension with it in a way two presentation
-profiles are not. If the model resolves that tension by suppressing both rather
-than layering them, the contract's cross-kind rule is asking for something the
-composition does not naturally produce, and stating the rule once per session is
-not enough to get it.
+Alone: 4 of 5 valid runs. Stacked with any presentation profile, in either slot
+order, at either variant: **0 of 9**.
 
-Neither hypothesis has been tested. Two obvious probes: reverse the order
-(`renfaire conduct:strict`) to see whether slot position matters, and try
-`conduct:default renfaire` to see whether the strict variant specifically is
-what collides.
+So none of the original guesses were right. It is not slot position, not the
+`strict` variant, and not `renfaire` — `dean`, which is about as far from
+theatrical as a register gets, suppresses the requirement just as completely.
+The finding is general: on this model, adding any presentation profile to a
+conduct profile removes the conduct profile's required content.
+
+## Attempted fix, and its failure
+
+Hypothesis: the contract states the cross-kind rule once, abstractly, far from
+the slots it governs, so it does not survive contact with a concrete register.
+Restating it beside the rendered slots, naming the specific profiles whose
+content is binding, should carry more weight.
+
+Implemented as a `composeMixedKindNotice` emitted only when a stack actually
+mixes kinds, appended after the rendered slots and echoed in the per-turn
+reinforcement, deriving the profile names from the stack rather than hardcoding
+any:
+
+````
+# Mixed-kind stack
+
+Presentation slots (renfaire:pageant) set voice, structure, and length only.
+Requirements from conduct:strict are content, not style.
+Every item those slots require must appear in the response whatever the register does.
+If the register is terse or ornate, shorten or restyle the prose around a required item.
+Never drop the item. A required item that disappears is a failure of the response, not a style choice.
+````
+
+Re-evaluated on `conduct:strict renfaire`, 4 runs: **0 of 4** produced a
+residuals statement. Checked by reading, not only by pattern — the closest was a
+hedge ("it may well run on 16, but it's outside the declared support line") with
+no statement of what was not established. One run finally applied the ornate
+register; none met the requirement.
+
+**The fix was reverted.** It is a correct statement of the contract and it
+changed nothing measurable, and shipping it would leave the repository looking
+like this issue had been addressed. The negative result is the artifact worth
+keeping.
 
 ## Consequence
 
 This blocks `reviewer`, the queued second conduct profile. Shipping a second
 conduct profile while conduct content demonstrably does not survive composition
-would be adding to a foundation that is known not to hold.
+would be adding to a foundation known not to hold.
 
-No fix is shipped with this fixture. Strengthening the per-turn reinforcement to
-restate the cross-kind rule is the obvious first attempt, but shipping an
-unverified fix is the exact failure this eval directory exists to prevent. The
-fix and its re-evaluation belong in the same change.
+It also puts a question over the design rather than the wording. Two failed
+approaches — stating the rule in the contract, then restating it at the
+composition point — suggest the problem may not be one of emphasis. A conduct
+profile's requirements may need to be structurally separate from persona text
+rather than another paragraph of it, or the contract may need to stop promising
+something the composition cannot deliver.
 
 ## Residual ambiguity
 
-Three runs per arm. 0 of 3 is consistent with a real rate up to roughly 60% at
-this sample size, so "always fails" is not established — "fails often enough to
-block dependent work" is.
+Nine runs across three stacks, four more against the attempted fix, all on one
+prompt and one model. The prompt is short and factual, which is the shape where
+a model is least inclined to append a residuals section, so the absolute rate is
+probably worse here than on a longer task. The comparison against the control is
+the load-bearing part, and the control used the identical prompt.
 
-Only one prompt, and one stack ordering. Both probes named above are unrun.
+`policy` was never tested in composition. `afterdark` under a register is the
+format documentation's own worked example and remains unobserved.
