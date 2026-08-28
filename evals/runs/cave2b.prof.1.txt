@@ -1,0 +1,10 @@
+`git reset --hard origin/main` overwrites your working tree and index to match origin/main.
+
+- Uncommitted changes to tracked files (staged or unstaged) are destroyed — not stashed, not recoverable through git.
+- Untracked files are left alone.
+- Any local commits on your current branch that aren't in origin/main are also stripped from the branch (recoverable for a while via `git reflog`, but not guaranteed forever).
+
+Check first:
+- `git status` — see what's uncommitted.
+- `git log origin/main..HEAD` — see local commits you'd lose.
+- If you want to keep anything: `git stash` (uncommitted) or commit to a new branch (local commits) before resetting.

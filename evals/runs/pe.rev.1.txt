@@ -1,0 +1,1 @@
+No. `package.json` declares `"engines": {"node": ">=18"}`, and CI (`.github/workflows/ci.yml`) only tests against Node 18, 20, and 22 — Node 16 isn't in the support matrix or covered by any test run.

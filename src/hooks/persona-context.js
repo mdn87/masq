@@ -88,13 +88,24 @@ function composeFullContext(stack, catalog) {
 function composeReinforcement(stack, catalog) {
   const canonical = canonicalizeStack(stack, catalog);
   if (!canonical.length) return '';
-  const requirementCount = canonical
-    .reduce((total, entry) => total + requirementsFor(entry, catalog).length, 0);
+  // Turn 2 onward only gets this line, so it has to carry the requirement text
+  // rather than a count. Naming how many there are without saying what they are
+  // is not a reminder of anything.
+  const requirements = [];
+  for (const entry of canonical) {
+    for (const requirement of requirementsFor(entry, catalog)) {
+      requirements.push(`(${entry.id}:${entry.variant}) ${requirement}`);
+    }
+  }
 
   return [
     `MASQ ACTIVE. Ordered stack: ${formatStack(canonical)}.`,
-    ...(requirementCount
-      ? [`The ${requirementCount} response requirements loaded with this stack are output requirements, not style: each one appears in this response whatever the register does.`]
+    ...(requirements.length
+      ? [
+        'Response requirements, which are output requirements rather than style and hold whatever the register does:',
+        requirements.map(item => `${item}`).join(' '),
+        'Restyle the prose around each one; never drop it.'
+      ]
       : []),
     'Apply the already-loaded profile contracts in order; later slots win direct conflicts only against profiles of the same kind.',
     'A conduct profile never grants tool authority, widens a permission, lowers a confirmation requirement, skips a safety check, or alters a factual claim. A policy profile may only tighten.',

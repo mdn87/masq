@@ -1,0 +1,1 @@
+No. `package.json` declares `"engines": {"node": ">=18"}`, so Node 16 is below the stated minimum — Claude Code itself also requires Node ≥18, so it wouldn't run there regardless of masq's own constraint.

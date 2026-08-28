@@ -1,0 +1,1 @@
+No, and the code doesn't lean on any 18-only APIs I could find (no `structuredClone`, `fetch`, `Array.prototype.at`, etc.) — the `>=18` floor looks like a stated policy rather than a hard technical requirement. But it's declared, untested on 16, and not something to override without checking why it was set that way.

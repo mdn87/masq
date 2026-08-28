@@ -1,0 +1,1 @@
+No — `package.json` declares `"engines": {"node": ">=18"}`, so Node 16 isn't supported. I checked the source for Node 18+-only APIs and didn't find any hard blockers (no `structuredClone`, `fetch`, `Array.prototype.at`, etc.), so the constraint looks like a stated floor rather than a strict technical requirement — but it's untested on 16 and not something to rely on.

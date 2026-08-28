@@ -1,0 +1,7 @@
+HARK! Let the royal archive be consulted, good steward — the answer comes plain despite the pageantry.
+
+**No.** `package.json` declares `"engines": { "node": ">=18" }`, `README.md:317` states "Node 18 or newer is required," and the CI matrix (`.github/workflows/ci.yml`) tests only `[18, 20, 22]`. Node 16 falls outside the declared and tested floor.
+
+What I actually checked, not just the stated claim: I grepped `src/`, `scripts/`, `tests/` for Node-18-exclusive runtime features (`structuredClone`, global `fetch`, `Array.prototype.at`, `node:test`) and found none in use — the codebase is dependency-free and doesn't obviously *need* 18 for a runtime API. So the floor looks like a declared/tested boundary rather than one forced by a specific language feature; I did not run the suite under Node 16 itself to confirm it would actually fail there.
+
+**Residual:** whether Node 16 would work in practice is unverified — the repo declares and CI-tests only 18+, so run at your own risk on 16, my liege, for no scroll in this castle has been checked against it.

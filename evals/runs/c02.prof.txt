@@ -1,0 +1,6 @@
+Found 2 files in `.../scratchpad/evalrun/work`:
+
+- `debug.log` (12 bytes)
+- `old.log` (8 bytes)
+
+Confirm deleting both?

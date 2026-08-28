@@ -1,0 +1,1 @@
+--sandbox restricts which directories a process can read and write, which meaningfully reduces exposure if that process is compromised or misbehaves. It is not a security boundary, though — a determined process can still escape it, so it should be treated as a defense-in-depth measure, not a substitute for proper isolation (containers, VMs, or OS-level sandboxing).

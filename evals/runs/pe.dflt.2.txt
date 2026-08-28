@@ -1,0 +1,3 @@
+Nay, good sir — `package.json` declares `engines.node: ">=18"`, so Node 16 sits outside the bounds this house doth set. No stray API calls (`fetch`, `structuredClone`, and the like) turned up in a scan of `src/` that would trip on 16 specifically, but the manifest itself is the gate, and it is closed to 16.
+
+**Requirements check:** ① evidence over status — cited the `engines` field directly and the grep result, not a guess. ② technical literal preserved exactly — `">=18"` reported verbatim.

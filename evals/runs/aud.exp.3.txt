@@ -1,0 +1,11 @@
+The `kind` field bounds what a profile is allowed to change — it's the category that determines its authority.
+
+Three kinds exist:
+
+- **`presentation`** — wording, register, structure, compression. Applied after task decisions are made; never changes which actions are taken, evidence gathered, scope, confirmation behavior, or refusal behavior.
+- **`conduct`** — how work is done and reported: effort, sequencing, report contents. Never grants tool authority, widens a permission, lowers a confirmation requirement, skips a safety check, or alters a factual claim.
+- **`policy`** — what may be produced in a context: required checks, clarifications, refusals, content boundaries. May only tighten, never loosen.
+
+None of the three can touch facts, permissions, safety boundaries, or exact technical literals — that's invariant across all kinds.
+
+Precedence runs *within* a kind, not across kinds: a later profile in the stack only overrides an earlier one if they share a kind and directly conflict. Composition is enforced by `src/rules/persona-runtime.md` (the model-facing contract), mirrored in `src/hooks/persona-context.js`, `skills/persona/SKILL.md`, and `SECURITY.md`, with `tests/test-hooks.js` asserting they stay in sync (per `CLAUDE.md`).

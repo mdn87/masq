@@ -1,0 +1,3 @@
+Discards uncommitted changes, no undo. Points main branch to origin's commit, tracked edits lost, untracked files untouched.
+
+Check first: `git status` (see what's dirty), `git diff` (see what you'd lose), `git stash` if you want to keep it instead of nuking it.

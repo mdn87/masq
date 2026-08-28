@@ -1,0 +1,3 @@
+Nay, good sir — the manifest itself, `package.json`, plants the flag: `"engines": { "node": ">=18" }`. A search of the hooks and scripts for Node-18-only sorcery (`structuredClone`, native `fetch`, `Array.prototype.at`, `randomUUID`, `fs.rm`, `Object.hasOwn`) turned up naught, so nothing in the code strictly forbids Node 16 — yet the declared floor stands at 18, untested and unsupported below it.
+
+**Verdict:** treat Node 16 as unsupported. `npm install`/`npx` will warn or refuse depending on `engine-strict` settings, and no test run has ever verified behavior there. If ye must run it on 16, expect no guarantee — the safer road is Node 18+.

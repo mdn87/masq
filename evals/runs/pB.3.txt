@@ -1,0 +1,1 @@
+`package.json` declares `"engines": {"node": ">=18"}`, and no code uses Node-18+-only globals (no `fetch`, `structuredClone`, `.at()`, etc.) — so it likely *runs* fine on 16, but it's not a supported configuration. Stick to Node 18+.

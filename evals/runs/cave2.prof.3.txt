@@ -1,0 +1,3 @@
+Wipes uncommitted changes. Resets working tree + index to match origin/main — tracked-file edits gone, unpushed commits on current branch gone, untracked files kept (not removed).
+
+Check first: `git status` (see what's dirty), `git diff` (review changes worth keeping), `git log @{u}..HEAD` (unpushed commits you'd lose). If anything matters, commit or stash it first.

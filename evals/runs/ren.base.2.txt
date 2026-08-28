@@ -1,0 +1,23 @@
+Both profiles exist. Two ways to set it:
+
+**Slash command:**
+```
+/persona set plain caveman
+```
+(`stack`, `only`, and `order` are aliases for `set`.)
+
+**Natural language:**
+```
+set the persona stack to plain, caveman
+```
+
+Order matters — later profiles win direct style conflicts, so caveman's voice would take precedence over plain's where they conflict (`src/hooks/persona-mode.js:176-177`, `:94-100`).
+
+By default this writes to the **active** scope, which resolves to the project override if one is defined, otherwise the global stack (`persona-mode.js:151-155`, `persona-state.js:238-239`). You can target a specific scope explicitly: `/persona global set plain caveman`, `/persona project set plain caveman`, or `/persona temp set plain caveman`.
+
+**Where it's stored:** under `${CLAUDE_PLUGIN_DATA}` (falls back to `~/.claude/plugins/data/masq-local` if that env var isn't set) — never in your repo (`persona-state.js:29-36`):
+- Global: `<data-dir>/state.json`
+- Project: `<data-dir>/projects/<sha256-of-cwd>.json`
+- Session/temp: `<data-dir>/sessions/<sha256-of-sessionId>.json`
+
+Each file just holds `{ version, active: [{id, variant}, ...] }` — so for your example it'd end up as `active: [{id:"plain", variant:"default"}, {id:"caveman", variant:"default"}]` (variant defaults unless you specify one, e.g. `caveman:gruff`).

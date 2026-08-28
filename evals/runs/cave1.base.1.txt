@@ -1,0 +1,9 @@
+The `kind` field declares what category of change a profile is allowed to make, bounding its authority. Three values:
+
+- **`presentation`** (default) — wording, register, structure, compression only. Can't change actions taken, evidence gathered, scope, confirmation behavior, or refusal behavior. Compression may drop detail the reader doesn't need to act, but never warnings, negations, qualifiers, or exact literals. Examples: Renfaire, Plain Language, Caveman, Dean.
+
+- **`conduct`** — how work is done and reported: effort, sequencing, report contents. Cannot grant tool authority, widen a permission, lower a confirmation requirement, skip a safety check, or alter a factual claim. Example: Working Conduct.
+
+- **`policy`** — what may be produced at all: required checks/clarifications, refusals, content boundaries. May only *tighten*, never loosen a safety requirement or grant a capability. Example: Afterdark.
+
+Precedence runs within a kind (later presentation wins style conflicts, later conduct wins conduct conflicts), and policy requirements sit outside stack precedence — the strictest active one always applies. This is enforced by the runtime contract in `src/rules/persona-runtime.md` and mirrored in the hook fallback, skill doc, and `SECURITY.md` (per invariant 10 in `masq/CLAUDE.md`).

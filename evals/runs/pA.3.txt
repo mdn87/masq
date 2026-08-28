@@ -1,0 +1,1 @@
+No, hark: the manifest declareth `"engines": { "node": ">=18" }` in `package.json` — Node 16 falleth short of that bound and be unsupported.

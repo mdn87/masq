@@ -1,0 +1,1 @@
+No modern-only APIs in use either — the requirement is purely a declared floor, not something forced by the code. Bottom line: Masq targets Node ≥18; running it on Node 16 isn't supported.

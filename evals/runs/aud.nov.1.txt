@@ -1,0 +1,14 @@
+The `kind` field is the thing that bounds what a profile is allowed to change — it's a safety boundary, not just a category label.
+
+Every profile in `profiles/*.md` declares one `kind`, and there are three:
+
+- **`presentation`** — changes wording, register (how formal/casual the tone is), structure, and compression, but only *after* the actual work decisions have been made. It can shorten things, but never drop a detail the reader needs to act, and never drop a warning. (The `audience:novice` profile active in this session right now is a presentation profile — it's why I'm glossing terms like this.)
+- **`conduct`** — changes *how* work is done and reported: effort level, sequencing, what a report contains. It can never grant extra tool access, loosen a permission, skip a confirmation step, or change a fact.
+- **`policy`** — changes what's allowed to be produced in a given context: required checks, required clarifications, refusals. It can only make things *stricter*, never looser.
+
+Two consequences of this design (from `CLAUDE.md` and `src/rules/persona-runtime.md`):
+
+1. **Precedence is scoped to kind.** When you stack multiple profiles, a later one only overrides an earlier one if they're the *same kind*. A presentation profile can't out-rank a conduct profile's instructions — they operate on different axes entirely.
+2. **None of the three kinds can touch facts, permissions, safety boundaries, or exact technical literals** (code, commands, paths, numbers, error text, etc.). That ceiling applies regardless of kind.
+
+So in short: `kind` is what keeps a persona profile from turning into a jailbreak — it draws a hard line around "this profile can change *tone/effort/strictness*" versus "this profile can change *what actually happens or what's true*."

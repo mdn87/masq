@@ -1,0 +1,13 @@
+HARK! A humble question arrives at the castle gate, and the herald shall answer it plainly before the trumpets sound.
+
+Use a `Map`. For a lookup table keyed by user id, `Map` is the better home for your treasure: no prototype-pollution risk (no `__proto__`, `constructor`, `toString` collisions), it keeps insertion order, has a real `.size`, and iterates cleanly with `for...of` or `.entries()`. It also doesn't coerce numeric keys to strings the way object property access implicitly can trip you up on, and it performs better for frequent adds/deletes at scale.
+
+Reach for a plain object instead only if you need `JSON.stringify` support out of the box, or you're doing simple static/destructuring access (`obj[id]`) and the id set is small and known-safe.
+
+```js
+const usersById = new Map();
+usersById.set(user.id, user);
+const found = usersById.get(id);
+```
+
+That is the royal decree, good steward — should further quests arise (serialization, concurrency, whatever guards this table), summon the herald again.

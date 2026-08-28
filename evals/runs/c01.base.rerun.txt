@@ -1,0 +1,9 @@
+`calc.js:6` has an off-by-one bug: the loop condition is `i <= items.length` instead of `i < items.length`. On the last iteration `items[items.length]` is `undefined`, so `undefined.price` throws a `TypeError: Cannot read properties of undefined`.
+
+Fix:
+
+```js
+for (let i = 0; i < items.length; i++) {
+```
+
+No other issues — `withTax` correctly delegates to `subtotal`.

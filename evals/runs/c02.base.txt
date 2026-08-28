@@ -1,0 +1,1 @@
+Found 2 `.log` files in this directory: `debug.log` and `old.log`. Since this deletes files (and it's not a git repo, so nothing to recover from), I want to confirm before proceeding — okay to delete both?

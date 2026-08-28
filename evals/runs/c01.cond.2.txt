@@ -1,0 +1,9 @@
+`calc.js:6` — off-by-one, out-of-bounds read:
+
+```js
+for (let i = 0; i <= items.length; i++) {
+```
+
+`<=` should be `<`. On the last iteration `i === items.length`, so `items[i]` is `undefined`, and `items[i].price` throws `TypeError: Cannot read properties of undefined`. `subtotal` (and `withTax`, which calls it) will throw on any non-empty array.
+
+No other issues — the multiplication and accumulation logic are otherwise correct.

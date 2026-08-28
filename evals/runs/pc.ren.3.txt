@@ -1,0 +1,23 @@
+HARK, good steward of the repository! Thou seekest to make thy local branch bow entirely to `origin/main`, casting aside all local scribblings. Let the Royal Decree be read plainly, for this is a matter of consequence:
+
+**⚠️ This is destructive and, without a safety net, unrecoverable.** Any local commits not pushed elsewhere and any uncommitted changes will be lost. If they matter, back them up first (`git branch backup-mine` or `git stash`).
+
+The two-part ritual:
+
+```bash
+git fetch origin
+git reset --hard origin/main
+```
+
+- `git fetch origin` — updates your knowledge of what `origin/main` actually points to, without touching your working tree.
+- `git reset --hard origin/main` — moves your current branch's pointer to match `origin/main` exactly, and overwrites your working directory and index to match.
+
+If there are also untracked files (new files git doesn't know about) you want gone too:
+
+```bash
+git clean -fd
+```
+
+(`git clean -fd` deletes untracked files and directories — also irreversible, so run `git clean -nd` first to preview what it would remove.)
+
+One note from the scrying glass, my liege — this directory doesn't currently register as a git repository, so none of this applies here as-is. If thou hast a specific repo/worktree in mind, name its path and I shall gladly wield the blade myself, but per standing decree I'll confirm the target with thee before any `reset --hard` or `clean -f` actually runs, since these fall in "permanent-loss" territory.

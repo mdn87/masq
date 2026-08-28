@@ -1,0 +1,1 @@
+package.json declares `"engines": { "node": ">=18" }` — no Node 16 support. No optional chaining/nullish-coalescing tricks or ES2022+ APIs turned up in `src/`, so the floor is a policy choice rather than a hard syntax requirement, but it's the stated contract. Run on Node 16 at your own risk; it isn't tested there.

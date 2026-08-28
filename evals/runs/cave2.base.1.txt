@@ -1,0 +1,20 @@
+This is a quick conceptual question, so here's the direct answer.
+
+## What it does
+
+`git reset --hard origin/main` moves your local `main` branch pointer to match `origin/main`, and resets both the **index** and **working directory** to that state. Effects:
+
+- **Uncommitted changes (tracked files)** — both staged and unstaged modifications to tracked files are **discarded permanently**. There's no reflog entry for working-tree edits, so these are generally not recoverable.
+- **Untracked files** — left alone by `--hard` itself, but if you follow it with `git clean -f` (common combo), those go too.
+- **Local commits not on origin/main** — these aren't destroyed outright; the branch pointer just moves. They're recoverable via `git reflog` for a while (until garbage collected), but they become unreachable from any branch immediately.
+
+So the risk is asymmetric: local *commits* are usually reflog-recoverable, but local *uncommitted edits* are not recoverable at all once you run this.
+
+## What to check first
+
+1. `git status` — see what's staged/unstaged/untracked.
+2. `git diff` and `git diff --staged` — review exactly what would be lost.
+3. `git log origin/main..HEAD` — see if you have local commits that would become orphaned (note where they are, or tag them, before resetting).
+4. If you want to keep the uncommitted work: `git stash push -u` (or commit it to a throwaway branch) before resetting, rather than discarding it.
+
+If you're about to run this and want, I can check your current working tree status first so you know exactly what's at stake.

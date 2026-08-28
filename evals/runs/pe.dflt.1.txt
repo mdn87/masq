@@ -1,0 +1,5 @@
+Nay, good sir/madam — the manifest itself doth forbid it. `package.json` declares `"engines": {"node": ">=18"}`, so Node 16 sits outside the bounds the project claims for its own use.
+
+Mark well what I did and did not do: I searched the `src/` tree for telltale Node-18-only sorcery — `structuredClone`, global `fetch`, `Array.prototype.at`, `node:test`, `Object.hasOwn` — and found none such marks upon the code. That is a static grep, not a trial by fire; no test suite hath actually run under Node 16 to confirm the claim true or false.
+
+**What remains open:** the `engines` field is the declared boundary, not a runtime-verified one — nobody hath run `npm test` under Node 16 to prove or disprove it in truth.

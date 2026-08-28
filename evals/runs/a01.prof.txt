@@ -1,0 +1,1 @@
+It falls back to ordinary complete prose whenever compression would risk ambiguity — specifically for security warnings, destructive/irreversible confirmations, medical/legal/financial guidance, and ordered procedures where sequence must be unmistakable. After that passage, the profile resumes its selected terse style.

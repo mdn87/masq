@@ -1,0 +1,9 @@
+The bug is in `subtotal()`, calc.js:6:
+
+```js
+for (let i = 0; i <= items.length; i++) {
+```
+
+`<=` causes an off-by-one: when `i === items.length`, `items[i]` is `undefined`, so `items[i].price` throws `TypeError: Cannot read properties of undefined (reading 'price')`. It should be `i < items.length`.
+
+That's the only issue — `withTax` is fine and just depends on `subtotal`.

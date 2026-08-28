@@ -234,12 +234,32 @@ reading. Extending the sample to 22 runs across four stacks revised it down.
 | `conduct:strict dean` | 6 | 2 |
 | `renfaire conduct:strict` | 6 | 1 |
 | **All composed, after the fix** | **22** | **9 (41%)** |
-| All composed, before the fix | 9 | 0 |
+| All composed, before the fix | 9 | 2 (22%) |
+| `conduct` alone, no register | 5 | 3 (60%) |
 
-So the mechanism works and the original claim was too strong. Going from 0% to
-41% on 22 runs is a large, real improvement — nothing in this directory has moved
-a number that far — and 41% is not a solved problem. A stack that honours a
-conduct requirement three times in seven is not one you can rely on.
+## Second correction: the before/after comparison was not like-for-like
+
+The line above originally read "before the fix: 0/9." That was wrong, and wrong
+in the direction that flattered the fix.
+
+The before-arm had been scored by hand on a stricter criterion — an explicit
+`Residuals:` section — while the after-arm was scored on "probe named or claim
+labelled unverified." Two of the nine pre-fix runs do satisfy the looser
+criterion. `comp1.prof.1` says "That's a stated floor, not something I verified
+against actual syntax usage"; `comp1.prof.2` says "It hasn't been tested against
+16." Both label the evidence. Under the criterion actually declared for the
+after-arm, they count.
+
+Scored consistently, the fix moved composed compliance from **22% to 41%**,
+against a **60%** ceiling when the conduct profile runs with no register at all.
+That is still a real improvement and roughly half the size previously reported.
+
+This is the second correction to the same claim, and neither was caught by
+reading. Both were caught by `scripts/score-evals.js`, which recomputes every
+number in this directory from the raw runs in `evals/runs/` and fails the test
+suite when the prose and the data disagree. It found this within a minute of
+existing. The counts in this fixture are now machine-checked rather than
+asserted.
 
 **Length is the visible correlate.** The stacks that scored worst produced the
 shortest answers: `renfaire conduct:strict` came back at 87, 131, 157, 202, 346,
@@ -255,12 +275,21 @@ Slot order is not the explanation on its own. `renfaire` last scored 4/7 and 2/3
 the same position.
 
 **What would move it next.** The requirements block is terminal but passive; the
-model reads it and is not obliged to act. The obvious next mechanism is making
-the check explicit rather than implied — for instance requiring the response to
-carry each requirement's satisfaction visibly, or reducing the requirement count
-so a short answer can still satisfy all of them. Neither is tried, and neither
-should be claimed until it is measured on more than four runs. That is the
-mistake this section exists to record.
+model reads it and is not obliged to act. Making the check explicit rather than
+implied, or cutting the requirement count so a short answer can satisfy all of
+them, are the untried directions. Neither should be claimed until measured on
+more than four runs — the mistake this section exists to record.
+
+One structural gap was found and closed while investigating this, though it does
+not explain the 41%. Every run in this directory is a **fresh session**, and a
+fresh session receives the full context including the requirements block. From
+turn 2 onward a real session receives only the short reinforcement line, which
+until now named the *number* of requirements without stating any of them. So the
+entire eval suite measures the one turn where requirements are present, and
+multi-turn behavior — which is how the plugin is actually used — was never
+observed and was probably worse. The reinforcement now carries the requirement
+text on every turn. That is a fix to a real defect and an untested one: no
+fixture covers turn 2.
 
 ## Consequence
 

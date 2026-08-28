@@ -6,6 +6,11 @@ All notable changes will be documented here.
 
 ### Corrected
 
+- **The composition before/after comparison was not like-for-like.** The
+  before-arm had been hand-scored on a stricter criterion than the after-arm.
+  Scored consistently, the fix moved composed compliance from 22% to 41%, not
+  from 0% to 41% — roughly half the reported effect, against a 60% ceiling with
+  no register present. Caught by `scripts/score-evals.js`, not by reading.
 - **0.5.0 overstated the composition fix.** Its changelog said "cross-kind
   composition now works" on the strength of 4 runs scoring 4/4. Extending to 22
   runs across four stacks gives 9/22, against 0/9 before the fix. The mechanism
@@ -16,6 +21,13 @@ All notable changes will be documented here.
 
 ### Added
 
+- `evals/runs/` — all 153 raw run outputs, so every count in a fixture can be
+  recomputed rather than taken on trust.
+- `scripts/score-evals.js` and `evals/scoring.json` — machine-checkable scoring.
+  Each contested claim declares its runs and its pattern; the script recomputes
+  and fails when fixture prose and raw data disagree. Wired into `npm test`, so
+  a fixture cannot drift from its evidence. It found two of my hand-counts wrong
+  on first run.
 - `evals/de-tell/03` — an earned negation survives the pass, 3/3.
 - `evals/audience/03` — the override holds at `expert`, 3/3, including the
   reflog distinction `caveman` once flattened.
@@ -39,6 +51,11 @@ All notable changes will be documented here.
 
 ### Fixed
 
+- The per-turn reinforcement now carries the requirement text rather than a
+  count of requirements. Turn 2 onward previously told the model there were four
+  requirements without saying what they were, so every multi-turn session lost
+  them after the first prompt. The whole eval suite runs fresh sessions and
+  never observed this.
 - **Cross-kind composition improved.** Conduct requirements survive a register:
   probe-named-or-labelled went 0/3 to 4/4 and the ornate register recovered 0/3
   to 3/4 on `conduct:strict renfaire`. Two earlier attempts that restated the

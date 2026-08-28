@@ -1,0 +1,5 @@
+No — `package.json` declares `"engines": { "node": ">=18" }` (masq/package.json:17-19), so Node 16 isn't supported.
+
+I didn't test-run it on Node 16 itself, so I can't confirm whether it would actually break at runtime — only that the declared requirement excludes it.
+
+**Residuals:** did not verify runtime behavior on Node 16 (no Node 16 install probed); relying solely on the declared `engines` field.

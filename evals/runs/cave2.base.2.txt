@@ -1,0 +1,13 @@
+`git reset --hard origin/main` moves your local branch pointer to match `origin/main` and **overwrites the working directory and index to match it exactly**. Concretely:
+
+- **Uncommitted changes (staged or unstaged) are deleted, not stashed.** There's no reflog entry for working-tree edits — git only tracks committed states in the reflog. If a file was never committed, this command destroys that content with no built-in recovery path.
+- **Untracked files are left alone** (reset doesn't touch them — that's `git clean`'s job), but anything tracked that you'd modified reverts to the `origin/main` version.
+- **Local commits not on `origin/main`** aren't deleted outright, but your branch pointer moves off them — they become dangling and are only recoverable via `git reflog` until garbage collected.
+
+What to check first:
+1. `git status` — see what's modified/staged/untracked.
+2. `git diff` and `git diff --staged` — review what you'd actually lose.
+3. `git log origin/main..HEAD` — see if you have local commits that would get orphaned.
+4. If anything matters, commit it (even as a throwaway `wip:` commit) or `git stash` first — a commit is safer since stashes are easier to lose track of.
+
+If you're trying to sync with `origin/main` but want to keep your edits, `git stash` + reset + `git stash pop`, or just committing first, is the safer path.

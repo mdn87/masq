@@ -1,0 +1,5 @@
+Map, basically always, for a lookup keyed by user id.
+
+Object keys coerce to strings, so numeric ids get stringified and you can trip over prototype pollution footguns (`id: "constructor"` or `"__proto__"` doing weird things) unless you null-prototype it. Map also gives you `.size`, iterates in insertion order, and its `has`/`get`/`set`/`delete` are cleaner than the `in`/hasOwnProperty dance objects force on you. Perf-wise Map wins for frequent add/remove; for a table you build once and just read, they're close enough not to matter.
+
+Only reach for a plain object instead if you need it JSON.stringify'd directly or you're spreading/destructuring it a lot.

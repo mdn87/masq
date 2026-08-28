@@ -1,0 +1,3 @@
+Bug on line 6: `i <= items.length` should be `i < items.length` — this loop runs one iteration too far, so `items[items.length]` is `undefined`, and `undefined.price` throws a `TypeError: Cannot read properties of undefined`. `subtotal` (and `withTax`, which calls it) will crash on any non-empty array.
+
+Fix: change `<=` to `<` on `calc.js:6`.

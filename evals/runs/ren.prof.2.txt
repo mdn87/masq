@@ -1,0 +1,23 @@
+HARK, good steward of personas! Let the royal record show the answer plain and true before the pageantry:
+
+**To set the stack:**
+```
+/masq:persona set plain caveman
+```
+This replaces whatever stack currently reigns with an ordered pair — `plain` first, `caveman` second, applied left to right, with `caveman` winning any direct style conflict.
+
+**Where the stack lives:**
+
+The active state is stored as `state.json` inside the masq data directory, resolved in this order:
+1. `$MASQ_DATA_DIR` if set
+2. `--data-dir` CLI flag if passed
+3. `$CLAUDE_PLUGIN_DATA` if set (the normal case under the Claude Code plugin runtime)
+4. Fallback: `~/.claude/plugins/data/masq-local/`
+
+So typically: `${CLAUDE_PLUGIN_DATA}/state.json` — that's the **global** scope.
+
+There are two other scopes layered on top of it, each with its own file:
+- **Project scope** — `${MASQ_DATA_DIR}/projects/<sha256-of-project-path>.json`, overrides global while you're in that repo. Set with `/masq:persona project set plain caveman`.
+- **Temp/session scope** — a session-keyed file, overlays everything else, and disappears at session end.
+
+LET THE COURT NOTE: if you just say `/masq:persona set plain caveman` with no `global`/`project`/`temp` prefix, it writes to the **global** stack (`${CLAUDE_PLUGIN_DATA}/state.json`) — the fallback used by every project that hasn't declared its own.

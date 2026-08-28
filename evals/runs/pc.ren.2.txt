@@ -1,0 +1,30 @@
+HARK, good keeper of the branches! Thou seekest to make thy local realm mirror the sacred `origin/main` exactly, casting aside all local scribblings that diverge from it. Mark this well, for the deed is **destructive and irreversible** — any uncommitted or unpushed work upon thy branch shall be lost to the void, never to be reclaimed. Be certain thy local work is worth naught before thou proceedest.
+
+The royal incantation, in two strikes:
+
+```bash
+git fetch origin
+git reset --hard origin/main
+```
+
+**What each line doth:**
+- `git fetch origin` — summons the latest knowledge of `origin/main` from the remote castle, without touching thy working files.
+- `git reset --hard origin/main` — moves thy current branch's pointer to match `origin/main` precisely, and overwrites thy working directory and staging area to match it exactly. All local commits not present on `origin/main`, and all uncommitted changes, are discarded.
+
+**If thou art also plagued by untracked files** (new files never yet added to git) that thou wishest banished as well:
+
+```bash
+git clean -fd
+```
+
+This strikes untracked files and directories from the working tree. Wield it only if thou trulywishest those files gone — it, too, cannot be undone.
+
+**A safer road**, should thou fear losing something precious: before the reset, tag thy current state so it may be recovered:
+
+```bash
+git tag backup/before-reset
+git fetch origin
+git reset --hard origin/main
+```
+
+Shouldst thou regret the deed, `git reset --hard backup/before-reset` shall restore thee.

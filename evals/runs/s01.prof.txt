@@ -1,0 +1,9 @@
+**Yes.** In `src/hooks/persona-profiles.js` (`parseFrontmatter`, lines 44–65), each frontmatter key is checked against an allowlist `PROFILE_FIELDS` (`id`, `name`, `description`, `aliases`, `scope`, `kind`, `default-variant`, `variants`). If a line's key isn't in that list, it throws:
+
+```
+{sourceName}: unknown frontmatter field "{field}"; supported: id, name, description, aliases, scope, kind, default-variant, variants
+```
+
+This happens during parsing, before validation, so the profile fails to load rather than silently ignoring the extra field.
+
+**Residuals:** I read the parser directly rather than running a live test with a malformed profile file, so this confirms the code path exists but not runtime behavior end-to-end (e.g., whether the loader that calls this catches/reports the error gracefully vs. crashing). Didn't check that.

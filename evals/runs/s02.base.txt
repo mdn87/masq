@@ -1,0 +1,1 @@
+No, `package.json` declares `"engines": { "node": ">=18" }` — Node 16 isn't supported. The codebase itself doesn't use any Node 18-only APIs I could find (no `fetch`, `structuredClone`, etc.), so it might run on 16 in practice, but it's not a supported/tested configuration.

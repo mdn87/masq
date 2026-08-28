@@ -1,0 +1,11 @@
+Bug found in `calc.js:6`: off-by-one loop bounds.
+
+```js
+for (let i = 0; i <= items.length; i++) {
+```
+
+`<=` should be `<`. With `<=`, the loop runs one iteration past the end of the array — on the last iteration `items[items.length]` is `undefined`, so `items[i].price` throws `TypeError: Cannot read properties of undefined (reading 'price')`. This will crash `subtotal()` (and `withTax()`, which calls it) for any non-empty `items` array.
+
+Fix: change `i <= items.length` to `i < items.length`.
+
+No other issues in the file — `withTax` correctly delegates to `subtotal`.

@@ -1,0 +1,1 @@
+Fixed — changed `i <= items.length` to `i < items.length` on line 6. No other issues in the file; `withTax` just multiplies `subtotal` by `rate`, which is correct as long as `rate` is passed as a decimal (e.g., 0.08 for 8%).

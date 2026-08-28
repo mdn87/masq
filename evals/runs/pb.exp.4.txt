@@ -1,0 +1,8 @@
+```
+git fetch origin
+git reset --hard origin/main
+```
+
+If you have untracked files you also want gone (build artifacts, scratch files not under version control), follow with `git clean -fd` — but check `git status` first, since that removes untracked files with no undo path.
+
+`reset --hard` rewrites your working tree and index to match `origin/main`; any local commits not on `origin/main` and any uncommitted changes are gone, recoverable only via reflog (`git reflog`) for a limited time, and only for committed work — uncommitted edits aren't in the reflog at all. If there's local work worth keeping, branch it off first: `git branch backup-<name>` before the reset.

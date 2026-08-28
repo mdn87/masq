@@ -1,0 +1,3 @@
+Bug at line 6: `i <= items.length` should be `i < items.length` — this off-by-one runs the loop one iteration past the array's end. `items[items.length]` is `undefined`, so `items[i].price` throws `TypeError: Cannot read properties of undefined (reading 'price')` for any non-empty `items` array.
+
+That's the only issue — fix is a one-character change (`<=` → `<`) on `calc.js:6`.

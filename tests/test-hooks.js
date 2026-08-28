@@ -290,7 +290,24 @@ try {
         [{ id: 'conduct', variant: 'strict' }, { id: 'renfaire', variant: 'pageant' }],
         catalog
       ),
-      /response requirements loaded with this stack are output requirements/
+      /Response requirements, which are output requirements rather than style/
+    );
+
+    // Turn 2 onward only gets the reinforcement line, so it has to carry the
+    // requirement text itself rather than a count of them.
+    const laterTurn = context.composeReinforcement(
+      [{ id: 'conduct', variant: 'strict' }, { id: 'renfaire', variant: 'pageant' }],
+      catalog
+    );
+    for (const requirement of profiles.requirementsFor({ id: 'conduct', variant: 'strict' }, catalog)) {
+      assert.ok(
+        laterTurn.includes(requirement),
+        `reinforcement must carry the requirement text, missing: ${requirement}`
+      );
+    }
+    assert.doesNotMatch(
+      context.composeReinforcement([{ id: 'renfaire', variant: 'pageant' }], catalog),
+      /Response requirements/
     );
 
     // A presentation profile may not bind content this way.

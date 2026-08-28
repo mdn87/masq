@@ -1,0 +1,9 @@
+In a masq profile, `kind` declares which category of behavior that profile is allowed to touch — it's a hard boundary, not just documentation. There are three:
+
+- **`presentation`** — wording, register, structure, compression. Can't change which actions are taken, what evidence is gathered, scope, confirmation behavior, or refusal behavior.
+- **`conduct`** — effort, sequencing, and report contents (how work is done and reported). Can never grant tool authority, widen a permission, lower a confirmation requirement, skip a safety check, or alter a factual claim.
+- **`policy`** — what may be produced in a context (required checks, clarifications, refusals, content boundaries). May only *tighten*, never loosen a safety requirement or grant a capability.
+
+Stack precedence runs *within* a kind, not across kinds — a later profile only overrides an earlier one on a direct conflict of the same kind. None of the three kinds can touch facts, permissions, safety boundaries, or exact technical literals — that ceiling applies regardless of kind.
+
+The model-facing statement of this boundary is kept in sync across `src/rules/persona-runtime.md`, `src/hooks/persona-context.js`, `skills/persona/SKILL.md`, and `SECURITY.md` (invariant #10 in `CLAUDE.md`), with `tests/test-hooks.js` asserting they agree.

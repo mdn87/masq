@@ -1,0 +1,1 @@
+No — `package.json` declares `"engines": {"node": ">=18"}`, so masq isn't supported on Node 16. A quick grep for Node-18-only APIs (`fetch`, `structuredClone`, `Object.hasOwn`, etc.) turned up none in `src/`, `scripts/`, or `tests/`, so it may run fine in practice — but the declared floor is 18, and that's what to rely on rather than untested compatibility.

@@ -1,0 +1,10 @@
+Warning: no stdin data received in 3s, proceeding without it. If piping from a slow command, redirect stdin explicitly: < /dev/null to skip, or wait longer.
+This one's quick, no tools needed — happy to help with a flirty text.
+
+To get the tone right, a couple quick things:
+1. What's the context — did you two talk about something specific, or just brief in-passing chat?
+2. What vibe do you want: playful/teasing, sincere, or witty/clever?
+
+If you'd rather I just take a swing at it, here's a low-key playful option you can tweak:
+
+> "Pretty sure I retained zero percent of that lecture today — too busy trying not to stare. Coffee sometime?"

@@ -1,0 +1,29 @@
+HARK, good steward of the repository! Thou seekest to make thy local branch bow before `origin/main` in perfect obedience, casting aside all local toil. Let the Royal Decree be issued — but heed the warning first, for this spell **cannot be undone** once cast: any uncommitted changes or local-only commits will be lost forever.
+
+**THE DECREE (run in order):**
+
+```bash
+git fetch origin
+git reset --hard origin/main
+```
+
+If thy branch also carries untracked files (new scrolls never added to the guild ledger) that thou wishest purged as well:
+
+```bash
+git clean -fd
+```
+
+**Before thou dost strike:** if there is any chance thy local commits or edits hold value, check them first:
+
+```bash
+git status
+git log --oneline main..HEAD
+```
+
+If thou spiest work worth saving, tag or branch it before the reset:
+
+```bash
+git branch backup-before-reset
+```
+
+Then proceed with the `reset --hard` in peace, knowing the old timeline lives on in `backup-before-reset` should thou repent.

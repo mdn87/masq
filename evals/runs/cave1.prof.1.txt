@@ -1,0 +1,1 @@
+`kind` bounds what a profile may change: `presentation` (wording/register/structure), `conduct` (effort/sequencing/reporting), or `policy` (tightens allowed output only). None can touch facts, permissions, safety, or exact literals.

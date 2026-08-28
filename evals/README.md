@@ -68,6 +68,28 @@ claiming a delta it did not observe. Re-recording against a clean authenticated
 config would raise every measured delta, and every fixture states this in its
 residual-ambiguity section.
 
+## Scoring is machine-checked, not asserted
+
+Every count quoted in a fixture is recomputed from the raw runs by
+`scripts/score-evals.js`, which reads `evals/scoring.json` and fails `npm test`
+when the prose and the data disagree. Raw outputs for all runs live in
+`evals/runs/`.
+
+This exists because hand-scoring failed. The fixtures were written by the same
+reader who designed the prompts, chose the observables, and wrote the verdicts,
+and that loop produced two wrong numbers in this directory — a 4/4 sample
+reported as a fix, and a before/after comparison where the two arms had been
+scored on different criteria. Both were caught by the script, neither by reading.
+
+The script does not make a criterion correct. A bad pattern scored mechanically
+is still a bad pattern, and the patterns in `scoring.json` are keyword
+approximations of prose judgements. What it does is make each criterion explicit
+and reproducible, so a reviewer can argue with the pattern instead of re-reading
+150 files — and so a fixture cannot quietly drift away from its own evidence.
+
+If you disagree with a count, change the pattern in `scoring.json` and re-run.
+That is the intended way to challenge anything here.
+
 ## What this directory has cost and returned
 
 Twenty-one fixtures, roughly 140 runs. What it found, in order of how much it

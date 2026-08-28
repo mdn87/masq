@@ -1,0 +1,1 @@
+The release is blocked — it cannot proceed until the integration tests finish, and their completion status isn't confirmed here. Please treat both the release and the tests as open items with no ETA from this update.

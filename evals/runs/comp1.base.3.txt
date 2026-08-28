@@ -1,0 +1,1 @@
+No Node 16+-incompatible syntax found. `package.json` declares `"engines": { "node": ">=18" }` — Node 16 isn't supported (unenforced by npm by default, but stated as the requirement). No, masq doesn't officially support Node 16.

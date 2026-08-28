@@ -1,0 +1,5 @@
+Map, basically always, for a keyed lookup table.
+
+Object keys coerce to strings, so numeric user IDs get stringified — annoying if you ever need the real type back. Map also doesn't have the prototype pollution surface (`__proto__`, `constructor`, etc. as keys), gives you `.size` instead of manually counting keys, and iterates in insertion order predictably. Performance-wise Map generally wins for frequent add/delete on large tables too.
+
+Plain object still makes sense if you need `JSON.stringify` support out of the box or you're doing simple static config-style lookups where none of the above matters — but for a growing user-id-keyed table, Map's the right call.

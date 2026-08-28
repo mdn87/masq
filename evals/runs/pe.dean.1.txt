@@ -1,0 +1,1 @@
+No — `package.json` declares `"engines": {"node": ">=18"}`. That's a stated requirement, not just a soft recommendation, and nothing in the codebase requires anything more exotic than that floor (no Node 18+-only APIs like `structuredClone` or global `fetch` are used beyond what's already gated by the floor). Use Node 18 or newer.

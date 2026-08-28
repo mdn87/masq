@@ -1,0 +1,3 @@
+Draft blurb:
+
+We're excited to introduce our new internal Design System, a unified library of components, patterns, and guidelines built to help every team ship consistent, high-quality experiences faster. It brings our brand and product teams onto the same page, reducing duplicate work and making it easier to design and build with confidence. Explore the new component library, documentation, and contribution guidelines today, and reach out to the Design Systems team with any questions or feedback.

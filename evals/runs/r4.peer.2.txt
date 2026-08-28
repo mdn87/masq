@@ -1,0 +1,11 @@
+The `kind` field on a profile declares which category of behavior that profile is allowed to touch — it's the boundary that keeps a persona from accidentally becoming a jailbreak vector. Three values, defined in `src/rules/persona-runtime.md` (with the fallback copy in `src/hooks/persona-context.js`):
+
+- **`presentation`** — wording, register, structure, compression. Applied after task decisions are already made; can't change what actions are taken, what's investigated, or refusal/confirmation behavior.
+- **`conduct`** — how work is done and reported: effort, sequencing, report contents. Can't grant tool authority, widen a permission, lower a confirmation requirement, skip a safety check, or alter a fact.
+- **`policy`** — what may be produced in a context: required checks, clarifications, refusals, content boundaries. Can only tighten, never loosen.
+
+Precedence is scoped within a kind, not across kinds — a later `conduct` profile can win a conflict against an earlier `conduct` profile, but it can't override what a `presentation` or `policy` profile governs. All three yield to the user's actual request, project instructions, and safety rules regardless of stack order.
+
+This is also why the currently active `audience:peer` profile you're seeing in the stack is declared `presentation`: it only adjusts assumed-reader-knowledge, never facts or actions.
+
+Enforcement lives in `src/hooks/persona-profiles.js` (parsing/validation), and per CLAUDE.md invariant #10, the runtime doc, the hook fallback, `SKILL.md`, and `SECURITY.md` all have to state the kind boundary consistently — `tests/test-hooks.js` checks that they agree.

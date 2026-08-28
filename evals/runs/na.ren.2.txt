@@ -1,0 +1,28 @@
+HARK, good steward of the data-realm! Gather round, for the Herald shall proclaim the truth of the **Index** — that enchanted ledger which speeds the Kingdom's queries, yet which, wielded carelessly, becomes a curse upon the castle's own scribes.
+
+## THE ROYAL DECREE: What an Index Does
+
+A database index is a separate, sorted structure (usually a B-tree, sometimes a hash) that maps column values to the physical location of the rows containing them. Without one, the database must perform a full table scan — checking every single row to find matches. With one, the database can jump nearly straight to the relevant rows, much as a book's index lets you skip to page 340 instead of reading cover to cover.
+
+- **Speeds up:** `WHERE` filters, `JOIN` conditions, `ORDER BY`, and uniqueness checks on the indexed column(s).
+- **Costs:** extra disk/memory storage, and extra work on every `INSERT`, `UPDATE`, or `DELETE` — because the index must be updated too, not just the table.
+
+## THE VILLAIN: When Adding One Makes Things Worse
+
+Let the record show — not every index is a hero. Several villains lurk who turn this speedy servant into a saboteur:
+
+1. **Write-heavy tables.** Every index adds overhead to every write. A table with heavy `INSERT`/`UPDATE`/`DELETE` traffic (logging tables, high-frequency event tables) can slow to a crawl under too many indexes, since each write must also update every index.
+
+2. **Low-cardinality columns.** Indexing a column like `is_active` (boolean) or `status` with only 3 values rarely helps — the optimizer often ignores it and scans anyway, since half the table matches any given value. The index adds cost with little benefit.
+
+3. **Small tables.** If a table has a few hundred rows, a full scan is already fast. An index here adds maintenance overhead for a battle that was already won.
+
+4. **Columns rarely used in filters/joins/sorts.** An index nobody queries against is pure dead weight — storage and write cost, zero payoff.
+
+5. **Redundant or overlapping indexes.** Two indexes covering nearly the same columns (e.g., `(a, b)` and `(a, b, c)`) often mean one is unnecessary — the optimizer can frequently use the broader one for both purposes.
+
+6. **Over-wide composite indexes.** Indexing many columns "just in case" bloats storage and slows writes without proportional query benefit — only the columns actually used in query predicates, in the right order, earn their keep.
+
+7. **Volatile columns.** Indexing a column that changes constantly (e.g., a `last_updated` timestamp touched on every write) means the index itself churns constantly, adding write amplification.
+
+**THE ROYAL COUNSEL:** Index for known, frequent query patterns — not speculatively. When in doubt, measure with `EXPLAIN`/query plans before and after, my liege, rather than trusting theatrics alone.

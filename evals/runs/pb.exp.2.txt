@@ -1,0 +1,12 @@
+```
+git fetch origin
+git reset --hard origin/main
+```
+
+`fetch` updates your local view of `origin/main`; `reset --hard` moves your current branch's tip and working tree to match it exactly, discarding all local commits and uncommitted changes on that branch.
+
+If you might want the discarded work later, back it up first (cheap insurance, since `reset --hard` is otherwise unrecoverable via normal means):
+```
+git branch backup/pre-reset
+```
+then reset. Recoverable afterward only via `git reflog` + `git reset --hard <sha>`, and only until the reflog entry expires or is GC'd.

@@ -1,0 +1,1 @@
+No — `package.json:17-19` declares `"engines": { "node": ">=18" }`. Node 16 falls below that floor and isn't a supported target.

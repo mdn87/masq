@@ -1,0 +1,12 @@
+Run this in the target repo:
+
+```
+git fetch origin
+git checkout main
+git reset --hard origin/main
+git clean -fd
+```
+
+`reset --hard` rewrites your branch tip and working tree to match `origin/main`'s commit exactly — it does not just discard uncommitted edits, it also **discards any local commits on `main` that aren't on `origin/main`**, irrecoverably unless you'd already noted the commit hash (recoverable briefly via `git reflog` if you catch it in time, but don't rely on that). `git clean -fd` on top removes untracked files/dirs too — anything not committed and not gitignored is gone. If there's local work you might want, `git branch backup-<name> main` before the reset gives you a pointer to recover from.
+
+Note: your current working directory isn't a git repo, so this presumably targets a different project directory — run it there.

@@ -1,0 +1,14 @@
+The `kind` field on a profile declares which category of behavior that profile is allowed to change — it's a boundary, not just a label. Masq recognizes three kinds:
+
+- **`presentation`** — changes wording, register (tone/formality), structure, and compression of the output, but only *after* the actual work and decisions are already made. It can never change which actions are taken, what evidence is gathered, or the facts reported.
+- **`conduct`** — changes *how* work is done and reported: effort level, sequencing of steps, what a report includes. It can never grant new tool permissions, loosen a confirmation requirement, skip a safety check, or change a factual claim.
+- **`policy`** — changes what's allowed to be produced in a given context (required checks, required clarifications, refusals, content limits). It may only make things *stricter* — it can never loosen a safety rule or grant a capability.
+
+Two enforcement rules follow from this:
+
+1. **Ordering only matters within a kind.** If two `presentation` profiles are both active, the later one wins a direct conflict. But a `conduct` profile can't override a `presentation` profile's wording choices, and vice versa — they operate on different axes entirely.
+2. **No kind can touch facts, permissions, or exact literals** (code, commands, paths, numbers, error text, etc.) — that boundary applies regardless of kind.
+
+For example, in this session the active profile is `audience:novice` — its `Kind: presentation` line is exactly why it's restricted to explaining terms and pacing detail for the reader, and explicitly barred from changing recommendations or technical literals.
+
+This is defined in `profiles/*.md` (each profile's `Kind:` header) and enforced by the contract in `src/rules/persona-runtime.md`.

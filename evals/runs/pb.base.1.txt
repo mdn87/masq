@@ -1,0 +1,12 @@
+```
+git fetch origin
+git reset --hard origin/main
+```
+
+This discards all uncommitted changes and local commits not on `origin/main` — it's not recoverable via a normal git command (uncommitted work is gone for good; local-only commits are only recoverable via `git reflog` for a limited time). If you want a safety net first, stash or branch off before resetting:
+
+```
+git branch backup-before-reset   # optional safety net for local commits
+git fetch origin
+git reset --hard origin/main
+```

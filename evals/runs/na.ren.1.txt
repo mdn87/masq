@@ -1,0 +1,31 @@
+HARK, good keeper of the data-hoard! Gather round, for the Herald shall proclaim the truth of the **index** — that clever contraption of the database realm.
+
+## THE ROYAL DECREE: What an Index Doth
+
+A database table, left to its own devices, is a great disorganized hall of scrolls — to find one record, the engine must march past every single row, torch in hand, reading each in turn. This is called a **full table scan**, and it is slow as a siege.
+
+An **index** is a separate, ordered structure (commonly a B-tree, sometimes a hash) built atop one or more columns. It holds sorted copies of those column values, each bearing a pointer back to the full row. Query the indexed column, and the engine no longer marches the whole hall — it leaps straight to the shelf, much as a book's index sends thee to the exact page rather than making thee read cover to cover.
+
+This speeds up:
+- `WHERE` clauses filtering on the indexed column(s)
+- `JOIN` conditions matching on those columns
+- `ORDER BY` / `GROUP BY` on those columns
+- Enforcing uniqueness (`UNIQUE` constraints lean on indexes)
+
+## THE VILLAIN: When the Index Turns Traitor
+
+Nay, my liege, an index is no free blessing — it exacts its price, and in certain quarters that price outweighs the gain:
+
+1. **Write cost.** Every `INSERT`, `UPDATE`, or `DELETE` must also update every index on that table. Pile on indexes, and thy writes crawl like a wounded knight. Tables with heavy write traffic and few reads suffer most.
+2. **Storage cost.** Each index is its own structure on disk — sometimes rivaling the table itself in size, especially wide composite indexes.
+3. **Low-cardinality columns.** Indexing a column with few distinct values (a `boolean`, a `status` field with three states) rarely helps — the engine often decides a full scan is cheaper than hopping through an index that doesn't narrow things much. The index becomes dead weight the query planner ignores anyway.
+4. **Small tables.** If the whole table fits comfortably in memory and is tiny, scanning it is already fast; the index adds overhead for negligible benefit.
+5. **Over-indexing.** Adding an index "just in case" for every column is a common mistake — each one taxes every write, and the query planner may even choose a worse plan when confused by too many options.
+6. **Volatile columns.** Indexing a column that changes constantly (e.g., a `last_updated_at` timestamp touched on every write) means constant index maintenance for a query pattern that may rarely use it.
+7. **Wide composite indexes with poor column order.** An index on `(a, b, c)` only helps queries filtering on `a`, or `a+b`, or `a+b+c` — not on `b` alone. A mis-ordered composite index can be nearly useless while still costing full write overhead.
+
+## THE COUNSEL
+
+Add an index when read queries on that column are frequent, the table is large, and the column has good cardinality (many distinct values). Skip or remove one when writes dominate, cardinality is low, the table is small, or no query actually filters/sorts/joins on that column — a quick check with `EXPLAIN` (or thy database's equivalent) will show whether the planner even uses it.
+
+Shouldst thou be staring at a specific slow query or a specific schema, bring it before the court and the Herald shall render judgment on which columns deserve the honor.

@@ -1,0 +1,1 @@
+The release can't ship right now because a blocker is stopping it, and the team still needs to identify and clear that issue before work can continue. The integration tests haven't started yet, so we don't have results on whether the current build passes them.

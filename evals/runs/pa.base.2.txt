@@ -1,0 +1,5 @@
+This is straightforward, no tools needed.
+
+Here's a two-sentence blurb:
+
+The `--sandbox` flag restricts which directories a process can read, which meaningfully reduces exposure if the process is compromised or misbehaves. It is not a security boundary, however — a sufficiently determined process can escape it, so it should not be relied on as the sole control for isolating untrusted code.

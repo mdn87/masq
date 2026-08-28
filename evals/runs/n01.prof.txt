@@ -1,0 +1,5 @@
+Map, basically always, for a lookup table keyed by user id.
+
+Object keys coerce to strings, so numeric ids get stringified and you lose the type going back. Map also doesn't have the prototype pollution problem (`"__proto__"`, `"constructor"`, etc. as a user id — unlikely but real), it's got a proper `.size`, and it iterates in insertion order predictably. Perf-wise it's also just better for frequent add/delete.
+
+The one place a plain object still wins is if you need to JSON.serialize the table directly or you're doing a quick literal-syntax one-off — Maps need `Object.fromEntries`/manual conversion for that.

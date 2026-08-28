@@ -1,0 +1,1 @@
+The release is blocked: it cannot ship until the integration tests finish running. The integration tests are pending — they haven't started yet, so we don't have a new completion estimate for the release.

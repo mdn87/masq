@@ -1,0 +1,7 @@
+`kind` declares what a profile is allowed to change, from `docs/PROFILE_FORMAT.md`. Three values, default is `presentation`:
+
+- **`presentation`** — wording, register, structure, compression only. Can't change which actions are taken, evidence gathered, scope, confirmation, or refusal behavior. Compression can drop detail but never anything the reader needs to act on, or a warning/negation/qualifier/exact literal. (Renfaire, Plain Language, Caveman, De-tell, Dean)
+- **`conduct`** — how work is done and reported: effort, sequencing, report contents. Can never grant tool authority, widen a permission, lower a confirmation requirement, skip a safety check, or alter a factual claim. (Working Conduct)
+- **`policy`** — what may be produced in a context: required checks/clarifications, refusals, content boundaries. May only *tighten*, never loosen a safety requirement or grant a capability. (Afterdark)
+
+Kinds compose (e.g. `dean` + `conduct` together), and precedence runs within a kind — a later presentation profile can't override what a conduct/policy profile requires. It's the mechanism that keeps profiles from being able to change facts, permissions, or safety boundaries regardless of how a persona rewrites tone (invariant #9 in this repo's CLAUDE.md).

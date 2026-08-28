@@ -1,0 +1,1 @@
+No — `package.json` declares `"engines": { "node": ">=18" }`. That's a stated floor, not something I verified against actual syntax usage, but the declared requirement rules out Node 16.

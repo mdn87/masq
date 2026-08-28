@@ -1,0 +1,19 @@
+HARK, good steward of personas! Let the royal decree be etched plainly, for this is a matter of exact commands and sacred file paths — no herald's flourish shall corrupt them.
+
+**To set the stack to plain, then caveman:**
+
+```text
+/masq:persona set plain caveman
+```
+
+This replaces the entire active stack in one stroke. Order matters: `plain` occupies the first slot, `caveman` the last — and since both are `presentation`-kind profiles, `caveman` wins any direct styling conflict between the two (per the stack rule that a later slot only overrides *direct* conflicts, preserving everything else).
+
+**Where the stack lives:**
+
+State is stored under Claude Code's persistent `CLAUDE_PLUGIN_DATA` directory (resolved via `getDataDir()` in `src/hooks/persona-state.js:29`), specifically:
+
+- Global stack: `<CLAUDE_PLUGIN_DATA>/state.json`
+- Project override (if one exists for this repo): `<CLAUDE_PLUGIN_DATA>/projects/<sha256-hash-of-canonical-cwd>.json`
+- Temp/session overlay: a session-scoped file that's cleared at `SessionEnd`
+
+If `CLAUDE_PLUGIN_DATA` isn't set, it falls back to `~/.claude/plugins/data/masq-local/`. Your `/masq:persona set` command targets the project override if one exists for this directory, otherwise it writes to the global `state.json`. Use `/masq:persona global set plain caveman` or `/masq:persona project set plain caveman` if thou must aim at a specific scope, keeper of the keys.

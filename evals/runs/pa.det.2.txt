@@ -1,0 +1,1 @@
+The `--sandbox` flag restricts which directories a process can read, cutting down real-world exposure. It's not a security boundary: a determined process can escape it.

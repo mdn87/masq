@@ -1,0 +1,5 @@
+No use of Node 18+-only APIs — `engines` just declares the floor as a policy choice, not a hard technical requirement I found evidence against.
+
+**Answer: package.json declares `"engines": { "node": ">=18" }`** (masq/package.json:17-19), so Node 16 isn't supported. I didn't find any Node-18-only API usage in `src/` (no `structuredClone`, `Object.hasOwn`, etc.), so the floor looks like a policy/CI choice rather than one forced by a specific runtime API — but that's inference, not something I ran on Node 16 to verify. If you need to know whether it'd *actually* break on 16, that would require running the test suite under Node 16, which I haven't done.
+
+**Residuals:** not run on an actual Node 16 runtime; can't rule out something failing silently that the grep missed.

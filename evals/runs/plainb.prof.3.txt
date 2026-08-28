@@ -1,0 +1,1 @@
+The release cannot proceed until an open blocker is resolved — I don't have the specific cause noted, so flagging that it needs to be identified. The integration tests haven't been run yet, so their results (pass/fail) are still unknown and needed before we can confirm the release is unblocked.

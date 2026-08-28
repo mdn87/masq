@@ -1,0 +1,3 @@
+No. `package.json` declares `"engines": { "node": ">=18" }` — Node 16 is below the required minimum, so it's not supported.
+
+Residuals: I only checked the declared `engines` constraint, not whether the code happens to run anyway on Node 16 despite the declaration (e.g., npm won't hard-block installs on the engines field unless `engine-strict` is set). I didn't test execution on Node 16.

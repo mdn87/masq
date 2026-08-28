@@ -1,0 +1,1 @@
+Introducing our new internal design system: a shared library of components, patterns, and guidelines built to keep our products consistent and speed up development. It brings design and engineering onto the same page, cutting down on rework and one-off decisions across teams. Find it on the intranet design system hub, along with docs and examples to get started.

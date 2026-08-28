@@ -1,0 +1,1 @@
+No, the code doesn't rely on Node 18-only APIs — the `>=18` requirement is a stated engine bound, not something forced by the source. If you need Node 16 support specifically, dropping the `engines` field or lowering it to `>=16` would likely work, but that'd be an intentional relaxation of the declared contract, not a bug fix.

@@ -1,0 +1,5 @@
+Here's an opening paragraph for the announcement:
+
+---
+
+Starting this sprint, we're moving to trunk-based development across all teams. Instead of long-lived feature branches that drift out of sync and collapse into painful merge conflicts, engineers will commit small, frequent changes directly to `main`, guarded by feature flags for anything not yet ready for users. The payoff is faster feedback, fewer integration surprises, and a codebase that's always in a shippable state — but it also means our CI pipeline and code review turnaround need to keep pace with a much higher commit cadence. Here's what's changing, and what we need from you to make it work.

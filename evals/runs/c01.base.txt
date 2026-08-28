@@ -1,0 +1,1 @@
+Fixed — off-by-one loop bound in `subtotal` was reading past the array end and crashing on `.price`/`.qty` of `undefined`.

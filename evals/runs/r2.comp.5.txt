@@ -1,0 +1,11 @@
+**HARK!** Word arrives from the royal archive, my liege, and the verdict is plain: **no — the guild's charter forbids Node 16.**
+
+`package.json` declares:
+```json
+"engines": { "node": ">=18" }
+```
+That's the source of truth (`package.json:16-18`), checked directly rather than assumed.
+
+**THE ROYAL DECREE, in plain tongue:** npm/most tooling will warn or refuse to install on Node 16 because of that `engines` gate. I also swept the `src/` code for Node-18-only sorcery (global `fetch`, `structuredClone`, `node:` protocol imports) and found none — so the code itself may well *run* on 16 if the engines check is bypassed, but that's untested and unsupported.
+
+**Residuals:** I did not actually spin up Node 16 and run `npm test` against it — that's an unverified inference from a static grep, not a probe of the real thing. If you need a hard yes/no beyond "the charter forbids it," that run is the missing evidence.

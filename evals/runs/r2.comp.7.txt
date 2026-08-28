@@ -1,0 +1,1 @@
+No, hark—**Masq requires Node ≥18** (declared in `package.json` under `engines`), so Node 16 falls short of the mark and is unsupported.

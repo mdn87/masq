@@ -1,0 +1,6 @@
+Use a `Map`.
+
+- **Correctness**: plain objects have prototype pollution risk (keys like `"__proto__"`, `"constructor"`, `"toString"` collide with inherited properties) unless you use `Object.create(null)`. `Map` has no such footguns.
+- **Performance**: `Map` is optimized for frequent add/remove; objects are optimized for static shape.
+- **Ergonomics**: `Map` gives you `.size`, `.has()`, `.delete()`, direct iteration (`for...of`), and preserves insertion order without key-order coercion (numeric-looking string keys get reordered in objects).
+- If user IDs are numeric and you need JSON-serialization or you're just doing quick static lookups from parsed JSON, a plain object is fine and slightly simpler — but for anything mutable or hot-path, `Map` is the safer default.

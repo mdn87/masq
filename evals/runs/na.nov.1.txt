@@ -1,0 +1,31 @@
+A database index is a separate data structure that stores a sorted copy of one or more columns' values, each paired with a pointer back to the full row it came from. Think of it like the index at the back of a textbook: instead of reading every page to find mentions of "photosynthesis," you look it up in the index and jump straight to the right pages.
+
+## What it does
+
+Without an index, the database has to do a **full table scan** — a sequential read of every row — to find the ones matching your query (e.g., `WHERE email = 'x@example.com'`). For a table with a few hundred rows, that's instant. For a table with tens of millions of rows, it's slow.
+
+With an index on the `email` column, the database uses a fast lookup structure (usually a **B-tree**, a balanced tree structure that keeps data sorted and lets the database find any value in a small, predictable number of steps) to jump almost directly to the matching row(s), instead of checking every row one by one.
+
+Indexes typically speed up:
+- `WHERE` clause lookups on the indexed column(s)
+- `JOIN` operations matching rows between tables
+- `ORDER BY` / sorting, since the index is already sorted
+- Uniqueness checks (e.g., enforcing that no two rows share an email)
+
+## When adding one makes things worse
+
+The catch: an index isn't free. It's extra data the database has to maintain, and that maintenance cost can outweigh the read speedup in several situations.
+
+1. **Slower writes.** Every `INSERT`, `UPDATE`, or `DELETE` on the table has to also update every index on it, to keep the index's sorted copy in sync with the real data. A table with five indexes means every write does up to six updates instead of one. On write-heavy tables (e.g., a high-volume logging or event table), too many indexes can noticeably slow down inserts.
+
+2. **Wasted space and memory.** Each index is a full extra copy of the indexed column(s) plus pointers, stored on disk. Large indexes also compete with actual data for space in the database's memory cache, which can push useful data out of that cache and slow down *other* queries.
+
+3. **Low-selectivity columns.** If a column only has a few distinct values relative to the table's size — e.g., a `status` column that's only ever `"active"` or `"inactive"` on a table of a million rows — an index doesn't help much. The database often decides it's just as fast (or faster) to scan the whole table anyway, so the index sits there costing you write overhead for no read benefit. This is a judgment call the database's query planner makes, not a hard rule.
+
+4. **Small tables.** If a table only has a few hundred or a few thousand rows, a full scan is already fast enough that the index adds overhead without a meaningful benefit.
+
+5. **Columns that change constantly.** If the indexed column is updated frequently (e.g., a "last seen" timestamp updated on every request), you pay the index-maintenance cost on nearly every write, for a query benefit you may rarely use.
+
+6. **Too many indexes on one table.** Each additional index compounds the write-cost problem above. It's common for teams to add an index "just in case" for every column that ever appears in a `WHERE` clause, and end up with a table that's fast to read but painfully slow to write to.
+
+**Rule of thumb:** add an index when a column is frequently searched/filtered/joined on, has many distinct values, and the table is read far more often than it's written to. Skip or remove one when the table is write-heavy, the column has low selectivity, or the table is small enough that a full scan is already cheap.

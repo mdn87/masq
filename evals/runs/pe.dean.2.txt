@@ -1,0 +1,3 @@
+No Node-18-only APIs are used (no `fetch`, `structuredClone`, `Array.prototype.at`, etc.). The declared `engines` requirement is stricter than the actual code needs.
+
+**Answer: `package.json` declares `"engines": { "node": ">=18" }`**, so Node 16 is not officially supported and `npm install` would warn/fail depending on `engine-strict` settings. I found no Node-18-specific runtime API in `src/` that would actually break on 16 — the floor looks like a stated policy rather than a hard technical requirement, but it hasn't been tested against 16, so I can't confirm compatibility beyond "no obvious blocker in the code I checked."

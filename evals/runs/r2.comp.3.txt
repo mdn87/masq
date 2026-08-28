@@ -1,0 +1,1 @@
+Nay, good sir — masq declares `"engines": { "node": ">=18" }` in `package.json`, so Node 16 falls outside the bounds it professes to support. Thou wouldst want Node 18 or later to run true.

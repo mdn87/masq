@@ -1,0 +1,28 @@
+A database index is an extra data structure the database keeps alongside a table, built specifically to make lookups faster — similar to the index at the back of a textbook that lets you jump straight to a page instead of reading the whole book to find a topic.
+
+## How it helps
+
+Without an index, the database answers a query like "find the user with email = x@example.com" by doing a **full table scan** — reading every single row in the table, one by one, to check whether it matches. On a small table this is fine. On a table with millions of rows, it's slow.
+
+An index on the `email` column keeps a separate, sorted lookup structure that maps each email value to the location of its row in the table. With that in place, the database can jump almost directly to the matching row instead of scanning everything. Indexes typically speed up:
+
+- Filtering (`WHERE column = ...`)
+- Sorting (`ORDER BY column`)
+- Joining two tables on a column
+- Enforcing uniqueness (e.g., no two users can share an email)
+
+## When adding one makes things worse
+
+**1. Every write gets slower.** Whenever a row is inserted, updated, or deleted, the database has to update the table *and* update every index on it to keep them in sync. A table with five indexes means five extra structures to maintain on every write. If your workload does a lot of writes relative to reads, extra indexes can noticeably slow down inserts/updates.
+
+**2. Indexes cost storage space.** Each index is its own structure stored on disk (and often cached in memory), separate from the table itself. A large index can be a significant fraction of the size of the table it indexes — sometimes larger.
+
+**3. Low-value indexes waste resources without helping.** An index on a column with very few distinct values (e.g., a `boolean` column that's 90% `true`) often isn't useful. The database usually decides a full scan is cheaper than using such an index anyway, so it sits there costing write overhead and disk space for no benefit.
+
+**4. Too many indexes can confuse the query planner.** The database's query planner (the component that decides *how* to execute a query) has to choose among all available indexes. In rare cases, having many overlapping or redundant indexes leads to a suboptimal choice, or just adds planning overhead.
+
+**5. Redundant indexes are pure waste.** If you have an index on `(a, b)`, an index on just `(a)` is usually redundant — the first index already serves that purpose. It costs write overhead and space without adding any query benefit.
+
+## Rule of thumb
+
+Add an index when you have a specific, frequent query pattern (a `WHERE`, `JOIN`, or `ORDER BY`) that's actually slow, and the column has enough distinct values to make narrowing the search worthwhile. Don't add indexes speculatively "just in case" — each one is a standing tax on every write to that table, so it needs to earn its keep against a real read pattern.

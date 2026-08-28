@@ -1,0 +1,1 @@
+No — `package.json` declares `"engines": { "node": ">=18" }`, so Node 16 isn't supported. Nothing in the source uses obviously post-16 syntax, but the engine floor is set at 18 and that's the supported minimum.

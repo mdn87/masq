@@ -1,0 +1,29 @@
+Database indexes are a well-understood topic — here's a direct explanation.
+
+## What an index does
+
+A table without an index requires a full scan — the database reads every row to find matches. An index is a separate data structure (usually a B-tree) that stores column values in sorted order alongside pointers to the actual rows. This lets the database do a lookup in roughly O(log n) instead of O(n), turning "scan a million rows" into "walk a tree a dozen levels deep."
+
+Indexes speed up:
+- `WHERE` filters on the indexed column(s)
+- `JOIN` conditions
+- `ORDER BY` / `GROUP BY` on indexed columns (can avoid a sort step)
+- Enforcing uniqueness constraints efficiently
+
+## When adding one makes things worse
+
+**Write overhead.** Every `INSERT`, `UPDATE`, or `DELETE` has to update every index on that table, not just the table itself. A table with 6 indexes pays that cost 6 times per write. On write-heavy tables (logs, queues, high-frequency event tables), extra indexes can measurably slow throughput and increase lock contention.
+
+**Low-cardinality columns.** Indexing a boolean or a status column with 3 possible values often doesn't help — the planner may still choose a full scan because the index isn't selective enough to narrow results meaningfully. You pay the maintenance cost for little to no read benefit.
+
+**Storage and cache pressure.** Indexes take disk space and, more importantly, compete for memory/buffer cache. A bloated set of indexes can push more useful data (or other indexes) out of cache, causing more disk I/O overall — net negative even for read paths.
+
+**Small tables.** If a table fits in a few pages, a sequential scan is often faster than the overhead of traversing an index structure. The planner usually figures this out and ignores the index anyway, but it's still dead weight on writes.
+
+**Redundant/overlapping indexes.** A composite index on `(a, b, c)` already serves queries filtering on `a` or `(a, b)`. A separate index on just `a` is often redundant — pure write cost, no read benefit.
+
+**Index used rarely but expensive to maintain.** An index that speeds up a report run once a week but slows down writes happening constantly is usually a bad trade — measure query frequency, not just query existence.
+
+## Rule of thumb
+
+Index for known, frequent query patterns (especially foreign keys and `WHERE`/`JOIN` columns), not defensively "just in case." Every index is a bet that read savings outweigh write cost — verify with `EXPLAIN`/query plans and actual write volume rather than assuming.

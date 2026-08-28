@@ -1,0 +1,27 @@
+## What a database index does
+
+A database index is a separate data structure that the database keeps alongside a table, sorted so it can find rows fast without checking every row (a "table" is just a grid of data — rows and columns, like a spreadsheet).
+
+Without an index, looking up a row means a **full table scan**: the database reads every single row, checking each one against your search condition, until it's checked them all. For a table with a few hundred rows, that's instant. For a table with tens of millions of rows, it's slow.
+
+An index works like a book's index at the back: instead of reading every page to find mentions of a topic, you look the topic up alphabetically and jump straight to the right page. Concretely, a database index is usually a structure called a **B-tree** (a sorted tree structure that lets the database narrow down a search in a handful of steps rather than checking every entry) built on one or more columns. When you query on an indexed column, the database walks the tree instead of scanning the whole table, turning a search that's proportional to table size into one that's proportional to the *log* of the table size — much faster as tables grow.
+
+Indexes typically speed up:
+- `WHERE` clauses filtering on that column
+- `JOIN`s matching on that column
+- `ORDER BY` sorting on that column
+- Enforcing uniqueness (e.g., no two users with the same email)
+
+## When adding one makes things worse
+
+**1. Slower writes.** Every `INSERT`, `UPDATE`, or `DELETE` has to update not just the table but every index on it too. A table with five indexes means each write does up to six pieces of work instead of one. On write-heavy tables (logging tables, high-frequency event tables), extra indexes can visibly slow down the application.
+
+**2. Wasted disk space and memory.** An index is a full copy of the indexed column(s), plus the tree structure pointing back to the real rows. On a large table, an index can be a meaningful fraction of the table's own size. That's disk space, and it's also memory pressure — databases cache frequently used data and indexes in RAM, and a bloated index footprint can push other useful data out of that cache.
+
+**3. Low-cardinality columns rarely benefit.** "Cardinality" means how many distinct values a column has. A column like `status` with only 3 possible values ("active," "pending," "closed") doesn't index well: an index there doesn't narrow the search down much, since a third of the table matches any given value. The query planner (the part of the database that decides *how* to run a query) will often just skip the index and scan the table anyway — so you paid the write and storage cost for no benefit.
+
+**4. Small tables don't need it.** If a table only has a few hundred or a few thousand rows, a full scan is already fast. The index adds overhead without a payoff.
+
+**5. Redundant or overlapping indexes.** Adding an index on `(a, b)` when one already exists on `(a, b, c)` is often pure waste — the existing one already serves most of the same queries, so the new one just adds write cost.
+
+**Bottom line:** an index trades write speed and storage for read speed. It's worth it on columns you filter/join/sort on often, especially on large, read-heavy tables. It's *not* worth it on small tables, low-cardinality columns, or columns that get written to constantly but rarely queried.

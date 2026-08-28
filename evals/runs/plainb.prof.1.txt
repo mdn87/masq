@@ -1,0 +1,1 @@
+The release can't ship until two blockers clear: the integration tests haven't started running yet, and until they complete (pass or fail), the release stays on hold. No ETA yet on when the tests will kick off — flag if you need one.

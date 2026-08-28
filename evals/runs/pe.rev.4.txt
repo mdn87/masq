@@ -1,0 +1,7 @@
+I have the answer from `package.json` directly — no need to browse further.
+
+Good sir, thy package doth declare its floor plain: `"engines": { "node": ">=18" }` — Node 16 lies beneath that line, unsupported by declaration, and no promise be made for it.
+
+**Answer:** No — masq's package.json requires Node ≥18. Node 16 is not supported.
+
+**Residuals:** I checked the declared `engines` constraint only, not runtime behavior on Node 16 — no syntax/API audit was run to confirm *why* it would fail (e.g., specific ES features or Node APIs used). If you need to actually run it on Node 16, that would need testing, not just this declaration.

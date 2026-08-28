@@ -1,0 +1,31 @@
+This is a conceptual question, so here's a direct explanation.
+
+## What an index does
+
+A database index is a separate, sorted data structure (usually a B-tree, sometimes a hash or other structure) that maps column values to the physical location of the matching rows. Instead of scanning every row in a table to find matches (a full table scan), the database can navigate the index directly, similar to how a book's index lets you jump to a page instead of reading cover to cover.
+
+This speeds up:
+- `WHERE` lookups on indexed columns
+- `JOIN` conditions on indexed columns
+- `ORDER BY` / `GROUP BY` on indexed columns
+- Enforcing uniqueness constraints
+
+The cost isn't free — an index is extra data that must be kept in sync.
+
+## When adding one makes things worse
+
+1. **Write-heavy tables.** Every `INSERT`, `UPDATE`, or `DELETE` has to update every index on that table, not just the table data. A table with 8 indexes might see each write turn into 9 writes. On high-throughput write paths (logging tables, event streams, queues), this can tank throughput.
+
+2. **Low-cardinality columns.** Indexing a boolean or a status column with 3 possible values often doesn't help — the optimizer may decide a full scan is cheaper than bouncing between index and table, so you paid the write cost for nothing.
+
+3. **Small tables.** If a table fits in a few disk pages, a full scan is already fast; the index adds overhead with no payoff.
+
+4. **Redundant/overlapping indexes.** An index on `(a, b)` already serves most queries that would use an index on `(a)` alone. Keeping both doubles the maintenance cost with no query benefit.
+
+5. **Bloat and storage cost.** Indexes consume disk and memory (cache pressure). A table with many rarely-used indexes can push more useful data out of the buffer cache, slowing down *everything*, not just writes.
+
+6. **Locking/contention.** Some databases take heavier locks or generate more write-ahead-log volume when updating indexes, which can worsen contention under concurrent write load.
+
+7. **Optimizer confusion.** More indexes give the query planner more options to evaluate, and occasionally it picks a worse plan (e.g., an index scan that's actually slower than a sequential scan for a given data distribution), especially if statistics are stale.
+
+**Rule of thumb:** index for the reads you actually perform (check query patterns, not guesses), and be stingy on tables with heavy write traffic or low-cardinality columns. When in doubt, add the index, measure write impact and query plans, and drop it if it's not earning its keep.

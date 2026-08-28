@@ -1,0 +1,5 @@
+**Verily — reach for the `Map`, good steward.**
+
+A `Map` is the sturdier lookup table when the keys are user IDs coming from live data: it won't choke on numeric IDs getting silently stringified, it dodges collisions with cursed keys like `"constructor"` or `"__proto__"`, it tells you its size directly via `.size`, and it iterates in insertion order without ceremony.
+
+The plain object still has its place — if the keys are a small, fixed, known-safe set of strings and you want the terse `obj[id]` syntax — but for a dynamic lookup keyed by user ID, `Map` is the one the guild trusts.

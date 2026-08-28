@@ -1,0 +1,9 @@
+`kind` bounds what a profile is allowed to touch, per `CLAUDE.md`'s three-way split:
+
+- **`presentation`** — wording, register, structure, compression. Applied after task decisions are made; never changes actions taken, evidence gathered, scope, or confirmation/refusal behavior.
+- **`conduct`** — effort, sequencing, report contents. Never grants tool authority, widens a permission, lowers a confirmation requirement, skips a safety check, or alters a factual claim.
+- **`policy`** — what may be produced in a context (required checks, clarifications, refusals, content boundaries). May only tighten, never loosen.
+
+None of the three kinds may touch facts, permissions, safety boundaries, or exact technical literals (code, paths, identifiers, numbers, etc.) — that's a hard floor regardless of kind.
+
+Mechanically, `kind` also gates composition: precedence (`src/rules/persona-runtime.md`) runs *within* a kind, not across kinds — a later `presentation` profile wins conflicts against an earlier `presentation` profile, but can't override a `conduct` or `policy` profile's requirements. Right now your active stack is just `audience:expert` (kind: `presentation`), so there's nothing else in the same kind for it to conflict with.

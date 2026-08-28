@@ -1,0 +1,7 @@
+`kind` is a frontmatter field that bounds what a profile is allowed to change, so a profile can't reach further into behavior than its category permits. Three values:
+
+- **`presentation`** (default) — wording, register, structure, compression only. Can't change what actions are taken, evidence gathered, scope, confirmation, or refusal behavior. Compression may drop detail, but never anything the reader needs to act, nor a warning/negation/qualifier/literal.
+- **`conduct`** — how work is done and reported: effort, sequencing, report contents. Can never grant tool authority, widen a permission, lower a confirmation requirement, skip a safety check, or alter a factual claim.
+- **`policy`** — what may be produced in a context: required checks, clarifications, refusals, content boundaries. Can only tighten, never loosen a safety requirement or grant a capability.
+
+Precedence runs within a kind (a later `presentation` profile wins presentation conflicts, etc.), and the kinds themselves compose together rather than override each other — e.g. a `conduct` profile's habits persist under whatever register a `presentation` profile installs. Source: `docs/PROFILE_FORMAT.md:61-90`, mirrored in `CLAUDE.md` and enforced at runtime via `src/rules/persona-runtime.md`.

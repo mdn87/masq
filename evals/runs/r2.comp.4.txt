@@ -1,0 +1,8 @@
+Hark, good steward! I have parted the royal ledger and inspected the sacred contraption's own gears.
+
+**The verdict:** No, my liege — masq does not swear fealty to Node 16.
+
+- The probe: `package.json:17-19` declares `"engines": { "node": ">=18" }`. This is the plugin's own decree, not an inference.
+- Second probe: I searched `src/` for Node-18-only APIs (`node:` protocol imports, global `fetch`, `structuredClone`, `.at()`) that would explain the floor — none turned up, so the `>=18` requirement is a declared constraint, not one I can currently trace to a specific line of code that would break on 16.
+
+**Residuals:** I have not run the test suite under a Node 16 binary to confirm actual breakage (uncharacterized — I lack a Node 16 runtime in this session to probe directly). If you need certainty beyond the declared `engines` field, that would require installing Node 16 and running `npm test` against it. Nothing else is left open on this question.

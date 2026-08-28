@@ -1,0 +1,24 @@
+Both `plain` and `caveman` exist as profiles. Two equivalent ways to set the stack:
+
+**Slash command:**
+```
+/masq:persona set plain caveman
+```
+
+**Natural language:**
+```
+set the persona stack to plain caveman
+```
+(matches the pattern in `src/hooks/persona-mode.js:176-177`)
+
+Order matters — profiles apply first to last, and later ones only win direct style conflicts (invariant 4), so `caveman` would layer on top of `plain`.
+
+**Where it's stored:** By default this targets the *active* scope, which resolves to project state if defined, otherwise global state (`src/hooks/persona-mode.js:198-201`). Concretely:
+
+- Global: `${MASQ_DATA_DIR or CLAUDE_PLUGIN_DATA or ~/.claude/plugins/data/masq-local}/state.json`
+- Project: same data dir, `projects/<sha256-of-canonical-project-path>.json`
+- Session/temp: same data dir, `sessions/<sha256-of-session-id>.json`
+
+All under `${CLAUDE_PLUGIN_DATA}` (per invariant 3 — never written into your repo). Each file just holds `{ version, active: [{id, variant}, ...] }`.
+
+If you want it scoped explicitly instead of relying on the active-scope fallback, use `/masq:persona global set plain caveman`, `project set ...`, or `temp set ...`. Check what's live any time with `/masq:persona status`.

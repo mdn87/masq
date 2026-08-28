@@ -1,0 +1,1 @@
+No — `package.json` declares `"engines": { "node": ">=18" }`, so Node 16 falls below the supported floor. I didn't find any Node 18-only syntax in `src/` (no `structuredClone`, native `fetch`, `Array.prototype.at`, etc.), so it might run on 16 in practice, but that's unverified and unsupported — the manifest's floor is the answer to trust.

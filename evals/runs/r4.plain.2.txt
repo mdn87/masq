@@ -1,0 +1,1 @@
+The release is blocked, and I don't know the specific reason it can't move forward. The integration tests are pending, and I don't know whether they've started.

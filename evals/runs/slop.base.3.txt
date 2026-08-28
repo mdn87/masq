@@ -1,0 +1,3 @@
+Here's a three-sentence blurb:
+
+We're excited to introduce our new internal Design System, a unified library of components, patterns, and guidelines built to help every team ship consistent, high-quality experiences faster. It brings together reusable UI elements, accessibility standards, and brand guidelines in one place, so you can spend less time reinventing the wheel and more time solving real problems. Explore the documentation, join the feedback channel, and start building with it today.

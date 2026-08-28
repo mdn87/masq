@@ -1,0 +1,6 @@
+**Destroys uncommitted work — staged and unstaged changes, both gone, unrecoverable.** Untracked files (new, not yet `git add`ed) survive, since reset only touches tracked files.
+
+Check first:
+- `git status` — see what's modified/staged/untracked.
+- `git diff` and `git diff --staged` — review what you'd lose.
+- If any of it matters: `git stash` or commit to a branch before reset.

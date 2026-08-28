@@ -1,0 +1,1 @@
+package.json declares `"engines": { "node": ">=18" }` — so no, Node 16 isn't supported.

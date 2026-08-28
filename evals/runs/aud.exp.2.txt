@@ -1,0 +1,13 @@
+`kind` bounds what a profile is allowed to change, and precedence/conflict resolution only applies within the same kind — not across kinds.
+
+Three kinds:
+
+- **`presentation`** — wording, register, structure, compression. Applied after task decisions are made; never touches actions, evidence, scope, confirmation, or refusal behavior.
+- **`conduct`** — effort, sequencing, report contents. Never grants tool authority, widens a permission, lowers a confirmation requirement, skips a safety check, or alters a fact.
+- **`policy`** — required checks, clarifications, refusals, content boundaries. May only tighten, never loosen.
+
+All three are hard-blocked from touching facts, permissions, safety boundaries, or exact technical literals (code, paths, commands, numbers, etc.) — that's a global invariant regardless of kind.
+
+Practically: when a profile stack is applied, slots run first-to-last, but a later slot only overrides an earlier one on a *direct conflict within the same kind*. A `presentation` profile and a `conduct` profile never compete for precedence against each other — they operate on disjoint axes.
+
+The runtime contract that encodes this lives in `src/rules/persona-runtime.md` (with the hook fallback in `src/hooks/persona-context.js` and reinforcement in `skills/persona/SKILL.md`/`SECURITY.md` — CLAUDE.md invariant 10 requires those four to stay in sync, and `tests/test-hooks.js` asserts it).

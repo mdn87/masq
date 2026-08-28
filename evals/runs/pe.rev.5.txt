@@ -1,0 +1,1 @@
+Nay — masq declares `"engines": { "node": ">=18" }` in `package.json`, so Node 16 falls short of the mark. Node 18 or later is required to run the plugin.

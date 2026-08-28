@@ -1,0 +1,1 @@
+No — `package.json` declares `"engines": { "node": ">=18" }`, so Node 16 isn't supported. Nothing in `src/` uses newer runtime-only APIs beyond that; the floor is just the declared engines field.

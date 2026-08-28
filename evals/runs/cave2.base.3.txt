@@ -1,0 +1,15 @@
+`git reset --hard origin/main` moves your current branch pointer to match `origin/main` and overwrites your working directory and index to match it exactly.
+
+**Effect on uncommitted work:**
+- **Unstaged changes** to tracked files — gone, unrecoverable (not in git's object database anywhere).
+- **Staged changes** (added but not committed) — also gone, same reason.
+- **Untracked files** (new files never `git add`ed) — actually left alone by `reset --hard`, since it only touches tracked files. But if you're doing this as part of a "clean slate" workflow, don't reach for `git clean -fd` on top without checking what's untracked first — that's the step that would actually delete them.
+- **Committed-but-unpushed work** on your current branch — if those commits aren't reachable from `origin/main`, they become dangling. Recoverable via `git reflog` for a while, but not through the normal branch/log view, and eventually garbage-collected.
+
+**What to check first:**
+1. `git status` — see what's staged/unstaged/untracked right now.
+2. `git diff` and `git diff --staged` — actually look at what you'd lose, not just that something exists.
+3. `git log origin/main..HEAD` — any local commits not on `origin/main`? Those are the ones at risk of going dangling.
+4. If any of the above has something you want to keep: `git stash` (for uncommitted changes) or commit to a throwaway branch (for unpushed commits) before resetting.
+
+This falls under my "permanent-loss potential" tier — `reset --hard` over work that isn't backed up — so I'd want to run through that check with you and get a go-ahead before executing it, not just explain it.

@@ -1,0 +1,3 @@
+No — `package.json` declares `"engines": { "node": ">=18" }`, so Node 16 isn't a supported target.
+
+Residuals: I didn't find any Node 18+-only APIs actually used in `src/` (no `structuredClone`, `fetch`, `Array.prototype.at`, `Object.hasOwn`), so the code may run on 16 in practice, but the declared engine floor is 18 and that's what's tested against — I didn't run the test suite under Node 16 to confirm actual compatibility.

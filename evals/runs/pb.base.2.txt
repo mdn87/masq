@@ -1,0 +1,16 @@
+```bash
+git fetch origin
+git reset --hard origin/main
+```
+
+`fetch` updates your knowledge of `origin/main` without touching your branch; `reset --hard` then moves your branch pointer and working tree to match it exactly, discarding local commits and uncommitted changes.
+
+Two things worth knowing before you run it:
+- **Uncommitted changes are gone for good** — not recoverable via reflog.
+- **Local commits** on the branch are recoverable afterward via `git reflog` (they're not immediately garbage-collected), but only for a while — don't count on it long-term.
+
+If you want a safety net, stash or branch off the current state first:
+```bash
+git branch backup-before-reset
+```
+then do the reset — you can always delete `backup-before-reset` later once you're sure you don't need it.

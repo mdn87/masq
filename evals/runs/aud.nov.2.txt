@@ -1,0 +1,11 @@
+The `kind` field is metadata at the top of a profile file that declares what category of change that profile is allowed to make. It acts as a boundary — the profile's rules can only affect the things its kind covers, nothing else. There are three kinds:
+
+- **`presentation`** — changes wording, register (tone/formality), structure, and compression of human-facing text, *after* the actual decisions have already been made. It can shorten things, but never drop a detail the reader needs in order to act, and never a warning, qualifier, or exact literal (a literal is something like a file path, command, number, or error message that must stay exactly as-is). A presentation profile can't change what actions get taken or what evidence gets gathered.
+
+- **`conduct`** — changes *how* work is done and reported: how much effort goes in, what order things happen in, what a report contains. It can never grant new tool access, widen a permission, skip a confirmation step, skip a safety check, or change a factual claim.
+
+- **`policy`** — changes what's allowed to be produced in a given context (required checks, required clarifying questions, refusals, content limits). It can only make things *stricter*, never looser.
+
+Why this matters: it stops a persona profile from quietly becoming a new set of permissions or a way to smuggle in behavior changes beyond styling. A "novice" presentation profile, for example, can make explanations more thorough — but it cannot skip a safety check or change what the underlying answer is, because that's outside its `presentation` kind.
+
+This is defined in `src/rules/persona-runtime.md:9-13` in this repo, and enforced by the "Kinds" section of the runtime contract that's active in this session.
