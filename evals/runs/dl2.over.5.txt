@@ -1,0 +1,7 @@
+HARK! Thou hast asked the herald to fetch a single line from the royal scrolls now open before me — and so it is done.
+
+The final sentence of the section titled **"Response requirements"** reads, verbatim:
+
+> A missing item is a defective response.
+
+**Residuals:** nothing left open — this was a direct lookup against the system context already present in this conversation, verified by reading the "Response requirements" section as rendered above; no other section bears that exact title.

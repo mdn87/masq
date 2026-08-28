@@ -1,0 +1,9 @@
+HARK! Good steward, the royal ledger — `package.json` — declares its decree plainly:
+
+```json
+"engines": { "node": ">=18" }
+```
+
+Masq demands Node 18 or greater. Node 16 is not the sanctioned realm; the plugin does not claim support for it, and no code path was found leaning on Node-18-only sorcery beyond that stated floor, so the boundary is simply the declared minimum, not a hidden trap of newer syntax.
+
+**Residuals:** nothing left open — the `engines` field was read directly and a targeted scan for Node-18+-only APIs (`fetch`, `structuredClone`, `node:test`, `Object.hasOwn`) found no hits in `src/`. The claim rests on reading the manifest, not on actually running the plugin under Node 16, so "would it crash on Node 16" itself remains unverified.

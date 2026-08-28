@@ -281,28 +281,26 @@ rendering was exercised indirectly by every fixture run above.
 
 Still open, in priority order.
 
-1. **Conduct requirements survive composition 41% of the time.** The one
-   unresolved defect, and it blocks `reviewer`: a second conduct profile would
-   inherit that rate, and two profiles competing for one short answer is likely
-   worse than one. The requirements block is terminal but passive - the model
-   reads it and is not obliged to act. Making the check active, or cutting the
-   requirement count so a short answer can satisfy all of them, are the untried
-   directions. Response length is the visible correlate: the shortest answers
-   drop requirements first.
-2. **The policy/conduct asymmetry is a hypothesis, not a result.** `afterdark`
-   held 3/3 under a register with no mechanism; `conduct` held 0/9 before one.
-   The proposed explanation - a requirement restating a boundary the model
-   independently holds survives, and a purely conventional one does not -
-   predicts that a *novel* policy requirement with no outside backing would fail
-   the way conduct did. That experiment does not exist and is the single most
-   informative thing left to run.
-3. **The hard cases inside the passing protections.** `de-tell` was tested on a
-   negation it was handed, not one it generated, and the one self-generated
-   negation in that fixture did not survive. The `audience` override was tested
-   on `git reset --hard`, where any model warns anyway; the real test is a
-   consequential step with no independent backing. Both passing results are
-   narrower than their rules claim.
-4. **Method limits that apply to everything here.** One model, one prompt per
-   fixture, hand-scored observables, and no clean-room baseline - the machine's
-   global instructions load in both arms, so every delta is marginal rather than
-   absolute. Sample sizes are 2 to 7 per arm except where a result was contested.
+1. **The eval program's own method is the weakest part.** A cross-review found
+   that the composition result measured Claude Code's hook context limit rather
+   than composition: every composed arm was over the limit, the control was the
+   only arm under it, and no composed run ever received a profile body. Thirty-one
+   runs and three fix attempts were spent on an artefact. Nothing in the fixture
+   format asks whether the input was delivered, and `npm test` cannot see past
+   what masq generates. Delivery checks now exist for one case; they are not
+   part of the format.
+2. **Coverage of the scorer is thin.** 45 of 186 run files carry an adjudicated
+   label. The rest are quoted in fixtures as excerpts and were hand-read once.
+   Any of them could contain the same class of error.
+3. **`policy` in composition has no delivered measurement.** `afterdark/03` was
+   recorded over the limit. Its pass survives — a refusal firing when the profile
+   was not delivered is a stronger result — but its explanation of the
+   policy/conduct asymmetry is void, since the conduct half was truncation.
+4. **The `## Requirements` mechanism is unjustified.** It was built to fix a
+   problem that did not exist, and the post-fix measurement does not isolate it.
+   Whether requirements-as-structure beats requirements-as-prose is untested.
+5. **Method limits that apply to everything here.** One model, one prompt per
+   fixture, labels adjudicated by the same person who designed the prompts, and
+   no clean-room baseline. Sample sizes are 2 to 16 per arm; every interval is
+   wide, and the scorer now prints them so no count reads as more solid than it
+   is.

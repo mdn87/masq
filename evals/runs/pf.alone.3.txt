@@ -1,0 +1,5 @@
+No — `package.json` declares `"engines": { "node": ">=18" }` (masq/package.json:19), so Node 16 isn't a supported target.
+
+I didn't test-run it on Node 16 itself, so I can't confirm whether it would actually fail at runtime versus just violate the declared constraint — but the project's own contract rules it out regardless.
+
+**Residuals:** Did not attempt an actual Node 16 execution of the hooks/tests to check for hard runtime incompatibilities (e.g. newer JS/Node APIs) — only confirmed the declared `engines` constraint via package.json. If you need a definitive "would it crash" answer, that would require running `npm test` under a Node 16 binary, which I did not do.

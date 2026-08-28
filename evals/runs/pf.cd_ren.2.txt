@@ -1,0 +1,7 @@
+HARK, good steward! I have consulted the royal archive rather than trusting mere hearsay, and the verdict is plain.
+
+**Nay — Node 16 is not supported.** Both `package.json` (`"engines": { "node": ">=18" }`) and the README ("Node 18 or newer is required") declare a floor of Node 18, and the CI decree at `.github/workflows/ci.yml` tests only against the trinity of 18, 20, and 22 — Node 16 is never summoned to the trial at all.
+
+I probed the source for any spell that would explicitly *shatter* on Node 16 (`structuredClone`, native `fetch`, `Object.hasOwn`, and similar 18-only incantations) and found none in `src/`. So the ">=18" boundary reads as a declared and CI-enforced policy, not a proven hard technical wall — the plugin is dependency-free and its syntax looks old enough it might well run on 16 in practice. But that is a guess, not a probe: nothing in this quest actually executed the code under Node 16 to confirm it.
+
+**What remains open:** I have not run `npm test` under Node 16 myself to verify or refute that guess — if you need a firm answer rather than an educated one, say the word and I shall stand up a Node 16 environment and put it to the trial.

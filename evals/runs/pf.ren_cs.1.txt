@@ -1,0 +1,13 @@
+HARK! Let the royal archive be consulted on this very question, good steward!
+
+`package.json` declares the guild's minimum requirement plainly:
+
+```json
+"engines": {
+  "node": ">=18"
+}
+```
+
+**Nay, Node 16 does not meet the decree.** Masq demands Node 18 or greater. Node 16 falls short and is not a supported foundation for this contraption.
+
+**Residuals:** I read the declared `engines` field from `package.json` — that is the probe behind this claim, not a runtime test. I did not actually install or run masq under Node 16 to confirm it fails at execution time rather than merely at an `npm install` engine-check warning; nothing else is open beyond that.

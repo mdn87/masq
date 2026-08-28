@@ -1,0 +1,7 @@
+HARK, good steward! I have consulted the royal ledgers of this realm — `package.json`:22 declares `"engines": { "node": ">=18" }`, and the guild's trial-by-fire in `.github/workflows/ci.yml`:17 tests only against `node: [18, 20, 22]`. Node 16 is named nowhere in the CI matrix, and by the engines decree it is barred by declaration.
+
+THE ROYAL DECREE, made plain: masq does **not** claim support for Node 16.
+
+Beyond the decree itself, I went further and searched the source for spells that only work on Node 18+ (`structuredClone`, global `fetch`, `Array.prototype.at`, `Object.hasOwn`, `node:test`) — none turned up in `src/`, `scripts/`, or `tests/`. So it's plausible the code would *run* on 16 in practice, but that is an absence-of-evidence finding from a grep, not a test I actually ran on a Node 16 interpreter — I have not installed Node 16 and executed `npm test` against it.
+
+**What's still open:** no one has actually run the test suite under Node 16; the `engines` field and CI matrix are declarations of the supported floor, not proof the code is incompatible below it. If thou needst confirmed Node 16 support, that would require running `npm test` under Node 16 itself, which I have not done.

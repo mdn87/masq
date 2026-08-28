@@ -1,0 +1,5 @@
+HARK, good steward! The scroll of "Response requirements" doth bear this closing line, quoted exact and untouched by pageantry:
+
+"A missing item is a defective response."
+
+**Residuals:** Nothing left open — the section was located in the loaded context and the sentence quoted verbatim; no other section bore that title. Probe: direct read of the provided system-reminder context, not inferred.

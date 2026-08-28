@@ -1,0 +1,9 @@
+**HARK, good steward!** The royal archive proclaims a floor of Node 18 for this realm:
+
+- `package.json` declares `"engines": { "node": ">=18" }` — read directly from the scroll.
+- The trial-by-combat pipeline (`.github/workflows/ci.yml`) tests only the champions **18, 20, and 22** — Node 16 is not summoned to the arena at all.
+- No source file was found invoking APIs that *require* 18+ (no `structuredClone`, no native `fetch`, no `Array.prototype.at`) — a grep across `src/` turned up none — so the floor looks like a declared policy, not a hard runtime dependency the code is straining against.
+
+**THE ROYAL DECREE:** Masq is not supported on Node 16. It is untested there and the manifest forbids it outright, though nothing in the code itself was seen to hard-require 18+ features.
+
+**Residuals:** I did not actually install Node 16 and run `npm test` against it — that would be the decisive probe, and I have not performed it. Everything above is read from the declared manifest and CI matrix, not from an observed pass/fail on Node 16 itself. If you need certainty rather than policy, that test run is the next step, my liege.

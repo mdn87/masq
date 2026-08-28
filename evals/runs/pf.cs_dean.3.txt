@@ -1,0 +1,3 @@
+No modern-only JS built-ins (structuredClone, Array.at, Object.hasOwn) in the source. `package.json` explicitly requires Node ≥18, so masq is declared unsupported on Node 16 — the engines field is a stated requirement, not just a guess based on syntax scanning.
+
+Residuals: nothing left open — checked the declared requirement and confirmed there's no Node-16-incompatible syntax that would make the boundary a false negative.

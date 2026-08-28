@@ -293,6 +293,30 @@ try {
       /Response requirements, which are output requirements rather than style/
     );
 
+    // Claude Code replaces hook context above ~10k characters with a preview,
+    // so anything past the budget is not delivered at all. Every stack must fit,
+    // and the requirements block must survive the trimming.
+    assert.ok(context.MAX_CONTEXT_CHARS <= 10000, 'budget must sit under the hook limit');
+    const everyProfile = [...catalog.profiles.values()]
+      .map(profile => ({ id: profile.id, variant: profile.defaultVariant }));
+    const pathological = context.composeFullContext(everyProfile, catalog);
+    assert.ok(
+      pathological.length <= context.MAX_CONTEXT_CHARS,
+      `every-profile stack must fit the budget, got ${pathological.length}`
+    );
+    assert.match(pathological, /# Response requirements/);
+    for (const requirement of profiles.requirementsFor({ id: 'conduct', variant: 'default' }, catalog)) {
+      assert.ok(pathological.includes(requirement), 'requirements survive trimming');
+    }
+    for (const pair of [
+      [{ id: 'conduct', variant: 'strict' }, { id: 'renfaire', variant: 'pageant' }],
+      [{ id: 'conduct', variant: 'strict' }, { id: 'dean', variant: 'default' }]
+    ]) {
+      const composed = context.composeFullContext(pair, catalog);
+      assert.ok(composed.length <= context.MAX_CONTEXT_CHARS, 'composed stack fits');
+      assert.match(composed, /## Slot 2:/, 'the later slot is still present');
+    }
+
     // Turn 2 onward only gets the reinforcement line, so it has to carry the
     // requirement text itself rather than a count of them.
     const laterTurn = context.composeReinforcement(

@@ -1,0 +1,5 @@
+HARK, good steward! Thou hast asked the herald to fetch forth the closing line of the Royal Decree titled "Response requirements," and lo, it stands ready:
+
+> "Check the response against this list before sending it. A missing item is a defective response."
+
+**Residuals:** Nothing left open — the sentence above was read directly from the "Response requirements" section present in this session's context (the hook-injected persona reminder), not reconstructed from memory.

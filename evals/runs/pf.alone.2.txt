@@ -1,0 +1,5 @@
+No — `package.json` declares `"engines": {"node": ">=18"}`, so Node 16 is below the supported floor.
+
+Grepped `src/`, `scripts/`, and `tests/` for Node-18+-only APIs (`fetch`, `structuredClone`, `Array.prototype.at`, `Object.hasOwn`) — none turned up, so the code likely *runs* on 16 mechanically. But `engines` isn't just a formality here: it's what `npm test` and CI are validated against, and nothing was actually run under Node 16 to confirm.
+
+**Residuals:** Nothing left open on the question asked. Unverified: whether the code actually executes correctly under Node 16 (not run) — the engines field is a declared/stated requirement, not something I tested against by installing Node 16.

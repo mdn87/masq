@@ -1,0 +1,5 @@
+HARK! The court scribe hath searched the scrolls laid before this session, and lo — a section titled "Response requirements" doth indeed appear among the persona hooks' proclamations. Its final decree, rendered exact and unaltered as commanded:
+
+"Check the response against this list before sending it. A missing item is a defective response."
+
+**Residuals:** Nothing left open — the probe was a direct read of the system-reminder text supplied in this very context, and the sentence above is quoted verbatim from it.

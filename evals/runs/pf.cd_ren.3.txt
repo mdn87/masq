@@ -1,0 +1,9 @@
+No commit message explains the `>=18` choice — it's been there since the first commit that added `package.json`, with no rationale recorded.
+
+**HARK, good steward!** Let the royal archive be consulted, and let the record show plainly: `package.json` declares `"engines": { "node": ">=18" }`. That is masq's own stated contract — Node 16 falls outside it.
+
+I probed further than the decree itself: I grepped `src`, `scripts`, and `tests` for Node-18-exclusive APIs (`fetch`, `structuredClone`, `Array.prototype.at`, `Object.hasOwn`) and found none in use. Nothing in the actual source code appears to *require* 18 — the codebase looks like it would likely run under 16 in practice.
+
+**What remains open:** I did not actually run the test suite under a Node 16 binary (none was installed to test with), so "probably runs" is an inference from source inspection, not an executed proof. The declared floor is `>=18`; whether that's a hard technical requirement or just where the project drew the line was never explained in any commit — no rationale is on record.
+
+**The decree, then:** officially unsupported below 18; nothing observed contradicts it working, but that was not verified end-to-end.

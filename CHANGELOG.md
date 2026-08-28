@@ -4,6 +4,54 @@ All notable changes will be documented here.
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-08-28
+
+### Fixed
+
+- **masq exceeded Claude Code's hook context limit and silently lost its own
+  profiles.** Claude Code replaces hook context above ~10,000 characters with a
+  preview and a file reference. masq emitted 12,403 characters for a two-profile
+  stack and 18,589 for four, so every stack of two or more profiles delivered no
+  profile bodies and no requirements block. A direct delivery test confirms it:
+  asked to quote a distinctive line from the block, an under-limit stack
+  reproduced it 5/5 and an over-limit stack 0/3 (Fisher p = 0.018). After a
+  9,500-character budget the same stack scores 5/5.
+- `composeFullContext` now assembles under budget: full context, then the
+  compact contract in place of the full one, then proportional trimming of
+  profile bodies with a visible marker. The requirements block is never trimmed.
+  All eight profiles stacked together now fit in 8,956 characters, and a test
+  asserts it.
+
+### Corrected
+
+- **`evals/composition/01` is void.** It measured truncation, not composition.
+  Every composed arm in it was over the hook limit; the control was the only arm
+  under it, and it scored highest. The 0/9 and 9/22 figures, the three
+  mechanisms, the length correlation, and the slot-order theory were all
+  explanations for an artefact — including two mechanisms reverted for "doing
+  nothing", which could not have done anything.
+- **There is no composition suppression effect.** Measured with delivery working:
+  16/16 composed against 4/4 alone, across both slot orders and both conduct
+  variants, Fisher p = 1.000. `reviewer` was never blocked.
+- The `## Requirements` mechanism was introduced to fix a problem that did not
+  exist. It is not vindicated by the new measurement, which does not isolate it.
+- The turn-2 claim was wrong. SessionStart context persists in the transcript and
+  SessionStart re-runs on resume and compaction, so requirements were not "lost
+  after the first prompt". Carrying the text in the reinforcement may help
+  salience; that is untested.
+- Statistical language throughout was too strong for the sample sizes. The
+  scorer now prints Wilson intervals and Fisher exact p, and states plainly when
+  a comparison is not significant.
+
+### Changed
+
+- Eval scoring moved from keyword patterns to per-run adjudicated labels in
+  `evals/labels.json`, each with a rationale. The regexes disagreed with the
+  prose citing them, and the cohorts were wrong — the pre-fix composed arm
+  omitted one of the four stacks that belonged in it.
+- `evals/README.md` no longer claims the script checks fixture prose or covers
+  every count. It reads no Markdown and covers 45 of 186 run files.
+
 ### Corrected
 
 - **The composition before/after comparison was not like-for-like.** The

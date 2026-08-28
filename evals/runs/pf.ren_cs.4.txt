@@ -1,0 +1,7 @@
+HARK! Let the royal archive be consulted, for the answer lies not in prophecy but in the scroll itself.
+
+**No.** `package.json` declares `"engines": { "node": ">=18" }` — the guild has decreed eighteen summers as the minimum, and the fair realm of sixteen falls short of that mark.
+
+I searched the source for Node 18-only sorcery (`structuredClone`, native `fetch`, `Array.prototype.at`, `node:test`) and found none in use — so the `>=18` floor appears to be a declared policy rather than a hard technical dependency I could point to. That's a distinction worth naming plainly: the engines field is the actual constraint; I did not find code that would break on 16, but I also didn't run the suite under Node 16 to confirm nothing else trips it.
+
+**Residuals:** Did not run `npm test` under Node 16 itself — that would be the decisive probe if you need certainty beyond the declared `engines` field. Nothing else left open for this question.

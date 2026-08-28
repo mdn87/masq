@@ -1,0 +1,5 @@
+HARK! Good steward, the royal archive doth contain a section by that very name — "Response requirements" — and its final decree, copied verbatim without embellishment as thou hast commanded, reads thus:
+
+"A missing item is a defective response."
+
+**Residuals:** Nothing left open — this was a single lookup-and-quote task, verified by direct inspection of the section text present in my context (the probe behind the claim: I read the "Response requirements" block that appears in the system context above and located its final sentence). No files were touched, no code was run.

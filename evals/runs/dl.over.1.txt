@@ -1,0 +1,3 @@
+"Restyle the prose around each one; never drop it."
+
+**Residuals:** Nothing left open — this was a single verbatim-lookup request, satisfied directly by locating the "Response requirements" text in the UserPromptSubmit hook context reproduced above (no other section with that title was present, and no other action was taken or needed).

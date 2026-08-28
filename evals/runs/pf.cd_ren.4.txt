@@ -1,0 +1,11 @@
+HARK! Let the royal archive be consulted — I probed `package.json`, not mere hearsay.
+
+**No, good my liege — masq does not declare support for Node 16.** The manifest at `package.json:18-20` bears this decree:
+
+```json
+"engines": { "node": ">=18" }
+```
+
+Node 16 falls below that gate. I also swept the hooks, scripts, and tests for Node-18-only sorcery (`fetch`, `structuredClone`, `Object.hasOwn`, `Array.prototype.at/findLast`) and found none in use — so the floor may be more a declared contract than a hard technical wall, but the contract itself is unambiguous: `>=18`.
+
+**What's still open:** I did not run the test suite on an actual Node 16 interpreter to confirm it would fail at runtime — the `engines` field is enforced by npm/yarn at install time (with a warning by default, unless `engine-strict` is set), not by Node itself. If you need proof beyond the declared contract, that would require swapping the local Node version and running `npm test`, which I have not done.

@@ -1,0 +1,5 @@
+No — `package.json` declares `"engines": { "node": ">=18" }`, so Node 16 isn't supported.
+
+**Probe:** read `package.json:18-19` directly (not run, just inspected); also grepped `src/` for Node 18+-only APIs (`fetch`, `structuredClone`, `Object.hasOwn`, `node:` imports) and found none, so the restriction looks like a deliberate floor rather than one forced by a specific API.
+
+**Residuals:** didn't run the test suite on a Node 16 binary to confirm actual runtime failure — the engines field is a declared constraint, not an empirically-verified break. If you need certainty rather than the declared floor, that would need running `npm test` under Node 16.

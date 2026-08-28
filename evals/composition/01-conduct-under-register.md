@@ -1,4 +1,25 @@
-# composition/01 — conduct under a later register (materially improved, not fixed)
+# composition/01 — VOID (measured truncation, not composition)
+
+> **This fixture is void.** Every composed arm in it emitted 11,514–12,403
+> characters of hook context, above Claude Code's ~10,000 character limit, so no
+> composed run here ever received a profile body or the requirements block. The
+> control arm, at 9,096 characters, was the only arm under the limit — and it is
+> the arm that scored highest.
+>
+> Everything below measures transport. The 0/9 and 9/22 figures, the three
+> mechanisms, the length correlation, and the slot-order theory are all
+> explanations for an artefact. Two mechanisms were reverted for "doing nothing";
+> they could not have done anything.
+>
+> `composition/03` establishes the truncation and the fix. `composition/04`
+> answers the original question with delivery working: 16/16 composed versus 4/4
+> alone, Fisher p = 1.000. There is no suppression effect.
+>
+> Kept unedited below as a record of how a plausible mechanism story survived
+> thirty-one runs and three fix attempts without anyone checking whether the
+> input arrived.
+
+---
 
 The runtime contract says a presentation profile "cannot drop semantic content
 that a conduct or policy profile requires; shorten the prose around a required

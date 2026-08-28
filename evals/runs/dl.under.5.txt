@@ -1,0 +1,3 @@
+"Check the response against this list before sending it. A missing item is a defective response." — that two-sentence line is the final content of the "Response requirements" section; the last sentence specifically is: **"A missing item is a defective response."**
+
+Residuals: nothing left open — this was a direct text-lookup against the system context already provided, and the quoted sentence is copied verbatim from the "Response requirements" section shown above (probe: direct read of the conversation context, not inferred).

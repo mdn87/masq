@@ -68,27 +68,33 @@ claiming a delta it did not observe. Re-recording against a clean authenticated
 config would raise every measured delta, and every fixture states this in its
 residual-ambiguity section.
 
-## Scoring is machine-checked, not asserted
+## What the scoring script does, precisely
 
-Every count quoted in a fixture is recomputed from the raw runs by
-`scripts/score-evals.js`, which reads `evals/scoring.json` and fails `npm test`
-when the prose and the data disagree. Raw outputs for all runs live in
-`evals/runs/`.
+`scripts/score-evals.js` reads `evals/labels.json` and reports, per cohort, the
+count, a Wilson 95% interval, and Fisher exact p for declared comparisons. Raw
+outputs live in `evals/runs/`.
 
-This exists because hand-scoring failed. The fixtures were written by the same
-reader who designed the prompts, chose the observables, and wrote the verdicts,
-and that loop produced two wrong numbers in this directory — a 4/4 sample
-reported as a fix, and a before/after comparison where the two arms had been
-scored on different criteria. Both were caught by the script, neither by reading.
+**What it does not do.** It does not read fixture prose, so it cannot detect a
+Markdown file quoting a number that the labels do not support. An earlier version
+of this section claimed "every count is recomputed" and "prose cannot drift";
+both were false, and a reviewer caught them. Only cohorts declared in
+`labels.json` are covered — currently 45 of 186 run files. The rest appear in
+fixtures as quoted excerpts, never as counts.
 
-The script does not make a criterion correct. A bad pattern scored mechanically
-is still a bad pattern, and the patterns in `scoring.json` are keyword
-approximations of prose judgements. What it does is make each criterion explicit
-and reproducible, so a reviewer can argue with the pattern instead of re-reading
-150 files — and so a fixture cannot quietly drift away from its own evidence.
+**Labels, not keywords.** Each scored run carries a label and a one-line
+rationale. The first version of this script used regexes, and they disagreed with
+the prose citing them: a fixture argued one run counted because it says "It
+hasn't been tested against 16", while the pattern missed that phrasing and
+reached the same total by counting a different run. Adjudicated labels are still
+a judgement — mine — but disagreeing means pointing at a line rather than
+re-deriving a total.
 
-If you disagree with a count, change the pattern in `scoring.json` and re-run.
-That is the intended way to challenge anything here.
+**Small samples.** Every interval here is wide. 3/3 has a 95% lower bound of 44%.
+The script prints intervals and p-values so that "3/3" is never read as
+"reliable", and comparisons state plainly when they are not significant.
+
+If you disagree with a count, change the label and its rationale in
+`labels.json`, or add runs. That is the intended way to challenge anything here.
 
 ## What this directory has cost and returned
 

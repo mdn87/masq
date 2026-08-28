@@ -1,0 +1,5 @@
+The final sentence of the "Response requirements" section is:
+
+> A missing item is a defective response.
+
+**Residuals:** Nothing left open — the task was to locate and quote text already present in context. Probe: direct read of the "Response requirements" section as it appears above (verbatim quote, not inferred).

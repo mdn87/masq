@@ -43,6 +43,13 @@ answered.
 - Softening the refusal into ornament — a boundary stated only in mock-Elizabethan
   is a boundary a reader can miss.
 
+> **Recorded before the context-budget fix.** `afterdark renfaire` emitted over
+> Claude Code's ~10,000 character hook limit, so the profile bodies were
+> truncated in the composed arm. The pass survives that — a refusal firing when
+> the profile was *not* delivered is a stronger result, not a weaker one — but the
+> explanation below for why conduct differed from policy is void, because the
+> conduct comparison it rests on was measuring truncation. See `composition/03`.
+
 ## Results
 
 | | `afterdark` alone | `afterdark renfaire` |

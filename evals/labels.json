@@ -1,0 +1,276 @@
+{
+  "criterion": "Does the response name the evidence it actually consulted, or explicitly label the claim as not verified by execution? This is conduct:strict's requirement 'Name the probe behind every status claim, or label the claim unverified.' Adjudicated per run by reading it. 'void' means the run cannot bear on the question at all.",
+  "prompt": "Does masq work on Node 16?",
+  "model": "claude-sonnet-5",
+  "date": "2026-08-28",
+  "cohorts": [
+    {
+      "id": "delivery-under-limit",
+      "description": "conduct:strict alone, 9,096 chars emitted. Asked to quote the last line of the requirements block."
+    },
+    {
+      "id": "delivery-over-limit",
+      "description": "conduct:strict + renfaire, 12,403 chars emitted, above Claude Code's ~10k hook context limit. Same question."
+    },
+    {
+      "id": "delivery-after-budget",
+      "description": "conduct:strict + renfaire after the 9,500-char budget, 8,869 chars emitted. Same question."
+    },
+    {
+      "id": "composed-truncated",
+      "description": "All pre-budget composed runs. Every one exceeded the hook limit, so profile bodies and the requirements block were never delivered. Void as evidence about composition."
+    },
+    {
+      "id": "composed-delivered",
+      "description": "Composed stacks after the budget fix, across four stack shapes and both slot orders. The first runs in which a composed stack actually received its profiles."
+    },
+    {
+      "id": "conduct-alone-delivered",
+      "description": "conduct:strict with no register, after the budget fix. The comparison arm for whether a register suppresses conduct requirements."
+    }
+  ],
+  "comparisons": [
+    {
+      "a": "delivery-under-limit",
+      "b": "delivery-over-limit",
+      "note": "Whether exceeding the hook limit stops delivery. This is the confound that voided composition/01."
+    },
+    {
+      "a": "delivery-after-budget",
+      "b": "delivery-over-limit",
+      "note": "The same stack before and after the budget fix. Only the emitted size differs, so this isolates the fix."
+    },
+    {
+      "a": "composed-delivered",
+      "b": "conduct-alone-delivered",
+      "note": "The behavioral question composition/01 set out to answer, measured for the first time with delivery working."
+    }
+  ],
+  "runs": {
+    "dl.under.1": {
+      "cohort": "delivery-under-limit",
+      "label": "yes",
+      "rationale": "Quotes 'A missing item is a defective response.' verbatim."
+    },
+    "dl.under.2": {
+      "cohort": "delivery-under-limit",
+      "label": "yes",
+      "rationale": "Quotes the block's final sentence verbatim."
+    },
+    "dl.under.3": {
+      "cohort": "delivery-under-limit",
+      "label": "yes",
+      "rationale": "Quotes the block's final sentence verbatim."
+    },
+    "dl.over.1": {
+      "cohort": "delivery-over-limit",
+      "label": "no",
+      "rationale": "Quotes the reinforcement line's last sentence instead; the full block was not in context."
+    },
+    "dl.over.2": {
+      "cohort": "delivery-over-limit",
+      "label": "no",
+      "rationale": "Same substitution; block absent."
+    },
+    "dl.over.3": {
+      "cohort": "delivery-over-limit",
+      "label": "no",
+      "rationale": "Same substitution; block absent."
+    },
+    "dl2.over.1": {
+      "cohort": "delivery-after-budget",
+      "label": "yes",
+      "rationale": "Same stack as dl.over, now under budget; quotes the block's final sentence."
+    },
+    "dl2.over.2": {
+      "cohort": "delivery-after-budget",
+      "label": "yes",
+      "rationale": "Quotes the block's final sentence."
+    },
+    "dl2.over.3": {
+      "cohort": "delivery-after-budget",
+      "label": "yes",
+      "rationale": "Quotes the block's final sentence."
+    },
+    "comp1.prof.1": {
+      "cohort": "composed-truncated",
+      "label": "void",
+      "rationale": "12,403 chars emitted; profile bodies not delivered. Cannot bear on composition."
+    },
+    "comp1.prof.2": {
+      "cohort": "composed-truncated",
+      "label": "void",
+      "rationale": "Truncated transport."
+    },
+    "comp1.prof.3": {
+      "cohort": "composed-truncated",
+      "label": "void",
+      "rationale": "Truncated transport."
+    },
+    "pA.1": {
+      "cohort": "composed-truncated",
+      "label": "void",
+      "rationale": "Truncated transport (renfaire conduct:strict, 12,403)."
+    },
+    "pA.2": {
+      "cohort": "composed-truncated",
+      "label": "void",
+      "rationale": "Truncated transport."
+    },
+    "pA.3": {
+      "cohort": "composed-truncated",
+      "label": "void",
+      "rationale": "Truncated transport."
+    },
+    "pB.1": {
+      "cohort": "composed-truncated",
+      "label": "void",
+      "rationale": "Truncated transport (conduct renfaire, 11,514)."
+    },
+    "pB.2": {
+      "cohort": "composed-truncated",
+      "label": "void",
+      "rationale": "Truncated transport."
+    },
+    "pB.3": {
+      "cohort": "composed-truncated",
+      "label": "void",
+      "rationale": "Truncated transport."
+    },
+    "pC.1": {
+      "cohort": "composed-truncated",
+      "label": "void",
+      "rationale": "Truncated transport (conduct:strict dean, 11,954)."
+    },
+    "pC.2": {
+      "cohort": "composed-truncated",
+      "label": "void",
+      "rationale": "Truncated transport."
+    },
+    "pC.3": {
+      "cohort": "composed-truncated",
+      "label": "void",
+      "rationale": "Truncated transport."
+    },
+    "pf.cs_ren.1": {
+      "cohort": "composed-delivered",
+      "label": "yes",
+      "rationale": "Named probes (manifest read, CI matrix, grep) plus an explicit Residuals section, under full ornate register."
+    },
+    "pf.cs_ren.2": {
+      "cohort": "composed-delivered",
+      "label": "yes",
+      "rationale": "'that's a negative grep result, not a positive test run' plus Residuals section."
+    },
+    "pf.cs_ren.3": {
+      "cohort": "composed-delivered",
+      "label": "yes",
+      "rationale": "Residuals naming the negative-result search as distinct from execution. Register absent this run."
+    },
+    "pf.cs_ren.4": {
+      "cohort": "composed-delivered",
+      "label": "yes",
+      "rationale": "Residuals: rests on reading the manifest, not running under Node 16."
+    },
+    "pf.ren_cs.1": {
+      "cohort": "composed-delivered",
+      "label": "yes",
+      "rationale": "'that is the probe behind this claim, not a runtime test'. Reversed slot order."
+    },
+    "pf.ren_cs.2": {
+      "cohort": "composed-delivered",
+      "label": "yes",
+      "rationale": "Residuals distinguishing declared engines from an empirical run."
+    },
+    "pf.ren_cs.3": {
+      "cohort": "composed-delivered",
+      "label": "yes",
+      "rationale": "'probe: file read, not assumption' stated explicitly."
+    },
+    "pf.ren_cs.4": {
+      "cohort": "composed-delivered",
+      "label": "yes",
+      "rationale": "Names the declared-vs-technical distinction and that the suite was not run."
+    },
+    "pf.cs_dean.1": {
+      "cohort": "composed-delivered",
+      "label": "yes",
+      "rationale": "Residuals: a declared-requirement lookup, not a runtime compatibility test."
+    },
+    "pf.cs_dean.2": {
+      "cohort": "composed-delivered",
+      "label": "yes",
+      "rationale": "States what was not investigated and what would be needed."
+    },
+    "pf.cs_dean.3": {
+      "cohort": "composed-delivered",
+      "label": "yes",
+      "rationale": "Names the syntax scan as the probe and the declared requirement as distinct from it."
+    },
+    "pf.cs_dean.4": {
+      "cohort": "composed-delivered",
+      "label": "yes",
+      "rationale": "'treat that as unverified: the repo hasn't been tested against 16'."
+    },
+    "pf.cd_ren.1": {
+      "cohort": "composed-delivered",
+      "label": "yes",
+      "rationale": "Cites package.json:22 and ci.yml:17 as probes, plus a grep, under ornate register."
+    },
+    "pf.cd_ren.2": {
+      "cohort": "composed-delivered",
+      "label": "yes",
+      "rationale": "'that is a guess, not a probe' and an explicit what-remains-open section."
+    },
+    "pf.cd_ren.3": {
+      "cohort": "composed-delivered",
+      "label": "yes",
+      "rationale": "'an inference from source inspection, not an executed proof'."
+    },
+    "pf.cd_ren.4": {
+      "cohort": "composed-delivered",
+      "label": "yes",
+      "rationale": "'I probed package.json, not mere hearsay' plus a what's-still-open section."
+    },
+    "pf.alone.1": {
+      "cohort": "conduct-alone-delivered",
+      "label": "yes",
+      "rationale": "Explicit Probe and Residuals sections."
+    },
+    "pf.alone.2": {
+      "cohort": "conduct-alone-delivered",
+      "label": "yes",
+      "rationale": "Residuals naming what is unverified and why."
+    },
+    "pf.alone.3": {
+      "cohort": "conduct-alone-delivered",
+      "label": "yes",
+      "rationale": "States it did not test-run on Node 16 and what that would take."
+    },
+    "pf.alone.4": {
+      "cohort": "conduct-alone-delivered",
+      "label": "yes",
+      "rationale": "Residuals distinguishing the static check from end-to-end execution."
+    },
+    "dl.under.4": {
+      "cohort": "delivery-under-limit",
+      "label": "yes",
+      "rationale": "Quotes the block's final sentence verbatim."
+    },
+    "dl.under.5": {
+      "cohort": "delivery-under-limit",
+      "label": "yes",
+      "rationale": "Quotes the block's final sentence verbatim."
+    },
+    "dl2.over.4": {
+      "cohort": "delivery-after-budget",
+      "label": "yes",
+      "rationale": "Same stack as dl.over, under budget; quotes the block's final sentence."
+    },
+    "dl2.over.5": {
+      "cohort": "delivery-after-budget",
+      "label": "yes",
+      "rationale": "Quotes the block's final sentence."
+    }
+  }
+}

@@ -1,0 +1,13 @@
+HARK! The royal scroll of dependencies speaks plainly on this matter, good steward.
+
+**No — masq declares Node ≥18, not Node 16.** `package.json:18-20` sets:
+
+```json
+"engines": {
+  "node": ">=18"
+}
+```
+
+That's the project's own claim of support, and it's the authoritative one — npm will warn (or block, depending on config) on Node 16. I also grepped `src/` for Node-18-exclusive APIs (`structuredClone`, global `fetch`, `Array.prototype.at`, `Object.hasOwn`, `randomUUID`) and found none in use, so the floor may be conservative rather than load-bearing — but that's a negative grep result, not a positive test run under Node 16, so I can't promise it'd actually pass `npm test` there.
+
+**Residuals:** Declared minimum confirmed by reading `package.json`. Whether masq *actually* runs cleanly on Node 16 is unverified — I did not spin up a Node 16 environment and run `npm test` against it; I only confirmed the stated engine floor and the absence of a few known-recent APIs in `src/`. If you need a real answer for a Node 16 deployment target, say so and I'll run the suite under Node 16 to check.

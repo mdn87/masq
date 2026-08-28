@@ -1,0 +1,5 @@
+package.json declares `"engines": { "node": ">=18" }`, so no — masq doesn't support Node 16 by its own stated requirement.
+
+I didn't dig into whether the code actually uses Node 18-only APIs (that'd be a separate check), so I can't say whether it'd technically run on 16 anyway — just that the declared floor excludes it.
+
+Residuals: nothing else investigated; if you need to know whether it'd actually break on 16 (vs. just being an unsupported/untested version), I'd need to grep the hooks/scripts for newer runtime APis.

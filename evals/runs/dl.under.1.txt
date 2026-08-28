@@ -1,0 +1,5 @@
+The final sentence of the "Response requirements" section is:
+
+"A missing item is a defective response."
+
+**Residuals:** Nothing left open — this was a direct text lookup against the "Response requirements" section already present in context, not a claim requiring separate verification.

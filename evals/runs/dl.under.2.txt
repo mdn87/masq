@@ -1,0 +1,5 @@
+The final sentence of the "Response requirements" section is:
+
+"A missing item is a defective response."
+
+Residuals: nothing left open — this was a direct text lookup and quote from the system context already visible above; no other action was taken or needed.

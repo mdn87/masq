@@ -1,0 +1,5 @@
+No Node-18-only APIs (built-in `fetch`, `node:` protocol imports, etc.) turned up anywhere in the codebase.
+
+**Answer:** No — `package.json:19` declares `"engines": { "node": ">=18" }`, and that's an intentional floor, not just an unverified default. Nothing in the source actually forces 18+ (no built-in `fetch`, no `node:` prefix requires, no other 18-only API), so it would very likely run fine on 16 in practice — but the declared contract is 18+, and `npm install`/CI will warn or fail engine checks under strict settings on 16.
+
+Residuals: engines field checked directly (`package.json:19`); grepped `src/` and repo root for Node-18-only APIs, none found — that's a negative-result search, not a run on Node 16 itself, so "works on 16" is unverified by actual execution. Nothing else left open.

@@ -1,0 +1,5 @@
+HARK! Good steward, let the royal archive speak plain truth before pageantry: **no** — Masq declares `"engines": { "node": ">=18" }` in `package.json`, so Node 16 is not a supported realm for this plugin.
+
+I checked the codebase for constructs that would explain why (native `fetch`, `structuredClone`, `Array.prototype.at`, `node:test`) and found none in `src/` — the `>=18` floor appears to be a declared engines constraint rather than something forced by a specific API usage I could find.
+
+**Residuals:** I did not run `npm install` or the test suite under an actual Node 16 binary — the answer above is based on the declared `engines` field and a grep for Node-18-only APIs, not an empirical run-on-Node-16 test. If you need certainty beyond the manifest, install Node 16 (e.g. via nvm) and run `npm test` — I can do that on your say-so.

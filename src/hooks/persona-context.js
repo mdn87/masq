@@ -61,28 +61,60 @@ function composeRequirementsBlock(canonical, catalog) {
   ].join('\n');
 }
 
-function composeFullContext(stack, catalog) {
-  const canonical = canonicalizeStack(stack, catalog);
-  if (!canonical.length) return '';
+// Claude Code replaces hook context above ~10k characters with a preview and a
+// file reference, so anything past this is not delivered at all. Emitting more
+// is strictly worse than emitting less: see evals/composition/03.
+const MAX_CONTEXT_CHARS = 9500;
 
-  const rendered = canonical
-    .map((entry, index) => renderProfile(entry, catalog, index + 1))
-    .filter(Boolean)
-    .join('\n\n---\n\n');
-
-  const requirements = composeRequirementsBlock(canonical, catalog);
-
+function assemble(header, contract, slots, requirements) {
   return [
-    'MASQ ACTIVE',
-    `Ordered stack: ${formatStack(canonical)}`,
+    ...header,
     '',
-    readRuntimeContract(),
+    contract,
     '',
     '# Active Persona Slots',
     '',
-    rendered,
+    slots.join('\n\n---\n\n'),
     ...(requirements ? ['', '---', '', requirements] : [])
   ].join('\n').trim();
+}
+
+function trimSlot(text, budget) {
+  if (text.length <= budget) return text;
+  const marker = '\n\n[trimmed to fit the hook context limit; the full profile is in profiles/]';
+  const room = Math.max(0, budget - marker.length);
+  const cut = text.slice(0, room);
+  const lastBreak = cut.lastIndexOf('\n');
+  return (lastBreak > room * 0.5 ? cut.slice(0, lastBreak) : cut).trimEnd() + marker;
+}
+
+function composeFullContext(stack, catalog, maxChars = MAX_CONTEXT_CHARS) {
+  const canonical = canonicalizeStack(stack, catalog);
+  if (!canonical.length) return '';
+
+  const slots = canonical
+    .map((entry, index) => renderProfile(entry, catalog, index + 1))
+    .filter(Boolean);
+  const requirements = composeRequirementsBlock(canonical, catalog);
+  const header = ['MASQ ACTIVE', `Ordered stack: ${formatStack(canonical)}`];
+
+  let out = assemble(header, readRuntimeContract(), slots, requirements);
+  if (out.length <= maxChars) return out;
+
+  // 1. Drop the full contract for the compact statement of the same rules.
+  out = assemble(header, FALLBACK_CONTRACT, slots, requirements);
+  if (out.length <= maxChars) return out;
+
+  // 2. Trim slot bodies proportionally. Requirements are never trimmed.
+  const overhead = assemble(header, FALLBACK_CONTRACT, slots.map(() => ''), requirements).length;
+  const slotBudget = Math.max(200, Math.floor((maxChars - overhead) / slots.length));
+  const trimmed = slots.map(slot => trimSlot(slot, slotBudget));
+  return assemble(
+    [...header, 'Some profile text was trimmed to fit the context limit; the rules above still apply in full.'],
+    FALLBACK_CONTRACT,
+    trimmed,
+    requirements
+  ).slice(0, maxChars);
 }
 
 function composeReinforcement(stack, catalog) {
@@ -115,6 +147,7 @@ function composeReinforcement(stack, catalog) {
 
 module.exports = {
   FALLBACK_CONTRACT,
+  MAX_CONTEXT_CHARS,
   composeFullContext,
   composeRequirementsBlock,
   composeReinforcement,

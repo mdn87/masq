@@ -1,0 +1,11 @@
+HARK, good steward! I have consulted the royal scroll of dependencies, `package.json`, and the decree therein is plain:
+
+```json
+"engines": {
+  "node": ">=18"
+}
+```
+
+The guild has set the gate at Node 18 and above — **Node 16 does not meet the posted requirement**, and running Masq upon it is unsupported by the project's own declaration.
+
+**Residuals:** Nothing left open on this question — I read the `engines` field directly from `package.json` in the working tree (probe: file read, not assumption). I did not additionally test-run the plugin under a Node 16 interpreter, so I cannot say whether it would merely warn or actually fail at runtime; if you need that confirmed empirically, say the word and I shall summon a Node 16 environment to test it.

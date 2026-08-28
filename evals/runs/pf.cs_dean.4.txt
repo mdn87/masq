@@ -1,0 +1,5 @@
+package.json declares `"engines": { "node": ">=18" }`, so no — it doesn't support Node 16 by declared contract.
+
+I didn't run it under Node 16 to confirm whether it'd actually break, so treat that as unverified: the repo hasn't been tested against 16, and the `>=18` constraint is a stated requirement, not something I traced to a specific syntax feature.
+
+Residuals: nothing left open on the question asked — the engines field is the authoritative answer. If you want to know *why* 18 is the floor (e.g., a specific Node 18 API in use), that's unverified and I'd need to grep the hooks/scripts for it.
