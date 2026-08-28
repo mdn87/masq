@@ -1,7 +1,7 @@
 ---
 name: persona
 description: This skill should be used when the user invokes "/masq:persona", asks to "turn on a persona", "disable a persona profile", "stack personas", "list persona profiles", "show active personas", or requests a persistent composable response style. It manages ordered persona overlays without changing technical facts, permissions, or safety boundaries.
-version: 0.3.0
+version: 0.4.0
 disable-model-invocation: true
 argument-hint: <status|list|doctor|preview|on|off|toggle|set|move|clear|global|project|temp|preset> [...]
 ---

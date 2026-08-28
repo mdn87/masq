@@ -169,6 +169,23 @@ structured; `dean:default` also collapses bullets back into prose where the
 items are reasoning rather than a checklist. The working half of this persona
 is the separate `conduct` profile below.
 
+### Audience
+
+Sets the reader's assumed expertise, and only that: what gets glossed on first
+use, how far a procedure is spelled out, what gets restated. It sets no register,
+so it pairs with whichever voice profile you want.
+
+```text
+audience:novice
+audience:peer
+audience:expert
+```
+
+The default is `audience:peer`. An override runs through every variant: where
+assuming knowledge would leave a reader unable to act on something consequential,
+the explanation stays regardless of level. `expert` means writing for peers, not
+writing to make someone feel stupid.
+
 ### Working Conduct
 
 The first profile on the conduct axis. Scope discipline, batched questions

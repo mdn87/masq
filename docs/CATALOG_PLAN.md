@@ -53,7 +53,7 @@ A profile earns a slot when all of these hold.
 
 | Kind | Profiles |
 | --- | --- |
-| `presentation` | `dean` (peer register), `plain` (outsider register), `caveman` (compression), `renfaire` (ornament), `de-tell` (corrective) |
+| `presentation` | `dean` (peer register), `plain` (clarity), `caveman` (compression), `renfaire` (ornament), `de-tell` (corrective), `audience` (assumed knowledge) |
 | `conduct` | `conduct` |
 | `policy` | `afterdark` |
 
@@ -66,31 +66,12 @@ protects negations, warnings, literals, and anything the reader needs in order
 to act is a presentation operation; the alternative reading would make every
 compression profile unclassifiable.
 
-Gaps that matter: nothing sets the reader's expertise level, nothing changes how
-findings are challenged, and `conduct` and `policy` have one entry each.
+Gaps that matter: nothing changes how findings are challenged, and `conduct` and
+`policy` have one entry each.
 
 ## The queue
 
-### 1. `audience` — presentation
-
-Sets the assumed expertise of the reader as variants: `novice`, `peer`,
-`expert`. Governs glossing on first use, how much procedure is spelled out, and
-how much context is restated.
-
-This is the piece of the primer work still unported: that project's audience was
-engineers who were not software engineers, so "assume competence" and "explain
-the term inline" were both correct and had to be resolved per reader.
-
-**Blocked on a prerequisite.** Expertise assumptions currently live in two
-places — `plain` glosses and defines terms, and `dean` has an entire "Assume
-competence" section. `audience:novice` cannot compose under `dean` while `dean`
-still says to use the reader's vocabulary and gloss only proprietary or
-action-blocking terms; they would contradict each other directly. Move
-expertise assumptions out of both first, leaving registers to control voice and
-`audience` to control assumed knowledge. Doing this after shipping `audience`
-means a second breaking change to two profiles.
-
-### 2. `reviewer` — conduct
+### 1. `reviewer` — conduct
 
 Adversarial working posture. Try to refute a finding rather than confirm it,
 default to "not established" when evidence is thin, separate what was observed
@@ -103,7 +84,7 @@ compose — they disagree about how much to hedge — before shipping.
 **Boundary risk:** "be skeptical" is one bad sentence away from "refuse to act."
 The conduct limits are load-bearing here, not decorative.
 
-### 3. `handoff` — conduct, contextual
+### 2. `handoff` — conduct, contextual
 
 Shapes session notes, handoff files, and commit bodies: root cause before
 outcome, explicit "do NOT re-run X" warnings, absolute dates rather than "last
@@ -117,7 +98,7 @@ contextual — handoff artifacts only — the way `afterdark` is contextual.
 artifact's shape, not the habit. If it cannot be written without repeating
 `conduct`, it should not be written.
 
-### 4. House style extraction
+### 3. House style extraction
 
 A personal global rules file is already a persona: register preferences,
 permission economy, evidence habits, reporting shape. Extracting one into
@@ -202,6 +183,7 @@ Recorded 2026-08-28 against `claude-sonnet-5`, Claude Code 2.1.195. See `evals/`
 | `renfaire` | 1 | pass, ornament and literal preservation both hold |
 | composition | 2 | `01` **fails**, `02` passes |
 | `de-tell` | 2 | `01` inconclusive, `02` pass — effect is real, emphasis is wrong |
+| `audience` | 1 | pass on the dial; surfaced a stack-announcement leak |
 
 Findings from the first two rounds worth carrying forward.
 
@@ -280,7 +262,15 @@ Still open, in priority order.
 3. **`de-tell` should be re-weighted** so the flags that fire lead and the
    negation-contrast is demoted. A fixture for the protection direction — an
    earned negation surviving the pass — is the untested case with real cost.
-4. **Untested cases that matter:** `renfaire` over a destructive confirmation,
+4. **The no-announce rule leaks.** `audience/01` found the active stack named in
+   3 of 3 `novice` runs against 0 of 2 baseline on the identical prompt. The
+   prompt was about masq itself, which invites it, so the fixture cannot separate
+   "this profile leaks" from "this topic leaks." A no-announce fixture on an
+   unrelated prompt would.
+5. **Untested cases that matter:** `audience:peer` — the default, and so what
+   most stacks actually run — was never evaluated; only the two extremes were.
+   The `audience` override is untested, which is the clause that matters most.
+   `renfaire` over a destructive confirmation,
    where the contract requires plain prose for the decisive sentence; `afterdark`
    under a register profile, which is the format documentation's own worked
    example; and any presentation profile stacked over `plain` or `caveman`, where

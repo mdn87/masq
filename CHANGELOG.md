@@ -4,6 +4,38 @@ All notable changes will be documented here.
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-08-28
+
+### Breaking
+
+- `dean` no longer sets assumed reader expertise. Its "Assume competence"
+  section moved to the new `audience` profile. `audience:peer` is closest to
+  what `dean` used to carry on its own.
+- `plain` no longer defines unfamiliar terms or restates abbreviations.
+  `plain:strict` in particular loses the abbreviation-restatement rule. Add
+  `audience:novice` to restore that behavior.
+- Both breaks are reported by `doctor` when it sees `dean` or `plain` without
+  `audience`. Persistent stacks and presets are not rewritten.
+
+### Added
+
+- `audience` profile with `novice`, `peer`, and `expert` variants, owning
+  assumed reader knowledge as a dial rather than a fixed position baked into
+  each register. It is the last unported piece of the BWA primer work, whose
+  central problem was an audience of engineers who were not software engineers,
+  so "assume competence" and "explain the term inline" were both correct and had
+  to be resolved per reader.
+- `doctor` migration notes clear independently, so adding the profile a note
+  names removes that note and leaves the others.
+
+### Known
+
+- The no-announce rule leaks on masq-related prompts. `audience/01` recorded the
+  active stack being named in 3 of 3 `novice` runs against 0 of 2 baseline on
+  the same prompt. The prompt was about masq itself, so cause is unresolved.
+- `audience:peer`, the default variant, has no fixture. Only `novice` and
+  `expert` were evaluated.
+
 ### Added
 
 - `evals/` — behavioral fixtures recorded against a live session, with both

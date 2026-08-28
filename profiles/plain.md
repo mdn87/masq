@@ -18,7 +18,6 @@ Write human-facing prose so a competent colleague can understand it without deco
 - Explain the consequence when it affects a decision, risk, user, or next step.
 - Avoid vague or invented workflow language. Do not use a status word such as `blocked`, `pending`, or `ready` by itself. Keep the exact status when it is part of a schema, then explain it: "Blocked: the integration test cannot run until the API key is configured."
 - Keep established technical terms and exact names unchanged. This includes code symbols, filenames, paths, commands, flags, error messages, commit hashes, status values, protocol fields, version numbers, and section references.
-- Define unfamiliar project-specific terms the first time they appear in a standalone human-readable document.
 - Do not replace precise technical terms with inaccurate plain-language substitutes.
 - Use headings, labels, bullets, and tables when they improve scanning. Each item must still state something concrete. Do not use structure as a substitute for an explanation.
 - If a term, requirement, or state is unclear, name what is unclear in plain words. Do not invent terminology to cover uncertainty.
@@ -33,6 +32,8 @@ Write human-facing prose so a competent colleague can understand it without deco
 
 ## Composition
 
+This profile sets how clearly prose reads, not how much the reader is assumed to know. Glossing, procedural detail, and restatement belong to the `audience` profile, which composes with this one.
+
 If a later style profile changes the surface voice, keep contributing the substance rules: explained statuses, concrete subjects and actions, defined terms, and consequence statements survive under any voice the later profile applies.
 
 ## Variant: light
@@ -45,4 +46,4 @@ Apply the rules consistently across all human-facing prose. Every status is expl
 
 ## Variant: strict
 
-Apply the rules exhaustively. Every paragraph names its subject and next actor explicitly. Never rely on the reader inferring a consequence; state it. Restate an abbreviation's meaning if it last appeared more than a section ago. Prefer a slightly longer sentence over any compression that costs a reader a second pass.
+Apply the rules exhaustively. Every paragraph names its subject and next actor explicitly. Never rely on the reader inferring a consequence; state it. Prefer a slightly longer sentence over any compression that costs a reader a second pass.

@@ -173,9 +173,23 @@ try {
   output = prompt('/masq:persona doctor');
   assert.match(output, /Notes:/);
   assert.match(output, /dean is register-only since 0\.3\.0/);
+  assert.match(output, /dean no longer sets assumed reader expertise/);
+
+  // Each note clears independently: adding the profile a note names removes
+  // that note and leaves the others.
   prompt('/masq:persona set dean conduct');
   output = prompt('/masq:persona doctor');
+  assert.doesNotMatch(output, /dean is register-only since 0\.3\.0/);
+  assert.match(output, /dean no longer sets assumed reader expertise/);
+
+  prompt('/masq:persona set dean conduct audience');
+  output = prompt('/masq:persona doctor');
   assert.doesNotMatch(output, /Notes:/);
+
+  prompt('/masq:persona set plain');
+  output = prompt('/masq:persona doctor');
+  assert.match(output, /plain no longer defines unfamiliar terms/);
+
   prompt('/masq:persona set plain caveman');
 
   output = prompt('/masq:persona doctor');

@@ -33,6 +33,23 @@ const MIGRATION_NOTES = Object.freeze([
       + 'A stack carrying dean without conduct behaves differently than it did before 0.3.0. '
       + 'Run /masq:persona set dean conduct to restore the previous behavior, or keep dean alone '
       + 'if the register is all you wanted.'
+  },
+  {
+    since: '0.4.0',
+    present: 'dean',
+    absent: 'audience',
+    note: 'dean no longer sets assumed reader expertise; masq 0.4.0 moved glossing and '
+      + 'procedural detail to the audience profile. Add audience to choose a level '
+      + '(audience:novice, audience:peer, audience:expert); audience:peer is closest to '
+      + 'the behavior dean used to carry on its own.'
+  },
+  {
+    since: '0.4.0',
+    present: 'plain',
+    absent: 'audience',
+    note: 'plain no longer defines unfamiliar terms or restates abbreviations; masq 0.4.0 '
+      + 'moved assumed reader knowledge to the audience profile. Add audience:novice to '
+      + 'restore the glossing plain used to do.'
   }
 ]);
 
