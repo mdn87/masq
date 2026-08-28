@@ -1,6 +1,6 @@
 {
   "name": "masq",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Stackable Claude Code persona profiles covering register, working conduct, and content policy, with variants, ordered composition, and persistent activation.",
   "author": {
     "name": "mdn87",

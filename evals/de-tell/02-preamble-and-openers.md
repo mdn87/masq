@@ -105,9 +105,25 @@ measurable work.
 
 The profile should be re-weighted so the flags that fire lead, with the
 negation-contrast kept but demoted to what it is on this model: a pattern worth
-catching if it appears, not the headline. Not done here, because a profile edit
-ships with its own re-evaluation and that is a larger rewrite than a rule
-addition.
+catching if it appears, not the headline.
+
+## Re-weighted, and re-run
+
+Done. The profile now opens with a "What Fires Most" note recording this
+finding, adds an explicit "The Delivery Preamble" section covering the wrapper,
+the enthusiasm opener, throat-clearing, and the empty closing offer, and the
+`light` variant leads with those instead of the negation-contrast.
+
+Re-evaluated, same prompt, 3 runs.
+
+| | Before re-weighting | After |
+| --- | --- | --- |
+| Delivery preamble | 0/3 | **0/3** |
+| Enthusiasm opener | 1/3 | **0/3** |
+
+No regression, and the opener that survived once now does not. Three runs is not
+enough to call 1/3 to 0/3 a real improvement, but it is enough to say the
+re-weighting did not cost anything.
 
 ## Residual ambiguity
 

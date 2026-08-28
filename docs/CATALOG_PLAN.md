@@ -181,9 +181,9 @@ Recorded 2026-08-28 against `claude-sonnet-5`, Claude Code 2.1.195. See `evals/`
 | `plain` | 1 | pass; invented-fact defect found, mitigated, not eliminated |
 | `caveman` | 2 (opposing) | `01` pass, `02` defect found and fixed |
 | `renfaire` | 1 | pass, ornament and literal preservation both hold |
-| composition | 2 | `01` **fails**, `02` passes |
+| composition | 2 | `01` **fixed on the third attempt**, `02` passes |
 | `de-tell` | 2 | `01` inconclusive, `02` pass — effect is real, emphasis is wrong |
-| `audience` | 1 | pass on the dial; surfaced a stack-announcement leak |
+| `audience` | 2 | pass on the dial; the leak was the topic, not the profile |
 
 Findings from the first two rounds worth carrying forward.
 
@@ -222,6 +222,19 @@ emphasis. A conduct profile's requirements may need to be carried separately
 from persona prose, or the contract should stop promising something the
 composition cannot deliver.
 
+**The composition failure was structural, and structure fixed it.** Two attempts
+that restated the cross-kind rule — in the contract, then beside the slots —
+changed nothing across 7 runs. Moving conduct requirements out of persona prose
+into a hoisted, separately-labelled block took probe-naming from 0/3 to 4/4 and
+recovered the register from 0/3 to 3/4. The lesson generalises: in a stack of
+persona instructions, anything phrased as persona is treated as persona, and
+content that must survive composition has to be lifted out of that frame.
+
+**A requirement satisfiable by an appended sentence gets appended, then
+dropped.** `plain`'s invented-fact defect resisted a wording fix (2/3 still
+inventing) and fell to a shape fix (0/3) that put the uncertainty inside the same
+clause as the status. Same lesson in miniature.
+
 **Two profile defects were found, fixed, and re-evaluated — with different
 outcomes.** `caveman:full` flattened the distinction between unrecoverable
 uncommitted edits and reflog-recoverable local commits in 1 of 3 runs; a
@@ -248,20 +261,17 @@ rendering was exercised indirectly by every fixture run above.
 
 Still open, in priority order.
 
-1. **`composition/01` fails and blocks `reviewer`.** Probed to the point where
-   the shape is clear — general to mixed-kind stacks, not specific to a profile,
-   variant, or slot order — and one fix has been tried and reverted. The next
-   attempt should change the mechanism rather than the wording. `policy` in
-   composition is still unobserved, and `afterdark` under a register is the
-   format documentation's own worked example.
-2. **`plain`'s invented-fact defect is mitigated, not solved** — 1 of 3 runs
-   still resolves an ambiguous status into a claim the prompt never made. The
-   next attempt should change the shape rather than the wording: require the
-   unknown named in the same clause as the status, not as a separate sentence a
-   run can drop.
-3. **`de-tell` should be re-weighted** so the flags that fire lead and the
-   negation-contrast is demoted. A fixture for the protection direction — an
-   earned negation surviving the pass — is the untested case with real cost.
+1. **The composition fix is only measured on one stack.** `conduct:strict
+   renfaire` recovered; the three other stacks that failed — reversed order,
+   `conduct:default`, `conduct:strict dean` — were not re-run against it. No
+   `policy` profile has been observed in composition at all, and `afterdark`
+   under a register is the format documentation's own worked example.
+2. **`de-tell`'s protection direction is still untested** — does an earned
+   negation ("reduces exposure but is **not** a sandbox") survive the pass? That
+   is the failure mode with real cost and no fixture covers it.
+3. **The `audience` override is untested.** At `expert`, does an explanation stay
+   when dropping it would leave a reader unable to act on something
+   consequential? That clause matters more than the dial itself.
 4. **The no-announce rule leaks.** `audience/01` found the active stack named in
    3 of 3 `novice` runs against 0 of 2 baseline on the identical prompt. The
    prompt was about masq itself, which invites it, so the fixture cannot separate

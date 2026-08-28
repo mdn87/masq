@@ -30,6 +30,13 @@ change facts, permissions, safety boundaries, or exact technical literals.
     `src/rules/persona-runtime.md`, its fallback in `src/hooks/persona-context.js`,
     the reinforcement line, `skills/persona/SKILL.md`, and `SECURITY.md`. Change
     them together; `tests/test-hooks.js` asserts they agree.
+11. Hard output requirements belong in a `## Requirements` section of a conduct
+    or policy profile, not in persona prose. They are hoisted out of the persona
+    framing at render time because prose requirements did not survive
+    composition with a register.
+12. A profile change ships with its own re-evaluation under `evals/`. A fix that
+    was not measured is not a fix, and a fix measured as ineffective is
+    reverted rather than shipped.
 
 ## Sources of Truth
 
@@ -42,6 +49,7 @@ change facts, permissions, safety boundaries, or exact technical literals.
 - `src/hooks/persona-state.js` - state normalization and safe persistence
 - `src/hooks/persona-profiles.js` - profile parsing, validation, resolution, and rendering
 - `docs/PROFILE_FORMAT.md` - public profile authoring contract
+- `evals/` - recorded behavioral fixtures; a profile change ships with its re-evaluation
 
 ## Development Loop
 

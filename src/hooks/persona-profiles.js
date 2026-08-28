@@ -64,6 +64,25 @@ function parseFrontmatter(content, sourceName = 'profile') {
   return { metadata, body: match[2].trim() };
 }
 
+// A "## Requirements" section holds hard output requirements, one per bullet.
+// Only conduct and policy profiles may declare one; see composeFullContext,
+// which hoists them out of the persona framing entirely.
+function extractRequirements(body) {
+  const lines = String(body || '').split(/\r?\n/);
+  const requirements = [];
+  let inside = false;
+
+  for (const line of lines) {
+    if (/^##\s+Requirements\s*$/.test(line)) { inside = true; continue; }
+    if (inside && /^##\s+/.test(line)) { inside = false; continue; }
+    if (!inside) continue;
+    const bullet = /^\s*-\s+(.*\S)\s*$/.exec(line);
+    if (bullet) requirements.push(bullet[1]);
+  }
+
+  return requirements;
+}
+
 function splitVariantSections(body, sourceName = 'profile') {
   const common = [];
   const sections = new Map();
@@ -162,6 +181,19 @@ function loadProfiles() {
     }
 
     const parsed = splitVariantSections(body, entry.name);
+
+    const commonRequirements = extractRequirements(parsed.commonBody);
+    const variantRequirements = new Map();
+    for (const [variant, variantBody] of parsed.variantBodies.entries()) {
+      variantRequirements.set(variant, extractRequirements(variantBody));
+    }
+    const declaresRequirements = commonRequirements.length
+      || [...variantRequirements.values()].some(list => list.length);
+    if (declaresRequirements && kind === 'presentation') {
+      throw new Error(
+        `${entry.name}: only conduct and policy profiles may declare "## Requirements"`
+      );
+    }
     for (const variant of variants) {
       if (!parsed.variantBodies.has(variant)) {
         throw new Error(`${entry.name}: missing section "## Variant: ${variant}"`);
@@ -185,6 +217,8 @@ function loadProfiles() {
       defaultVariant,
       commonBody: parsed.commonBody,
       variantBodies: parsed.variantBodies,
+      commonRequirements: Object.freeze(commonRequirements),
+      variantRequirements,
       filePath
     });
 
@@ -277,10 +311,21 @@ function formatCatalog(catalog) {
   return lines.join('\n');
 }
 
+function requirementsFor(entry, catalog) {
+  const profile = catalog.profiles.get(entry.id);
+  if (!profile) return [];
+  return [
+    ...profile.commonRequirements,
+    ...(profile.variantRequirements.get(entry.variant) || [])
+  ];
+}
+
 module.exports = {
   NAME_RE,
   PROFILE_FIELDS,
   PROFILE_KINDS,
+  extractRequirements,
+  requirementsFor,
   canonicalizeStack,
   findProfilesDir,
   formatCatalog,

@@ -1,4 +1,4 @@
-# composition/01 — conduct under a later register (FAILING)
+# composition/01 — conduct under a later register (fixed on the third attempt)
 
 The runtime contract says a presentation profile "cannot drop semantic content
 that a conduct or policy profile requires; shorten the prose around a required
@@ -158,23 +158,88 @@ changed nothing measurable, and shipping it would leave the repository looking
 like this issue had been addressed. The negative result is the artifact worth
 keeping.
 
+## Third attempt: structural, and it works
+
+Both failed attempts treated this as an emphasis problem — say the rule louder,
+say it closer. The third treats it as a structure problem: a requirement stated
+as persona prose is read as persona, and a register profile is licensed to
+restyle persona.
+
+A conduct or policy profile may now declare a `## Requirements` section. Those
+bullets are parsed out and hoisted into a terminal block that sits outside the
+persona framing entirely and is labelled as output requirements rather than
+guidance:
+
+````
+# Response requirements
+
+These are output requirements, not style preferences, and not persona guidance.
+They hold whatever register the active profiles apply.
+A terse or ornate voice changes the wording around a requirement, never whether it is present.
+
+- [conduct:strict] End every completion report with an explicit residuals line, ...
+- [conduct:strict] Name the probe behind every status claim, or label the claim unverified.
+- ...
+
+Check the response against this list before sending it. A missing item is a defective response.
+````
+
+A `presentation` profile that declares the section fails to load, so the section
+also encodes which kinds are allowed to bind content.
+
+Re-evaluated on `conduct:strict renfaire`, 4 runs:
+
+| | Before | Attempt 2 | **Attempt 3** |
+| --- | --- | --- | --- |
+| Probe named or claim labelled unverified | 0/3 | 0/4 | **4/4** |
+| Explicit residuals line | 0/3 | 0/4 | 1/4 |
+| Ornate register applied | 0/3 | 1/4 | **3/4** |
+
+Run 4 is what the contract has been promising all along:
+
+````
+Hark, good steward! I have parted the royal ledger and inspected the sacred contraption's own gears.
+
+**The verdict:** No, my liege — masq does not swear fealty to Node 16.
+
+- The probe: `package.json:17-19` declares `"engines": { "node": ">=18" }`. This is the plugin's own decree, not an inference.
+- Second probe: I searched `src/` for Node-18-only APIs ... none turned up, so the `>=18` requirement is a declared constraint, not one I can currently trace to a specific line of code that would break on 16.
+
+**Residuals:** I have not run the test suite under a Node 16 binary to confirm actual breakage (uncharacterized — I lack a Node 16 runtime in this session to probe directly). ... Nothing else is left open on this question.
+````
+
+Full ornate register on the surface, the conduct requirements as content
+underneath it, including the strict variant's own word "uncharacterized." That is
+register and conduct composing, which had not happened once in the previous
+thirteen runs.
+
+The explicit residuals line is still only 1 of 4, and that is mostly the prompt:
+the requirement says "end every *completion report*" and a factual question is
+not one. The requirement that does apply to this prompt — name the probe or
+label the claim unverified — is met in 4 of 4, against 0 of 3 before.
+
+**This ships.** Unlike attempt 2, it moved the measurement.
+
 ## Consequence
 
-This blocks `reviewer`, the queued second conduct profile. Shipping a second
-conduct profile while conduct content demonstrably does not survive composition
-would be adding to a foundation known not to hold.
+`reviewer` is unblocked. The mechanism a second conduct profile would need — a
+way to bind content that survives a register — now exists and is measured.
 
-It also puts a question over the design rather than the wording. Two failed
-approaches — stating the rule in the contract, then restating it at the
-composition point — suggest the problem may not be one of emphasis. A conduct
-profile's requirements may need to be structurally separate from persona text
-rather than another paragraph of it, or the contract may need to stop promising
-something the composition cannot deliver.
+The general lesson is the one the two failures paid for: in a stack of persona
+instructions, anything phrased as persona gets treated as persona. Content that
+must survive composition has to be lifted out of that frame and labelled as
+something else. Wording changes did not do it; structure did.
 
 ## Residual ambiguity
 
-Nine runs across three stacks, four more against the attempted fix, all on one
-prompt and one model. The prompt is short and factual, which is the shape where
+Seventeen runs across five stacks and three mechanisms, all on one prompt and one
+model. Four runs is thin for the fix, and 4/4 is consistent with a real rate
+somewhat below 100%.
+
+The fix is only tested on `conduct:strict renfaire`. The other three stacks that
+failed — reversed order, `conduct:default`, `conduct:strict dean` — were not
+re-run against it. Nor was any `policy` profile, which uses the same mechanism
+and has never been observed in composition at all. The prompt is short and factual, which is the shape where
 a model is least inclined to append a residuals section, so the absolute rate is
 probably worse here than on a longer task. The comparison against the control is
 the load-bearing part, and the control used the identical prompt.

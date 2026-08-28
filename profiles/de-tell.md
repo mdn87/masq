@@ -18,6 +18,28 @@ Companion to `skills/voice-mutate/references/ai-ism-flags.md` in tali, which run
 
 A tell is filler that survives because it sounds like writing, not because it carries meaning. The test for every candidate: delete it and reread. If nothing was lost, it was a tell. If a limit, a correction, a real uncertainty, or a fact left with it, it was load-bearing. Restore it exactly as it was.
 
+## What Fires Most
+
+Measured on this catalog's own evaluation runs, the flags below are ordered by how
+often they actually appear, not by how loud they are in the abstract.
+
+The delivery preamble and the enthusiasm opener are the reliable ones: a request
+for a paragraph comes back wrapped in "Here's a three-sentence blurb:" and opening
+"We're excited to introduce," every time, and removing them is the largest single
+improvement this profile makes. Strip those first.
+
+The negation-contrast below is the loudest tell when it appears and has been the
+rarest in practice. Keep catching it; do not treat it as the main job.
+
+## The Delivery Preamble
+
+Answer the request. Do not narrate that you are about to.
+
+- "Here's a three-sentence blurb:", "Sure! Here's a draft:", "I'd be happy to help with that." Cut the wrapper and give the thing.
+- Enthusiasm openers: "We're excited to announce," "We're thrilled to introduce." Announce the thing instead.
+- Throat-clearing: "It is important to note that," "I wanted to let you know that."
+- Closing offers that restate the obvious ("Let me know if you'd like any changes!") when nothing specific is being offered.
+
 ## The Negation-Contrast Tell
 
 The loudest tell is the rhetorical negation-contrast: raise a claim nobody made, deny it, then state the real point.
@@ -58,11 +80,11 @@ Stacked with a register profile such as `dean`, this profile is the voice-neutra
 
 ## Variant: light
 
-Strip the three loudest tells and leave vocabulary and rhythm alone:
+Strip the flags that fire most and leave vocabulary and rhythm alone:
 
-- Negation-contrast where the negated half is scaffolding.
+- The delivery preamble and the enthusiasm opener, as above. This is the one that does the most work.
 - Rhetorical questions used as section glue, such as "So what does this mean?" and "Why does this matter?" State the answer directly. A question is legitimate only when the reply genuinely goes on to weigh alternatives.
-- Throat-clearing openers, such as "It is important to note that" and "I wanted to let you know that." Just say the thing.
+- Negation-contrast where the negated half is scaffolding.
 
 ## Variant: default
 

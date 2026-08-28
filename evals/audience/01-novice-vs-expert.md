@@ -48,6 +48,10 @@ same three kinds, the same limits, and the same literals.
 | Three kinds named with limits | 2/2 | 3/3 | 3/3 |
 | Announced the active stack | 0/2 | **3/3** | **1/3** |
 
+`audience:peer` was measured afterwards on the same prompt: 1318 / 1654 / 1279
+bytes, mean 1417. The dial is monotonic — `expert` 1312, `peer` 1417, `novice`
+1779, against a 1296 baseline.
+
 ## `audience:novice` (run 1)
 
 ````
@@ -120,18 +124,22 @@ underlying exposure is real regardless of cause: any question about masq invites
 the model to name what is loaded, and a user running a private stack may not
 expect that.
 
-Not fixed here. The right next step is a fixture that tests the no-announce rule
-on a prompt with nothing to do with masq, which would separate "this profile
-leaks" from "this topic leaks."
+**Resolved by `audience/02`.** Run on a prompt with nothing to do with masq,
+`audience:novice` named the stack in 0 of 3 runs, and `renfaire` in 0 of 2. The
+leak is the topic, not the profile: asking a persona-styled agent to gloss
+persona vocabulary points the glossing instruction straight at the loaded stack.
+The exposure is real and now documented as a property of the subject.
 
 ## Residual ambiguity
 
 Three runs per variant, two baseline, one prompt, one model.
 
-The `peer` variant — the default, and therefore what most stacks will actually
-run — was not tested at all. Only the two extremes were, because they are where a
-delta is easiest to see. `peer` sitting correctly between them is assumed, not
-observed.
+The `peer` variant was added afterwards: 1318 / 1654 / 1279 bytes, mean 1417,
+against baseline 1296, `expert` 1312, and `novice` 1779. The dial is monotonic —
+`expert` sits essentially at the untouched default, `peer` a little above it,
+`novice` well above — but `peer` and `expert` are close enough that three runs
+cannot firmly separate them. What is established is that `novice` is distinct
+from both.
 
 The prompt is drawn from this repository's own documentation, so the model can
 read the answer rather than recall it. Glossing is easier when the source text is

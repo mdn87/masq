@@ -4,6 +4,41 @@ All notable changes will be documented here.
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-08-28
+
+### Added
+
+- `## Requirements` sections for conduct and policy profiles. Bullets are parsed
+  out and hoisted into a terminal block outside the persona framing, labelled as
+  output requirements rather than guidance. A presentation profile declaring one
+  fails to load, so the section also encodes which kinds may bind content.
+- `conduct` declares requirements at `default` and `strict`.
+- `evals/audience/02` resolving the stack-announcement question.
+
+### Fixed
+
+- **Cross-kind composition now works.** Conduct requirements survive a register:
+  probe-named-or-labelled went 0/3 to 4/4 and the ornate register recovered 0/3
+  to 3/4 on `conduct:strict renfaire`. Two earlier attempts that restated the
+  rule changed nothing; treating it as structure rather than emphasis did.
+  `reviewer` is unblocked.
+- `plain`'s invented-fact defect is fixed, not merely mitigated: 0/3 invented,
+  down from 2/2 originally and 2/3 after the first attempt. Requiring the
+  uncertainty in the same clause as the status — rather than in an appendable
+  sentence — is what did it, and output got shorter.
+- The stack-announcement leak is not a profile defect. On a prompt unrelated to
+  masq, `audience:novice` named the stack in 0/3 and `renfaire` in 0/2, against
+  3/3 for `novice` on a masq-vocabulary prompt. Asking masq about masq invites
+  it; documented as a property of the subject.
+
+### Changed
+
+- `de-tell` re-weighted so the flags that fire lead. A "What Fires Most" note
+  and an explicit delivery-preamble section; the negation-contrast is kept but
+  demoted. Re-run showed no regression and the enthusiasm opener went 1/3 to 0/3.
+- `audience:peer` measured: mean 1417 bytes against `expert` 1312, `novice`
+  1779, baseline 1296. The dial is monotonic.
+
 ## [0.4.0] - 2026-08-28
 
 ### Breaking

@@ -89,6 +89,39 @@ Precedence runs within a kind. Presentation traits compose and a later presentat
 
 The kinds compose. A conduct profile keeps supplying its habits under any register, so `dean` and `conduct` together produce the register and the working style that originally shipped as one file.
 
+## Requirements Sections
+
+A conduct or policy profile may declare a `## Requirements` section, in the
+common body or inside a variant section or both. Each bullet is one hard output
+requirement.
+
+```markdown
+## Requirements
+
+- End every completion report with an explicit residuals line.
+- Name the probe behind every status claim, or label the claim unverified.
+```
+
+Requirements are treated differently from the rest of a profile. At render time
+they are collected from every active conduct and policy slot and emitted as a
+terminal block, outside the persona framing and labelled as output requirements
+rather than guidance. The rest of the profile body still renders normally, so a
+requirement appears twice on purpose.
+
+This exists because stating requirements as persona prose did not work. A
+conduct profile's required content disappeared whenever any presentation profile
+was stacked with it, and two attempts to fix it by restating the rule — once in
+the runtime contract, once beside the rendered slots — changed nothing
+measurable. `evals/composition/01` has the numbers.
+
+A `presentation` profile may not declare a `## Requirements` section; loading one
+fails. Binding output content is what separates the other two kinds from
+presentation, so the section is also a check on the kind boundary.
+
+Keep requirements few, imperative, and checkable. A requirement a reader cannot
+verify against a finished response does not belong here; put it in the profile
+body as ordinary guidance.
+
 ## Variant Sections
 
 Declare exactly one `## Variant: <id>` section for each item in `variants`. Text before the first variant section becomes common behavior and loads for every variant. At runtime, only the common body and selected variant body are injected.

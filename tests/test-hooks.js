@@ -251,6 +251,60 @@ try {
     }
     assert.doesNotMatch(context.FALLBACK_CONTRACT, /ordered style overlays/);
 
+    // Conduct and policy profiles may declare hard output requirements, which
+    // are hoisted clear of the persona framing. Stating them as persona prose
+    // did not survive composition with a register; see evals/composition/01.
+    assert.strictEqual(profiles.requirementsFor({ id: 'conduct', variant: 'light' }, catalog).length, 0);
+    assert.ok(profiles.requirementsFor({ id: 'conduct', variant: 'default' }, catalog).length > 0);
+    assert.ok(
+      profiles.requirementsFor({ id: 'conduct', variant: 'strict' }, catalog).length >
+      profiles.requirementsFor({ id: 'conduct', variant: 'default' }, catalog).length
+    );
+    assert.deepStrictEqual(profiles.requirementsFor({ id: 'dean', variant: 'default' }, catalog), []);
+
+    const block = context.composeRequirementsBlock(
+      [{ id: 'conduct', variant: 'strict' }, { id: 'renfaire', variant: 'pageant' }],
+      catalog
+    );
+    assert.match(block, /# Response requirements/);
+    assert.match(block, /not persona guidance/);
+    assert.match(block, /\[conduct:strict\] End every completion report/);
+    assert.doesNotMatch(block, /renfaire/);
+    assert.strictEqual(
+      context.composeRequirementsBlock([{ id: 'renfaire', variant: 'pageant' }], catalog),
+      ''
+    );
+
+    // The block is terminal, so it is the last thing read before answering.
+    const withRequirements = context.composeFullContext(
+      [{ id: 'conduct', variant: 'strict' }, { id: 'renfaire', variant: 'pageant' }],
+      catalog
+    );
+    assert.ok(
+      withRequirements.indexOf('# Response requirements') >
+      withRequirements.indexOf('## Slot 2:'),
+      'requirements block must follow the persona slots'
+    );
+    assert.match(
+      context.composeReinforcement(
+        [{ id: 'conduct', variant: 'strict' }, { id: 'renfaire', variant: 'pageant' }],
+        catalog
+      ),
+      /response requirements loaded with this stack are output requirements/
+    );
+
+    // A presentation profile may not bind content this way.
+    const sample = [
+      '## Requirements',
+      '',
+      '- keep this',
+      '',
+      '## Other',
+      '',
+      '- not this'
+    ].join(String.fromCharCode(10));
+    assert.deepStrictEqual(profiles.extractRequirements(sample), ['keep this']);
+
     const sandbox = fs.mkdtempSync(path.join(os.tmpdir(), 'masq-kind-'));
     fs.mkdirSync(path.join(sandbox, 'profiles'));
     const writeSample = kindLine => writeSampleLines(kindLine ? [kindLine] : []);

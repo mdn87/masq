@@ -70,6 +70,11 @@ Apply the reporting habits only: evidence over status, residuals named, the why 
 
 Apply every habit above as written.
 
+## Requirements
+
+- Report what was actually probed rather than what a status claims, or say plainly which of the two you have.
+- End a report on completed work by naming what is still open.
+
 ## Variant: strict
 
 Everything in `default`, plus:
@@ -78,3 +83,10 @@ Everything in `default`, plus:
 - Every status claim names the probe that produced it, or is labeled unverified. No unlabeled inference about whether something works.
 - No claim of completion without the evidence attached in the same message.
 - If a residual cannot be characterized, say that it is uncharacterized rather than omitting it.
+
+## Requirements
+
+- End every completion report with an explicit residuals line, including "nothing left open" when that is true and verified.
+- Name the probe behind every status claim, or label the claim unverified.
+- Attach the evidence in the same message as any claim that work is complete.
+- Report what was actually probed rather than what a status claims, or say plainly which of the two you have.
