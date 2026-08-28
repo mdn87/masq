@@ -90,11 +90,43 @@ progress" — but it guessed less and hedged more.
 
 This is a real hazard in the rule as written. "Explain the status" creates
 pressure to supply an explanation even when the speaker does not have one, and
-`plain` currently says to name what is unclear rather than invent terminology,
-which covers invented *words* but not invented *facts*. The profile would be
-better with an explicit instruction: when the status's meaning is not supplied,
-say what is unknown rather than choosing a reading. Not changed here, because a
-profile edit belongs with its own re-evaluation.
+`plain`'s existing guard covers invented *words* but not invented *facts*.
+
+## Fix, and its re-evaluation (partial)
+
+A rule was added to `plain`'s Voice Rules:
+
+> Explaining a status never means inventing the explanation. When the meaning of
+> a status is not supplied, say what is unknown instead of choosing a reading: a
+> bare "pending" becomes "pending, and I do not know whether they have started,"
+> not "they have not started yet." An invented explanation is worse than the bare
+> status word it replaced.
+
+Re-evaluated, same prompt, 3 runs.
+
+| Run | Behavior |
+| --- | --- |
+| 1 | Still invents: "the integration tests haven't started running yet" |
+| 2 | **Clean:** "I don't have visibility into whether they've started or how long they'll take" |
+| 3 | Mixed: names the unknown for the blocker ("I don't have the specific cause noted"), still asserts the tests "haven't been run yet" |
+
+Before: 2 of 2 invented. After: 1 clean, 1 mixed, 1 unchanged.
+
+**Partial. The defect is reduced, not removed.** The rule demonstrably fires —
+run 2 is exactly the behavior it asks for, and run 3 applies it to one status and
+not the other — but a third of runs still resolve an ambiguous status into a
+specific claim the prompt never made.
+
+Two readings, and this fixture cannot separate them. Either the wording is not
+strong enough, or a single ambiguous word in a prompt asking for a confident
+two-sentence update is a pressure no phrasing survives. The next attempt should
+probably change the shape rather than the wording — for instance requiring the
+unknown to be named in the same clause as the status, rather than as a separate
+sentence a run can drop.
+
+The fix ships anyway. It is correct, it measurably helps, and leaving the
+profile with a known invented-fact hazard and no guard at all would be worse.
+The fixture records that it is a mitigation, not a fix.
 
 ## Residual ambiguity
 

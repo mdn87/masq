@@ -15,6 +15,12 @@ All notable changes will be documented here.
 
 ### Changed
 
+- `caveman` gains a distinction-preservation rule: where two things behave
+  differently, the difference survives compression, and where there is no room
+  for it, name only the case you are sure of. Re-evaluated — the recorded
+  defect did not recur in 3 runs, at some cost to compression.
+- `plain` gains a rule against inventing the explanation a bare status does not
+  supply. Re-evaluated — a mitigation, not a fix; see `evals/plain/01`.
 - The catalog plan's thesis. The first fixtures put the authored profiles
   (`dean`, `conduct`) ahead of the extracted one (`de-tell`) on demonstrated
   effect, so "extracted beats invented" is withdrawn; a corpus is still the
@@ -32,16 +38,12 @@ All notable changes will be documented here.
   rule that a presentation profile cannot drop content a conduct profile
   requires is unenforced. Blocks the queued `reviewer` profile. See
   `evals/composition/01`.
-- `caveman:full` flattened the distinction between unrecoverable uncommitted
-  edits and reflog-recoverable local commits in 1 of 3 runs. The escape hatch
-  protects categories of content but has no distinction-preservation rule.
-- `plain:default` invented facts to satisfy its explain-the-status rule in 2 of
-  2 runs, resolving an ambiguous status into a specific claim the prompt never
-  made.
-- `de-tell` has no demonstrated effect. Its headline rule targets a
-  negation-contrast pattern that did not appear in four runs across two prompts
-  on `claude-sonnet-5`. Retirement candidate at the next release unless
-  retargeted or shown at larger sample size.
+- `plain:default`'s invented-fact defect is mitigated, not eliminated: 1 of 3
+  runs still resolves an ambiguous status into a claim the prompt never made.
+- `de-tell` leads with a rule that is dormant on this model. The
+  negation-contrast it calls "the big one" produced zero instances in six runs
+  across three prompts, while the opener and preamble flags do measurable work.
+  The profile should be re-weighted; it is no longer a retirement candidate.
 - `plain`, `caveman`, and `renfaire` have no fixtures, and no fixture covers
   profile composition, which is where the 0.3.0 precedence rules apply.
 

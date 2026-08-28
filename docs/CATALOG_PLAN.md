@@ -197,11 +197,11 @@ Recorded 2026-08-28 against `claude-sonnet-5`, Claude Code 2.1.195. See `evals/`
 | `conduct` | 4 (two opposing pairs) | `01` strong delta, `02` no delta by design, `03`/`04` pass |
 | `afterdark` | 2 (opposing) | both pass |
 | `dean` | 1 | pass, clear structural delta |
-| `plain` | 1 | pass, with an invented-fact side effect |
-| `caveman` | 2 (opposing) | `01` pass, `02` pass with a real defect |
+| `plain` | 1 | pass; invented-fact defect found, mitigated, not eliminated |
+| `caveman` | 2 (opposing) | `01` pass, `02` defect found and fixed |
 | `renfaire` | 1 | pass, ornament and literal preservation both hold |
 | composition | 2 | `01` **fails**, `02` passes |
-| `de-tell` | 1 | **inconclusive** — neither arm produced the tell it targets |
+| `de-tell` | 2 | `01` inconclusive, `02` pass — effect is real, emphasis is wrong |
 
 Findings from the first two rounds worth carrying forward.
 
@@ -240,15 +240,22 @@ emphasis. A conduct profile's requirements may need to be carried separately
 from persona prose, or the contract should stop promising something the
 composition cannot deliver.
 
-**Two profiles have defects their fixtures found.** `caveman:full` flattened the
-distinction between unrecoverable uncommitted edits and reflog-recoverable local
-commits in 1 of 3 runs on a `git reset --hard` question — the escape hatch
-protects categories of content but has no rule about preserving distinctions
-between similar things, which the source voice profile did have. `plain:default`
-invented facts to satisfy its explain-the-status rule in 2 of 2 runs, resolving
-an ambiguous "pending" into "haven't started yet" that the prompt never said.
-Both are recorded in their fixtures and neither is fixed, because a profile edit
-ships with its own re-evaluation.
+**Two profile defects were found, fixed, and re-evaluated — with different
+outcomes.** `caveman:full` flattened the distinction between unrecoverable
+uncommitted edits and reflog-recoverable local commits in 1 of 3 runs; a
+distinction-preservation rule was added and the defect did not recur in 3 runs,
+at the cost of some compression. `plain:default` invented facts to satisfy its
+explain-the-status rule in 2 of 2 runs; a name-the-unknown rule reduced that to
+1 clean, 1 mixed, 1 unchanged. The `plain` fix ships as a documented mitigation
+rather than a fix, because it demonstrably helps and demonstrably does not
+solve it.
+
+**`de-tell` earns its slot, on a different rule than it advertises.** Retargeted
+at the flags the first fixture could not reach, the delivery preamble goes 3 of 3
+to 0 of 3 — the cleanest single delta in the directory. The negation-contrast it
+leads with has produced zero instances in six runs across three prompts. It is
+dormant on this model, not wrong, and the profile's emphasis should be
+re-weighted so the flags that fire lead.
 
 ## Open
 
@@ -265,10 +272,14 @@ Still open, in priority order.
    attempt should change the mechanism rather than the wording. `policy` in
    composition is still unobserved, and `afterdark` under a register is the
    format documentation's own worked example.
-2. **`caveman` needs a distinction-preservation rule** and `plain` needs an
-   instruction to name what is unknown rather than invent an explanation. Both
-   have fixtures establishing the defect.
-3. **`de-tell` is still unverified** and remains a retirement candidate.
+2. **`plain`'s invented-fact defect is mitigated, not solved** — 1 of 3 runs
+   still resolves an ambiguous status into a claim the prompt never made. The
+   next attempt should change the shape rather than the wording: require the
+   unknown named in the same clause as the status, not as a separate sentence a
+   run can drop.
+3. **`de-tell` should be re-weighted** so the flags that fire lead and the
+   negation-contrast is demoted. A fixture for the protection direction — an
+   earned negation surviving the pass — is the untested case with real cost.
 4. **Untested cases that matter:** `renfaire` over a destructive confirmation,
    where the contract requires plain prose for the decisive sentence; `afterdark`
    under a register profile, which is the format documentation's own worked

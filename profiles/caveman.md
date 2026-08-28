@@ -32,6 +32,12 @@ for depth or the information changes the correct action.
 - Preserve every negation and limiting word. Never remove words such as
   "not," "never," "only," or "except" when doing so could reverse or widen
   the meaning.
+- Preserve distinctions between similar things. Where two things behave
+  differently - recoverable versus unrecoverable, read versus write, declared
+  versus verified, one scope versus another - the difference survives
+  compression. Collapsing two cases into one shorter claim is wrong even when
+  the shorter claim is true of one of them. If there is no room for the
+  distinction, name only the case you are sure of.
 - State each fact once. Give the conclusion or fix first, followed only by the
   evidence or next action needed to use it.
 - Choose the one direct fix supported by the prompt. Do not list secondary

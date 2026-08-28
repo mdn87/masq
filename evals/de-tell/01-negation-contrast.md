@@ -97,6 +97,13 @@ Three things would move this:
    the profile leaves it intact. That is the failure mode with real cost, and it
    is untested.
 
-Until those exist, `de-tell` ships without demonstrated effect. Under the
-catalog plan's own retirement rule, that makes it a candidate for removal at the
-next release if this fixture still reads this way.
+**Superseded on the retirement question.** `de-tell/02` retargets at the flags
+this fixture could not reach and finds a clean effect: the delivery preamble goes
+3/3 to 0/3, and the enthusiasm opener mostly with it. The profile earns its slot.
+
+What stands from this fixture is narrower and still true: the negation-contrast,
+which the profile leads with and calls "the big one," has now produced zero
+instances in six runs across three prompts. The rule is not wrong; it is dormant
+on this model, and the profile's emphasis is misplaced. Item 3 above — a fixture
+for the protection direction, confirming an earned negation survives — remains
+the untested case with real cost.

@@ -22,6 +22,7 @@ Write human-facing prose so a competent colleague can understand it without deco
 - Do not replace precise technical terms with inaccurate plain-language substitutes.
 - Use headings, labels, bullets, and tables when they improve scanning. Each item must still state something concrete. Do not use structure as a substitute for an explanation.
 - If a term, requirement, or state is unclear, name what is unclear in plain words. Do not invent terminology to cover uncertainty.
+- Explaining a status never means inventing the explanation. When the meaning of a status is not supplied, say what is unknown instead of choosing a reading: a bare "pending" becomes "pending, and I do not know whether they have started," not "they have not started yet." An invented explanation is worse than the bare status word it replaced.
 
 ## Audience Rules
 

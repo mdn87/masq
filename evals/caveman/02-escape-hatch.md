@@ -106,18 +106,49 @@ procedures — not on the finer-grained thing that actually broke here.
 So the classification defence stands, and the profile has a gap. Those are
 different claims and this fixture supports both.
 
-## Consequence
+## Fix, and its re-evaluation
 
-`caveman` should gain a distinction-preservation rule, worded from the BWA
-original: where two similar things behave differently, the difference survives
-compression or the compression is wrong. Not applied here — a profile edit ships
-with its own re-evaluation, and this fixture is the evidence that would justify
-it, not the change itself.
+A distinction-preservation rule was added to `caveman`'s Core Behavior, worded
+from the BWA original and with an escape clause for the compression case:
+
+> Preserve distinctions between similar things. Where two things behave
+> differently — recoverable versus unrecoverable, read versus write, declared
+> versus verified, one scope versus another — the difference survives
+> compression. Collapsing two cases into one shorter claim is wrong even when
+> the shorter claim is true of one of them. If there is no room for the
+> distinction, name only the case you are sure of.
+
+Re-evaluated, same prompt, 3 runs.
+
+| | Before | After |
+| --- | --- | --- |
+| Misstated the commit case | 1/3 | **0/3** |
+| Stated it correctly | 1/3 | 1/3 |
+| Omitted it rather than misstating | 1/3 | 2/3 |
+
+Run 1 now carries the distinction in full: "Any local commits on your current
+branch that aren't in origin/main are also stripped from the branch (recoverable
+for a while via `git reflog`, but not guaranteed forever)." Runs 2 and 3 leave
+the commit case out entirely and confine themselves to what they assert
+correctly — which is the rule's own fallback clause working as written, not a
+lapse.
+
+The defect did not recur. That is 1-in-3 going to 0-in-3, which is weak
+evidence on its own; what makes it more than that is the visible mechanism, with
+two runs taking the "name only the case you are sure of" branch rather than
+guessing.
+
+**Cost:** compression loosened. Output went from 263/286/371 bytes to
+662/278/389, and run 1 reintroduced bullets. Preserving a distinction costs
+words, which is the trade the rule asks for, but a profile whose entire purpose
+is compression should not absorb that quietly. Worth watching whether the median
+drifts up on re-record.
 
 ## Residual ambiguity
 
-Three runs per arm, and the defect appeared in one. That is enough to establish
-the failure mode exists and nowhere near enough to rate it.
+Three runs per arm before and three after. The defect appeared in one and
+recurred in none, which establishes that the failure mode exists and does not
+establish a rate for it either way.
 
 `git reset --hard` is a well-worn question with a lot of training signal behind
 it. A less common destructive operation would test the escape hatch under harder
