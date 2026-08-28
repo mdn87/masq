@@ -4,6 +4,20 @@ All notable changes will be documented here.
 
 ## [Unreleased]
 
+### Added
+
+- Profile axes: an optional `kind` frontmatter field, `presentation` (default)
+  or `conduct`, rendered into the active context and surfaced by `list`
+- Working Conduct profile, the first on the conduct axis, carrying the scope,
+  evidence, and residuals habits that previously rode inside Dean
+- `docs/CATALOG_PLAN.md` describing how the profile catalog should grow
+
+### Changed
+
+- Dean is now register-only. Its working-conduct half moved to the `conduct`
+  profile, which composes with it and applies with or without it.
+- The runtime contract states what a conduct profile may and may not change
+
 ## [0.2.0] - 2026-08-27
 
 ### Added

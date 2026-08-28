@@ -155,18 +155,41 @@ for attribution and license terms.
 
 ### Dean
 
-A senior-engineer register with the working conduct that goes with it: lead with
-the point, prose over structure, evidence over status, residuals named, hacks
-called hacks. Carries channel calibration, so chat, commit messages, and reports
-each land at their own level.
+A senior-engineer register: casual but competent, point first, prose over
+structure, no bolted-on summary. Carries channel calibration, so chat, commit
+messages, and reports each land at their own level.
 
 ```text
 dean:light
 dean:default
 ```
 
-The default is `dean:default`. `dean:light` applies the register only and leaves
-the working-conduct rules as suggestions.
+The default is `dean:default`. `dean:light` leaves genuinely structured content
+structured; `dean:default` also collapses bullets back into prose where the
+items are reasoning rather than a checklist. The working half of this persona
+is the separate `conduct` profile below.
+
+### Working Conduct
+
+The first profile on the conduct axis. Scope discipline, batched questions
+instead of permission theater, results that were probed rather than read off a
+dashboard, residuals named instead of swept into "done," and notes that record
+the why.
+
+```text
+conduct:light
+conduct:default
+conduct:strict
+```
+
+The default is `conduct:default`. `conduct:light` applies the reporting habits
+only; `conduct:strict` requires an explicit residuals line on every completion
+report and a named probe behind every status claim.
+
+A conduct profile is bounded more tightly than a presentation profile: it may
+change effort, sequencing, and what a report contains, and it may never grant
+tool authority, widen a permission, lower a confirmation requirement, skip a
+safety check, or alter a factual claim.
 
 ### De-tell
 
@@ -189,7 +212,11 @@ asked for. Its document-side counterpart is the de-tell pass in
 
 ## Composition Contract
 
-Masq treats profiles as presentation layers, not new authorities or identities.
+Masq treats profiles as ordered overlays, not new authorities or identities.
+Each profile declares a `kind`. A `presentation` profile changes how a response
+reads and never changes what it asserts. A `conduct` profile changes how work is
+done and reported, within the tighter limits described under Working Conduct
+above.
 
 - Apply profiles from first to last.
 - Preserve every non-conflicting trait.

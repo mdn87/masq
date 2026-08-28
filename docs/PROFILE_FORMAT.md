@@ -58,6 +58,21 @@ Use maximal theatrical commitment without damaging the answer.
 `aliases`
 : Comma-separated alternate IDs accepted by commands. Aliases must be unique across the complete profile catalog.
 
+`kind`
+: `presentation` (the default) or `conduct`. See Profile Axes below.
+
+## Profile Axes
+
+A profile changes one of two things, and `kind` declares which.
+
+A `presentation` profile changes how a response reads: register, vocabulary, structure, ornament. It never changes what the response asserts. Renfaire, Plain Language, Caveman, De-tell, and Dean are presentation profiles.
+
+A `conduct` profile changes how the work is done and reported: effort, sequencing, and what a report contains. Working Conduct is the first of these.
+
+A conduct profile is bounded more tightly than a presentation profile, because it reaches past the prose. It may never grant tool authority, widen a permission, lower a confirmation requirement, skip a safety check, or alter a factual claim, and it yields to any user request, project instruction, permission rule, or safety rule. State that boundary inside the profile as well as relying on the runtime contract; a reader of the file should be able to see the limit without loading the rest of the plugin.
+
+The two axes compose. A conduct profile keeps supplying its habits under any register, so `dean` and `conduct` together produce the register and the working style that originally shipped as one file.
+
 ## Variant Sections
 
 Declare exactly one `## Variant: <id>` section for each item in `variants`. Text before the first variant section becomes common behavior and loads for every variant. At runtime, only the common body and selected variant body are injected.

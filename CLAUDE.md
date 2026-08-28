@@ -2,7 +2,11 @@
 
 ## Project Intent
 
-Masq is a Claude Code plugin for ordered, composable persona profiles. Profiles alter user-visible presentation only. They must not change facts, permissions, tool behavior, safety boundaries, or exact technical literals.
+Masq is a Claude Code plugin for ordered, composable persona profiles. A profile
+sits on one of two axes, declared by its `kind`. A `presentation` profile alters
+user-visible presentation only. A `conduct` profile alters how work is done and
+reported: effort, sequencing, and what a report contains. Neither may change
+facts, permissions, safety boundaries, or exact technical literals.
 
 ## Invariants
 
@@ -16,6 +20,10 @@ Masq is a Claude Code plugin for ordered, composable persona profiles. Profiles 
 6. Hooks must fail closed, emit no untrusted state bytes, and never block Claude Code startup or prompt submission.
 7. Preserve code, commands, paths, URLs, identifiers, schemas, errors, citations, numbers, and units exactly.
 8. Keep the plugin dependency-free unless a dependency solves a concrete reliability problem that cannot reasonably remain local.
+9. A conduct profile may change effort, sequencing, and reporting. It may never
+   grant tool authority, widen a permission, lower a confirmation requirement,
+   skip a safety check, or alter a factual claim. It yields to any user
+   request, project instruction, permission rule, or safety rule.
 
 ## Sources of Truth
 

@@ -29,6 +29,7 @@ id: ${id}
 name: ${displayName}
 description: Describe what this profile contributes.
 aliases: 
+# kind: conduct   # optional; presentation is the default, see docs/PROFILE_FORMAT.md
 scope: user-visible prose where this style should apply
 default-variant: default
 variants: light, default, extreme

@@ -18,7 +18,8 @@
 
 ## 0.3 - Composition Controls
 
-- Profile categories such as voice, workflow, domain, and context
+- Profile axes: `kind: presentation | conduct` (implemented; see ADR 0004)
+- Further categories such as domain and context
 - Optional exclusive groups for profiles that should not coexist
 - Explicit conflict metadata and diagnostics
 - Named compositions such as `courtly-afterdark`

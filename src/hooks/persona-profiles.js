@@ -5,6 +5,7 @@ const path = require('path');
 
 const NAME_RE = /^[a-z0-9][a-z0-9-]{0,63}$/;
 const MAX_PROFILE_BYTES = 128 * 1024;
+const PROFILE_KINDS = Object.freeze(['presentation', 'conduct']);
 
 function normalizeName(value) {
   if (typeof value !== 'string') return null;
@@ -126,6 +127,13 @@ function loadProfiles() {
     if (!name) throw new Error(`${entry.name}: missing name`);
     if (!description) throw new Error(`${entry.name}: missing description`);
 
+    const kind = metadata.kind === undefined
+      ? 'presentation'
+      : normalizeName(metadata.kind);
+    if (!kind || !PROFILE_KINDS.includes(kind)) {
+      throw new Error(`${entry.name}: kind must be one of: ${PROFILE_KINDS.join(', ')}`);
+    }
+
     const variants = parseList(metadata.variants);
     if (variants.length === 0) throw new Error(`${entry.name}: define at least one variant`);
     if (new Set(variants).size !== variants.length) throw new Error(`${entry.name}: duplicate variant`);
@@ -153,6 +161,7 @@ function loadProfiles() {
       name,
       description,
       scope,
+      kind,
       aliases: Object.freeze(profileAliases),
       variants: Object.freeze(variants),
       defaultVariant,
@@ -222,6 +231,7 @@ function renderProfile(entry, catalog, slotNumber) {
 
   return [
     `## Slot ${slotNumber}: ${profile.name} (${profile.id}:${entry.variant})`,
+    `Kind: ${profile.kind}`,
     `Scope: ${profile.scope}`,
     '',
     profile.commonBody,
@@ -242,7 +252,8 @@ function formatCatalog(catalog) {
     const aliases = profile.aliases.filter(alias => alias !== profile.id);
     lines.push(
       `- ${profile.id} [${profile.variants.join('|')}] default=${profile.defaultVariant}` +
-      `${aliases.length ? ` aliases=${aliases.join(',')}` : ''} - ${profile.description}`
+      `${aliases.length ? ` aliases=${aliases.join(',')}` : ''}` +
+      `${profile.kind === 'presentation' ? '' : ` kind=${profile.kind}`} - ${profile.description}`
     );
   }
   return lines.join('\n');
@@ -250,6 +261,7 @@ function formatCatalog(catalog) {
 
 module.exports = {
   NAME_RE,
+  PROFILE_KINDS,
   canonicalizeStack,
   findProfilesDir,
   formatCatalog,

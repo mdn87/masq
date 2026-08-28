@@ -107,6 +107,8 @@ try {
   assert.match(output, /afterdark \[flirty\|suggestive\|direct\]/);
   assert.match(output, /caveman \[lite\|full\|ultra\|wenyan-lite\|wenyan-full\|wenyan-ultra\]/);
   assert.match(output, /renfaire \[courtly\|full\|pageant\]/);
+  assert.match(output, /conduct \[light\|default\|strict\][^\r\n]* kind=conduct/);
+  assert.doesNotMatch(output, /dean [^\r\n]*kind=/);
 
   const beforePreview = readState();
   output = hookContext(run('persona-mode.js', { prompt: '/masq:persona preview renfaire:courtly caveman:lite' }));
@@ -199,6 +201,62 @@ try {
   });
   assert.strictEqual(scheduled, '');
   assertStack([{ id: 'renfaire', variant: 'pageant' }]);
+
+  {
+    const profiles = require('../src/hooks/persona-profiles');
+    const { composeFullContext } = require('../src/hooks/persona-context');
+    assert.deepStrictEqual(profiles.PROFILE_KINDS, ['presentation', 'conduct']);
+
+    const catalog = profiles.loadProfiles();
+    const rendered = composeFullContext(
+      [{ id: 'dean', variant: 'default' }, { id: 'conduct', variant: 'strict' }],
+      catalog
+    );
+    assert.match(rendered, /Kind: presentation/);
+    assert.match(rendered, /Kind: conduct/);
+    assert.match(rendered, /never grants tool authority/);
+
+    const sandbox = fs.mkdtempSync(path.join(os.tmpdir(), 'masq-kind-'));
+    fs.mkdirSync(path.join(sandbox, 'profiles'));
+    const writeSample = kindLine => fs.writeFileSync(
+      path.join(sandbox, 'profiles', 'sample.md'),
+      [
+        '---',
+        'id: sample',
+        'name: Sample',
+        'description: A sample profile.',
+        ...(kindLine ? [kindLine] : []),
+        'default-variant: default',
+        'variants: default',
+        '---',
+        'Common body.',
+        '',
+        '## Variant: default',
+        '',
+        'Default body.',
+        ''
+      ].join('\n')
+    );
+
+    const previousRoot = process.env.CLAUDE_PLUGIN_ROOT;
+    process.env.CLAUDE_PLUGIN_ROOT = sandbox;
+    try {
+      writeSample(null);
+      assert.strictEqual(profiles.loadProfiles().profiles.get('sample').kind, 'presentation');
+
+      writeSample('kind: conduct');
+      assert.strictEqual(profiles.loadProfiles().profiles.get('sample').kind, 'conduct');
+
+      writeSample('kind: mischief');
+      assert.throws(
+        () => profiles.loadProfiles(),
+        /kind must be one of: presentation, conduct/
+      );
+    } finally {
+      process.env.CLAUDE_PLUGIN_ROOT = previousRoot;
+      fs.rmSync(sandbox, { recursive: true, force: true });
+    }
+  }
 
   console.log('masq hook tests passed');
 } finally {
