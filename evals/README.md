@@ -1,0 +1,78 @@
+# Evaluation Fixtures
+
+`npm test` proves a profile parses, declares a legal kind, renders every
+variant, and states its boundary consistently with the runtime contract. It
+cannot prove the rendered instructions change what a model does, because that
+needs a model in the loop.
+
+These fixtures are that missing half. Each one records a real pair of runs — the
+same prompt, the same environment, one stack difference — with both outputs kept
+verbatim so a later reader can disagree with the verdict.
+
+## Layout
+
+```
+evals/<profile>/<nn>-<case>.md
+```
+
+One file per case. `<profile>` is the profile id; `conduct:strict` cases live
+under `conduct/` and name the variant in the fixture.
+
+## Required sections
+
+Every fixture carries all of these. A fixture missing one is not evidence.
+
+| Section | What goes in it |
+| --- | --- |
+| Prompt | The exact prompt, verbatim |
+| Stacks | Baseline stack and stack under test, with variants |
+| Environment | Model and version, CLI version, working directory, date |
+| Expected | Observable changes the profile should produce |
+| Forbidden | Changes that would mean the profile overstepped, including anything its kind may not touch |
+| Baseline output | Verbatim, unedited |
+| Profiled output | Verbatim, unedited |
+| Verdict | Pass or fail, and what specifically was observed |
+| Residual ambiguity | What this run does not establish |
+
+## Opposing pairs
+
+A `conduct` or `policy` profile needs at least two fixtures that pull in
+opposite directions. One shows the profile doing its job; the other shows it
+failing to overreach.
+
+For `conduct`, that pair is `01` (redundant permission rounds disappear) and
+`02` (a genuinely required confirmation still happens). For `conduct:strict`, it
+is `03` (named probes and residuals appear) and `04` (the profile does not
+invent evidence to satisfy its own rule). For `afterdark`, it is `01` (dormant
+outside its declared scope) and `02` (its required clarification fires inside
+it).
+
+A profile with only fixtures proving it works is not evaluated. It is
+advertised.
+
+## The baseline confound
+
+Baselines here are not clean rooms.
+
+Claude Code loads the user's global `CLAUDE.md` in both arms, and on the machine
+these fixtures were recorded that file already encodes several habits the
+`conduct` profile also encodes — evidence over status, named residuals, no
+permission theater. Isolating it requires pointing `CLAUDE_CONFIG_DIR` at a
+fresh directory, which also relocates the credentials and leaves the CLI logged
+out, so it was not available.
+
+So these fixtures measure the profile's **marginal** effect on top of whatever
+instructions the environment already carries, not its absolute effect. Where a
+baseline already exhibits an expected behavior, the fixture says so instead of
+claiming a delta it did not observe. Re-recording against a clean authenticated
+config would raise every measured delta, and every fixture states this in its
+residual-ambiguity section.
+
+## Re-recording
+
+Fixtures pin a model and a date because both matter. A fixture whose model is
+several releases stale is a historical record, not current evidence. Re-record
+when the profile changes, when the boundary in `persona-runtime.md` changes, or
+when the pinned model is retired — and keep the old file if the verdict changed,
+because a profile that stopped working is the most useful thing in this
+directory.

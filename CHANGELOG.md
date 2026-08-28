@@ -4,6 +4,31 @@ All notable changes will be documented here.
 
 ## [Unreleased]
 
+### Added
+
+- `evals/` — behavioral fixtures recorded against a live session, with both
+  outputs kept verbatim: 4 for `conduct` (two opposing pairs), 2 for
+  `afterdark`, 1 each for `dean` and `de-tell`
+- Coverage section in `docs/CATALOG_PLAN.md` recording what the first round
+  found
+
+### Changed
+
+- The catalog plan's thesis. The first fixtures put the authored profiles
+  (`dean`, `conduct`) ahead of the extracted one (`de-tell`) on demonstrated
+  effect, so "extracted beats invented" is withdrawn; a corpus is still the
+  cheapest way to find a profile's job, but a corpus gathered on a different
+  model can supply a rule for a problem the current model does not have
+
+### Known
+
+- `de-tell` has no demonstrated effect. Its headline rule targets a
+  negation-contrast pattern that did not appear in four runs across two prompts
+  on `claude-sonnet-5`. Retirement candidate at the next release unless
+  retargeted or shown at larger sample size.
+- `plain`, `caveman`, and `renfaire` have no fixtures, and no fixture covers
+  profile composition, which is where the 0.3.0 precedence rules apply.
+
 ## [0.3.0] - 2026-08-28
 
 ### Breaking

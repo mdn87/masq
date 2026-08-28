@@ -8,19 +8,24 @@ product, and right now it is thin and skewed toward demos.
 A profile earns its place by doing a specific job well in real sessions, not by
 being interesting to design.
 
-Two of the current profiles do work every session. `de-tell` was extracted from
-a production documentation round — 26 documents in three voices with verified
-fidelity — and its rules are the ones that survived that round. `dean` is an
-authored composite register rather than an extraction, and it works because it
-answers a narrow question: how should a reply to this person read. The other
-three presentation profiles were designed to prove the engine handles ornament,
-compression, and contextual dormancy, which was worth proving once.
+The first round of evaluation fixtures says something the earlier draft of this
+plan got wrong.
 
-So origin is not the discriminator. The useful profiles have a job that can be
-stated in one sentence and checked in one reading. Corpus-derived extraction is
-the better default heuristic, because a corpus supplies that job for free and
-keeps the rules honest — but it is a heuristic until there is broader behavioral
-evidence, not a settled result from two examples.
+`dean` is an authored composite register, not an extraction, and it produces a
+clear observable change: the bulleted comparison the default reaches for
+disappears. `conduct` produces the strongest measured effect in the catalog, and
+it too was authored rather than lifted from a corpus. `de-tell` was the
+extraction — from a documentation round of 26 documents in three voices with
+verified fidelity — and it is the one profile whose headline rule could not be
+demonstrated at all, because the pattern it targets never appeared.
+
+So origin is not the discriminator, and the earlier claim that extraction beats
+invention had it close to backwards on this evidence. What the profiles that
+worked share is a job that can be stated in one sentence and checked in one
+reading, against behavior the model actually exhibits. A corpus is still the
+cheapest way to find such a job, and it keeps the rules honest — but a corpus
+gathered on a different model can hand you a rule for a problem your model does
+not have, which is exactly what `de-tell` looks like right now.
 
 ## Admission criteria
 
@@ -148,12 +153,14 @@ fixture after a release is a candidate for removal.
 
 ## Evaluation fixtures
 
-Nothing currently proves a profile changed anything. `npm test` validates that
+`npm test` cannot prove a profile changed anything. It validates that
 every profile parses, that every declared variant has a body, that kinds are
 declared and legal, that the kind boundary is stated consistently across the
 contract, its fallback, the reinforcement line, the skill, and the security
 notes, and that every variant renders. It cannot check that the rendered
-instructions changed a response, because that needs a model in the loop.
+instructions changed a response, because that needs a model in the loop. The
+fixtures in `evals/` are that half, and the Coverage section below records what
+they found.
 
 Deterministic CI can prove parser behavior, rendering, fallback contracts,
 precedence mechanics, migration notes, and profile-local guardrails. Only the
@@ -161,8 +168,9 @@ last question — do these instructions actually change what the model does —
 needs a model, and a CI job that asserts a profile "works" without running one
 would be worse than the gap it papers over.
 
-So the manual check becomes repeatable instead of informal. Each admitted
-profile ships `evals/<profile>/<case>.md` containing:
+So the manual check becomes repeatable instead of informal. The format and the
+current results live in `evals/`. Each admitted profile ships
+`evals/<profile>/<nn>-<case>.md` containing:
 
 - the fixed prompt or prompt set
 - the baseline stack and the stack under test, with variants
@@ -180,9 +188,48 @@ appear, one showing the profile does not invent evidence to satisfy its own
 rule. A profile that only has fixtures proving it works is not evaluated; it is
 advertised.
 
+## Coverage
+
+Recorded 2026-08-28 against `claude-sonnet-5`, Claude Code 2.1.195. See `evals/`.
+
+| Profile | Fixtures | Result |
+| --- | --- | --- |
+| `conduct` | 4 (two opposing pairs) | `01` strong delta, `02` no delta by design, `03`/`04` pass |
+| `afterdark` | 2 (opposing) | both pass |
+| `dean` | 1 | pass, clear structural delta |
+| `de-tell` | 1 | **inconclusive** — neither arm produced the tell it targets |
+| `plain` | 0 | not evaluated |
+| `caveman` | 0 | not evaluated |
+| `renfaire` | 0 | not evaluated |
+
+Three findings from the first round worth carrying forward.
+
+**Single runs are not evidence on this model.** The `conduct/01` baseline edited
+a file it was told only to review on three of five runs and behaved correctly on
+the other two. The first two runs disagreed with each other, and a one-pair
+fixture would have produced a confident verdict in either direction. Behavioral
+fixtures need repeated sampling; the ones here that have only one run per arm say
+so in their residual sections and are weaker for it.
+
+**`de-tell` is currently unverified.** Its headline rule targets a pattern that
+did not appear in four runs across two prompts. The rules came from a
+documentation round on a different model. Under the retirement rule above, that
+makes it a removal candidate at the next release unless a larger prompt set
+finds the pattern, or the fixture is retargeted at the flags that do fire.
+
+**The measured deltas are marginal, not absolute.** Both arms load the machine's
+global `CLAUDE.md`, which already encodes several conduct habits, and isolating
+it logs the CLI out. Every number here understates the profile's effect against a
+clean baseline. `evals/README.md` documents this.
+
 ## Open
 
-`claude --plugin-dir .` — the live plugin smoke test the development loop calls
-for — has not been run against the kind changes. Parser, rendering, contract,
-and migration-note behavior are covered by `npm test`; how the rendered
-instructions actually land in a session is not.
+The live smoke test has been run: `claude --plugin-dir .` loads the plugin,
+hooks fire, `doctor` reports `PASS` at 0.3.0 with 7 profiles and 23 variants, and
+the 0.3.0 migration note appears for a `dean`-without-`conduct` stack. Profile
+rendering was exercised indirectly by every fixture run above.
+
+Still open: `plain`, `caveman`, and `renfaire` have no fixtures. No fixture
+covers composition — two presentation profiles stacked, or a policy profile
+under a register — which is where the precedence rules added in 0.3.0 actually
+apply and where nothing has been observed at all.
