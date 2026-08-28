@@ -1,4 +1,4 @@
-# composition/01 — conduct under a later register (fixed on the third attempt)
+# composition/01 — conduct under a later register (materially improved, not fixed)
 
 The runtime contract says a presentation profile "cannot drop semantic content
 that a conduct or policy profile requires; shorten the prose around a required
@@ -187,13 +187,15 @@ Check the response against this list before sending it. A missing item is a defe
 A `presentation` profile that declares the section fails to load, so the section
 also encodes which kinds are allowed to bind content.
 
-Re-evaluated on `conduct:strict renfaire`, 4 runs:
+Re-evaluated on `conduct:strict renfaire`, first 4 runs:
 
 | | Before | Attempt 2 | **Attempt 3** |
 | --- | --- | --- | --- |
 | Probe named or claim labelled unverified | 0/3 | 0/4 | **4/4** |
 | Explicit residuals line | 0/3 | 0/4 | 1/4 |
 | Ornate register applied | 0/3 | 1/4 | **3/4** |
+
+**That 4/4 was a lucky sample. See the correction below before quoting it.**
 
 Run 4 is what the contract has been promising all along:
 
@@ -220,10 +222,53 @@ label the claim unverified — is met in 4 of 4, against 0 of 3 before.
 
 **This ships.** Unlike attempt 2, it moved the measurement.
 
+## Correction: 4/4 did not hold up
+
+The first four runs were reported as a fix, and masq 0.5.0 shipped on that
+reading. Extending the sample to 22 runs across four stacks revised it down.
+
+| Stack | Runs | Probe named or claim labelled |
+| --- | --- | --- |
+| `conduct:strict renfaire` | 7 | 4 |
+| `conduct renfaire` | 3 | 2 |
+| `conduct:strict dean` | 6 | 2 |
+| `renfaire conduct:strict` | 6 | 1 |
+| **All composed, after the fix** | **22** | **9 (41%)** |
+| All composed, before the fix | 9 | 0 |
+
+So the mechanism works and the original claim was too strong. Going from 0% to
+41% on 22 runs is a large, real improvement — nothing in this directory has moved
+a number that far — and 41% is not a solved problem. A stack that honours a
+conduct requirement three times in seven is not one you can rely on.
+
+**Length is the visible correlate.** The stacks that scored worst produced the
+shortest answers: `renfaire conduct:strict` came back at 87, 131, 157, 202, 346,
+649 bytes and scored 1 of 6. `conduct renfaire` produced 506, 722, 1068 and
+scored 2 of 3. Requirements are dropped when the answer is short, which fits a
+model resolving a length-versus-completeness tension against the requirement, and
+fits the earlier finding that a requirement satisfiable by an appended sentence
+is the first thing shed.
+
+Slot order is not the explanation on its own. `renfaire` last scored 4/7 and 2/3;
+`renfaire` first scored 1/6 — suggestive, but `conduct:strict dean` also scored
+2/6 with the register last, so a plain register underperforms an ornate one in
+the same position.
+
+**What would move it next.** The requirements block is terminal but passive; the
+model reads it and is not obliged to act. The obvious next mechanism is making
+the check explicit rather than implied — for instance requiring the response to
+carry each requirement's satisfaction visibly, or reducing the requirement count
+so a short answer can still satisfy all of them. Neither is tried, and neither
+should be claimed until it is measured on more than four runs. That is the
+mistake this section exists to record.
+
 ## Consequence
 
-`reviewer` is unblocked. The mechanism a second conduct profile would need — a
-way to bind content that survives a register — now exists and is measured.
+`reviewer` is **not** unblocked, contrary to what the first re-evaluation claimed.
+A second conduct profile would inherit a 41% compliance rate on its own
+requirements, and two conduct profiles competing for the same short answer is
+likely worse than one. Ship it only after the composed rate is materially higher
+than this.
 
 The general lesson is the one the two failures paid for: in a stack of persona
 instructions, anything phrased as persona gets treated as persona. Content that
@@ -232,14 +277,19 @@ something else. Wording changes did not do it; structure did.
 
 ## Residual ambiguity
 
-Seventeen runs across five stacks and three mechanisms, all on one prompt and one
-model. Four runs is thin for the fix, and 4/4 is consistent with a real rate
-somewhat below 100%.
+Thirty-one runs across five stacks and three mechanisms, all on a single prompt
+and a single model. The prompt is short and factual, which is the shape least
+likely to carry a residuals section, so the absolute rate is probably better on
+longer work than 41% suggests. The before/after comparison used the identical
+prompt throughout, which is the load-bearing part.
 
-The fix is only tested on `conduct:strict renfaire`. The other three stacks that
-failed — reversed order, `conduct:default`, `conduct:strict dean` — were not
-re-run against it. Nor was any `policy` profile, which uses the same mechanism
-and has never been observed in composition at all. The prompt is short and factual, which is the shape where
+Scoring is by hand against a keyword pass plus a read. "Probe named or claim
+labelled" admits judgement at the margins, and a stricter reader would score
+lower.
+
+`policy` under a register was subsequently tested in `afterdark/03` and behaved
+completely differently — 3/3 with no mechanism at all. The contrast is written up
+there and reframes what the `## Requirements` block is actually for. The prompt is short and factual, which is the shape where
 a model is least inclined to append a residuals section, so the absolute rate is
 probably worse here than on a longer task. The comparison against the control is
 the load-bearing part, and the control used the identical prompt.

@@ -4,6 +4,28 @@ All notable changes will be documented here.
 
 ## [Unreleased]
 
+### Corrected
+
+- **0.5.0 overstated the composition fix.** Its changelog said "cross-kind
+  composition now works" on the strength of 4 runs scoring 4/4. Extending to 22
+  runs across four stacks gives 9/22, against 0/9 before the fix. The mechanism
+  is real and the improvement is the largest recorded in `evals/`, but 41% is
+  not a fix, and `reviewer` is **not** unblocked as 0.5.0 claimed. Corrected in
+  `evals/composition/01`; the 0.5.0 entry below is left as written with a
+  pointer, since rewriting shipped history hides the mistake.
+
+### Added
+
+- `evals/de-tell/03` — an earned negation survives the pass, 3/3.
+- `evals/audience/03` — the override holds at `expert`, 3/3, including the
+  reflog distinction `caveman` once flattened.
+- `evals/renfaire/02` — ornament around a destructive warning, not through it.
+  "Cannot be undone" and "lost forever" stay uncostumed; every command verbatim.
+- `evals/afterdark/03` — policy survives a register with no mechanism at all,
+  3/3, in exactly the configuration where conduct failed 0/9. The contrast
+  reframes what `## Requirements` is for: a requirement restating a boundary the
+  model already holds needs no help, and a purely conventional one does.
+
 ## [0.5.0] - 2026-08-28
 
 ### Added
@@ -17,11 +39,12 @@ All notable changes will be documented here.
 
 ### Fixed
 
-- **Cross-kind composition now works.** Conduct requirements survive a register:
+- **Cross-kind composition improved.** Conduct requirements survive a register:
   probe-named-or-labelled went 0/3 to 4/4 and the ornate register recovered 0/3
   to 3/4 on `conduct:strict renfaire`. Two earlier attempts that restated the
   rule changed nothing; treating it as structure rather than emphasis did.
-  `reviewer` is unblocked.
+  (**Corrected after release** — see Unreleased. At 22 runs the composed rate is
+  9/22, not 4/4, and `reviewer` remains blocked.)
 - `plain`'s invented-fact defect is fixed, not merely mitigated: 0/3 invented,
   down from 2/2 originally and 2/3 after the first attempt. Requiring the
   uncertainty in the same clause as the status — rather than in an appendable

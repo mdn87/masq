@@ -68,6 +68,26 @@ claiming a delta it did not observe. Re-recording against a clean authenticated
 config would raise every measured delta, and every fixture states this in its
 residual-ambiguity section.
 
+## What this directory has cost and returned
+
+Twenty-one fixtures, roughly 140 runs. What it found, in order of how much it
+changed:
+
+- A composition failure invisible to the test suite: a conduct profile's required
+  content vanished whenever a presentation profile was stacked with it. Three
+  mechanisms were tried; two did nothing and were reverted.
+- Two profile defects. `caveman` flattened a recoverability distinction; `plain`
+  invented the explanation for a status it was never given. Both fixed, and the
+  second only after the first attempt was measured and found wanting.
+- A profile whose headline rule is dormant on the current model, and whose real
+  effect is a flag it barely mentions.
+- One overclaim of my own, corrected: a 4/4 sample reported as a fix, revised to
+  9/22 once the sample grew.
+
+Twice the recorded result was "this did not work" and the change was reverted
+rather than shipped. That is the directory earning its keep. A repository where
+every fix is described as successful is a repository where nobody measured.
+
 ## Re-recording
 
 Fixtures pin a model and a date because both matter. A fixture whose model is

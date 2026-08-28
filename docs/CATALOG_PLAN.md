@@ -176,14 +176,34 @@ Recorded 2026-08-28 against `claude-sonnet-5`, Claude Code 2.1.195. See `evals/`
 | Profile | Fixtures | Result |
 | --- | --- | --- |
 | `conduct` | 4 (two opposing pairs) | `01` strong delta, `02` no delta by design, `03`/`04` pass |
-| `afterdark` | 2 (opposing) | both pass |
+| `afterdark` | 3 | `01`/`02` pass; `03` policy survives a register unaided |
 | `dean` | 1 | pass, clear structural delta |
-| `plain` | 1 | pass; invented-fact defect found, mitigated, not eliminated |
+| `plain` | 1 | pass; invented-fact defect found and fixed on the second attempt |
 | `caveman` | 2 (opposing) | `01` pass, `02` defect found and fixed |
-| `renfaire` | 1 | pass, ornament and literal preservation both hold |
-| composition | 2 | `01` **fixed on the third attempt**, `02` passes |
-| `de-tell` | 2 | `01` inconclusive, `02` pass — effect is real, emphasis is wrong |
-| `audience` | 2 | pass on the dial; the leak was the topic, not the profile |
+| `renfaire` | 2 | `01` literals preserved; `02` destructive warning stays uncostumed |
+| composition | 2 | `01` improved 0% to 41%, **not fixed**; `02` passes |
+| `de-tell` | 3 | `01` inconclusive, `02` pass, `03` earned negation survives 3/3 |
+| `audience` | 3 | dial works; leak was the topic; override holds at `expert` 3/3 |
+
+Twenty-one fixtures, roughly 140 recorded runs.
+
+### Protection directions
+
+Every profile that can suppress something now has a fixture testing that it does
+not. This was the last systematic gap, and all five passed.
+
+| Protection | Result |
+| --- | --- |
+| `de-tell` keeps an earned negation | 3/3 |
+| `caveman` keeps a warning under compression | 3/3, after a distinction rule |
+| `audience:expert` keeps a consequential explanation | 3/3 |
+| `renfaire` keeps a destructive warning legible | 3/3 |
+| `afterdark` keeps its refusal under a register | 3/3 |
+
+The pattern across all five: the model reliably protects content with independent
+backing - safety warnings, refusals, irreversibility. It is unreliable about
+content whose only backing is a profile convention, which is exactly what
+`composition/01` measures at 41%.
 
 Findings from the first two rounds worth carrying forward.
 
@@ -261,28 +281,28 @@ rendering was exercised indirectly by every fixture run above.
 
 Still open, in priority order.
 
-1. **The composition fix is only measured on one stack.** `conduct:strict
-   renfaire` recovered; the three other stacks that failed — reversed order,
-   `conduct:default`, `conduct:strict dean` — were not re-run against it. No
-   `policy` profile has been observed in composition at all, and `afterdark`
-   under a register is the format documentation's own worked example.
-2. **`de-tell`'s protection direction is still untested** — does an earned
-   negation ("reduces exposure but is **not** a sandbox") survive the pass? That
-   is the failure mode with real cost and no fixture covers it.
-3. **The `audience` override is untested.** At `expert`, does an explanation stay
-   when dropping it would leave a reader unable to act on something
-   consequential? That clause matters more than the dial itself.
-4. **The no-announce rule leaks.** `audience/01` found the active stack named in
-   3 of 3 `novice` runs against 0 of 2 baseline on the identical prompt. The
-   prompt was about masq itself, which invites it, so the fixture cannot separate
-   "this profile leaks" from "this topic leaks." A no-announce fixture on an
-   unrelated prompt would.
-5. **Untested cases that matter:** `audience:peer` — the default, and so what
-   most stacks actually run — was never evaluated; only the two extremes were.
-   The `audience` override is untested, which is the clause that matters most.
-   `renfaire` over a destructive confirmation,
-   where the contract requires plain prose for the decisive sentence; `afterdark`
-   under a register profile, which is the format documentation's own worked
-   example; and any presentation profile stacked over `plain` or `caveman`, where
-   the earlier profile's contribution is substance-shaped rather than
-   register-shaped.
+1. **Conduct requirements survive composition 41% of the time.** The one
+   unresolved defect, and it blocks `reviewer`: a second conduct profile would
+   inherit that rate, and two profiles competing for one short answer is likely
+   worse than one. The requirements block is terminal but passive - the model
+   reads it and is not obliged to act. Making the check active, or cutting the
+   requirement count so a short answer can satisfy all of them, are the untried
+   directions. Response length is the visible correlate: the shortest answers
+   drop requirements first.
+2. **The policy/conduct asymmetry is a hypothesis, not a result.** `afterdark`
+   held 3/3 under a register with no mechanism; `conduct` held 0/9 before one.
+   The proposed explanation - a requirement restating a boundary the model
+   independently holds survives, and a purely conventional one does not -
+   predicts that a *novel* policy requirement with no outside backing would fail
+   the way conduct did. That experiment does not exist and is the single most
+   informative thing left to run.
+3. **The hard cases inside the passing protections.** `de-tell` was tested on a
+   negation it was handed, not one it generated, and the one self-generated
+   negation in that fixture did not survive. The `audience` override was tested
+   on `git reset --hard`, where any model warns anyway; the real test is a
+   consequential step with no independent backing. Both passing results are
+   narrower than their rules claim.
+4. **Method limits that apply to everything here.** One model, one prompt per
+   fixture, hand-scored observables, and no clean-room baseline - the machine's
+   global instructions load in both arms, so every delta is marginal rather than
+   absolute. Sample sizes are 2 to 7 per arm except where a result was contested.
