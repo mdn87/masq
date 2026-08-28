@@ -59,19 +59,35 @@ Use maximal theatrical commitment without damaging the answer.
 : Comma-separated alternate IDs accepted by commands. Aliases must be unique across the complete profile catalog.
 
 `kind`
-: `presentation` (the default) or `conduct`. See Profile Axes below.
+: `presentation` (the default), `conduct`, or `policy`. See Profile Kinds below.
 
-## Profile Axes
+## Profile Kinds
 
-A profile changes one of two things, and `kind` declares which.
+`kind` declares what a profile is allowed to change. Every shipped profile states it explicitly; the `presentation` default exists for third-party profiles written before the field did.
 
-A `presentation` profile changes how a response reads: register, vocabulary, structure, ornament. It never changes what the response asserts. Renfaire, Plain Language, Caveman, De-tell, and Dean are presentation profiles.
+**`presentation`** changes wording, register, structure, and compression, after the task decisions have been made. Compression may drop detail, but never detail the reader needs to decide or act, and never a warning, negation, qualifier, or exact literal. It does not change which actions are taken, what evidence is gathered, the scope of the work, confirmation behavior, or refusal behavior. Renfaire, Plain Language, Caveman, De-tell, and Dean are presentation profiles.
 
-A `conduct` profile changes how the work is done and reported: effort, sequencing, and what a report contains. Working Conduct is the first of these.
+**`conduct`** changes how the work is done and reported: effort, sequencing, and what a report contains. It may never grant tool authority, widen a permission, lower a confirmation requirement, skip a safety check, or alter a factual claim. Working Conduct is the first of these.
 
-A conduct profile is bounded more tightly than a presentation profile, because it reaches past the prose. It may never grant tool authority, widen a permission, lower a confirmation requirement, skip a safety check, or alter a factual claim, and it yields to any user request, project instruction, permission rule, or safety rule. State that boundary inside the profile as well as relying on the runtime contract; a reader of the file should be able to see the limit without loading the rest of the plugin.
+**`policy`** changes what may be produced in a context: required checks, required clarifications, refusals, and content boundaries. It may only tighten, and never loosens or removes a safety requirement, grants a capability, or permits content another rule forbids. Afterdark is a policy profile: it can require clarification when age is ambiguous and refuse whole classes of request, which is not something a presentation profile may do.
 
-The two axes compose. A conduct profile keeps supplying its habits under any register, so `dean` and `conduct` together produce the register and the working style that originally shipped as one file.
+A conduct or policy profile is bounded more tightly than a presentation profile because it reaches past the prose. State the boundary inside the profile as well as relying on the runtime contract; a reader of the file should be able to see the limit without loading the rest of the plugin.
+
+### Choosing a kind
+
+Ask what the profile changes when nothing else about the situation changes.
+
+- Only how the same answer is worded, structured, or compressed? `presentation`.
+- Which steps are taken, how much is asked, or what a report must contain? `conduct`.
+- Whether something may be produced at all, or what must be checked or refused first? `policy`.
+
+Compression is presentation. Omitting something the reader needs in order to act is not compression, and no kind permits it.
+
+### Precedence
+
+Precedence runs within a kind. Presentation traits compose and a later presentation profile owns the surface register. Conduct traits compose and a later conduct profile wins a direct conduct conflict. A presentation profile cannot drop semantic content that a conduct or policy profile requires; shorten the prose around a required item instead. Policy requirements sit outside stack precedence, and the strictest active requirement applies.
+
+The kinds compose. A conduct profile keeps supplying its habits under any register, so `dean` and `conduct` together produce the register and the working style that originally shipped as one file.
 
 ## Variant Sections
 

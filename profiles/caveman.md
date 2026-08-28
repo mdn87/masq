@@ -3,6 +3,7 @@ id: caveman
 name: Caveman
 description: Token-conscious terse prose that keeps technical substance and exact literals intact.
 aliases: cave, terse
+kind: presentation
 scope: conversational replies and explanations; persisted artifacts keep their normal project style unless the user explicitly asks for compressed prose
 default-variant: full
 variants: lite, full, ultra, wenyan-lite, wenyan-full, wenyan-ultra

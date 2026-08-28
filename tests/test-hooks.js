@@ -205,27 +205,63 @@ try {
   {
     const profiles = require('../src/hooks/persona-profiles');
     const { composeFullContext } = require('../src/hooks/persona-context');
-    assert.deepStrictEqual(profiles.PROFILE_KINDS, ['presentation', 'conduct']);
+    assert.deepStrictEqual(profiles.PROFILE_KINDS, ['presentation', 'conduct', 'policy']);
 
     const catalog = profiles.loadProfiles();
-    const rendered = composeFullContext(
-      [{ id: 'dean', variant: 'default' }, { id: 'conduct', variant: 'strict' }],
-      catalog
-    );
-    assert.match(rendered, /Kind: presentation/);
-    assert.match(rendered, /Kind: conduct/);
-    assert.match(rendered, /never grants tool authority/);
+
+    // Every shipped profile declares its kind explicitly rather than relying on
+    // the presentation default, and every kind in use is a supported one.
+    for (const profile of catalog.profiles.values()) {
+      const source = fs.readFileSync(profile.filePath, 'utf8');
+      assert.match(source, /^kind: /m, `${profile.id} must declare kind explicitly`);
+      assert.ok(profiles.PROFILE_KINDS.includes(profile.kind), `${profile.id} kind`);
+    }
+    assert.strictEqual(catalog.profiles.get('afterdark').kind, 'policy');
+    assert.strictEqual(catalog.profiles.get('conduct').kind, 'conduct');
+    assert.strictEqual(catalog.profiles.get('caveman').kind, 'presentation');
+
+    // The guardrail must live in the conduct profile's own body, not only in
+    // the runtime contract that happens to be composed alongside it.
+    const conductBody = catalog.profiles.get('conduct').commonBody;
+    assert.match(conductBody, /cannot grant tool authority/);
+    assert.match(conductBody, /lower a confirmation requirement/);
+    assert.doesNotMatch(catalog.profiles.get('dean').commonBody, /grant tool authority/);
+
+    // Kind travels with each slot, not merely somewhere in the composed context.
+    const deanSlot = profiles.renderProfile({ id: 'dean', variant: 'default' }, catalog, 1);
+    const conductSlot = profiles.renderProfile({ id: 'conduct', variant: 'strict' }, catalog, 2);
+    const slotLines = text => text.split('\n');
+    assert.strictEqual(slotLines(deanSlot)[0], '## Slot 1: Dean (dean:default)');
+    assert.strictEqual(slotLines(deanSlot)[1], 'Kind: presentation');
+    assert.strictEqual(slotLines(conductSlot)[0], '## Slot 2: Working Conduct (conduct:strict)');
+    assert.strictEqual(slotLines(conductSlot)[1], 'Kind: conduct');
+
+    // The contract, its fallback, and the per-turn reinforcement must all state
+    // the conduct boundary; three copies of a boundary are worthless if the
+    // other authoritative copies still describe Masq as presentation-only.
+    const context = require('../src/hooks/persona-context');
+    for (const text of [
+      context.readRuntimeContract(),
+      context.FALLBACK_CONTRACT,
+      context.composeReinforcement([{ id: 'conduct', variant: 'default' }], catalog)
+    ]) {
+      assert.match(text, /conduct/i);
+      assert.match(text, /permission|confirmation/i);
+      assert.match(text, /policy/i);
+    }
+    assert.doesNotMatch(context.FALLBACK_CONTRACT, /ordered style overlays/);
 
     const sandbox = fs.mkdtempSync(path.join(os.tmpdir(), 'masq-kind-'));
     fs.mkdirSync(path.join(sandbox, 'profiles'));
-    const writeSample = kindLine => fs.writeFileSync(
+    const writeSample = kindLine => writeSampleLines(kindLine ? [kindLine] : []);
+    const writeSampleLines = extra => fs.writeFileSync(
       path.join(sandbox, 'profiles', 'sample.md'),
       [
         '---',
         'id: sample',
         'name: Sample',
         'description: A sample profile.',
-        ...(kindLine ? [kindLine] : []),
+        ...extra,
         'default-variant: default',
         'variants: default',
         '---',
@@ -247,11 +283,24 @@ try {
       writeSample('kind: conduct');
       assert.strictEqual(profiles.loadProfiles().profiles.get('sample').kind, 'conduct');
 
+      writeSample('kind: policy');
+      assert.strictEqual(profiles.loadProfiles().profiles.get('sample').kind, 'policy');
+
       writeSample('kind: mischief');
       assert.throws(
         () => profiles.loadProfiles(),
-        /kind must be one of: presentation, conduct/
+        /kind must be one of: presentation, conduct, policy/
       );
+
+      // A misspelled key must not silently fall back to presentation.
+      writeSample('knd: conduct');
+      assert.throws(() => profiles.loadProfiles(), /unknown frontmatter field "knd"/);
+
+      writeSampleLines(['kind: presentation', 'kind: conduct']);
+      assert.throws(() => profiles.loadProfiles(), /duplicate frontmatter field "kind"/);
+
+      writeSample('sneaky: true');
+      assert.throws(() => profiles.loadProfiles(), /unknown frontmatter field "sneaky"/);
     } finally {
       process.env.CLAUDE_PLUGIN_ROOT = previousRoot;
       fs.rmSync(sandbox, { recursive: true, force: true });

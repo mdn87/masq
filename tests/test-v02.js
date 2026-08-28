@@ -167,10 +167,21 @@ try {
   output = prompt('/masq:persona preset delete concise');
   assert.match(output, /Deleted preset concise/);
 
+  // A stack written before 0.3.0 keeps working but no longer means the same
+  // thing; doctor has to say so rather than letting it change silently.
+  prompt('/masq:persona set dean');
+  output = prompt('/masq:persona doctor');
+  assert.match(output, /Notes:/);
+  assert.match(output, /dean is register-only since 0\.3\.0/);
+  prompt('/masq:persona set dean conduct');
+  output = prompt('/masq:persona doctor');
+  assert.doesNotMatch(output, /Notes:/);
+  prompt('/masq:persona set plain caveman');
+
   output = prompt('/masq:persona doctor');
   assert.match(output, /Masq doctor: PASS/);
   assert.match(output, /Catalog: \d+ profiles, \d+ variants/);
-  assert.match(output, /Manifest: 0\.2\.0, required hooks present/);
+  assert.match(output, new RegExp(`Manifest: ${require('../package.json').version.replace(/\./g, '\\.')}, required hooks present`));
   assert.match(output, /Project override: \(unset\)/);
 
   const projectHash = crypto.createHash('sha256').update(fs.realpathSync.native(projectA), 'utf8').digest('hex');

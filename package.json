@@ -1,8 +1,8 @@
 {
   "name": "masq",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
-  "description": "Stackable persona profiles for Claude Code.",
+  "description": "Stackable persona profiles for Claude Code: register, working conduct, and content policy.",
   "type": "commonjs",
   "repository": {
     "type": "git",

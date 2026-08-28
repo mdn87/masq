@@ -20,6 +20,29 @@ function readJson(filePath) {
   }
 }
 
+// Compatibility notices for stacks written before a profile changed shape.
+// This is the second intentional exception to "no included profile IDs in the
+// generic runtime" (the first is the /masq:afterdark command), and it is meant
+// to be deleted once the affected release is far enough back. See ADR 0005.
+const MIGRATION_NOTES = Object.freeze([
+  {
+    since: '0.3.0',
+    present: 'dean',
+    absent: 'conduct',
+    note: 'dean is register-only since 0.3.0; its working conduct moved to the conduct profile. '
+      + 'A stack carrying dean without conduct behaves differently than it did before 0.3.0. '
+      + 'Run /masq:persona set dean conduct to restore the previous behavior, or keep dean alone '
+      + 'if the register is all you wanted.'
+  }
+]);
+
+function migrationNotes(effective) {
+  const active = new Set((effective || []).map(entry => entry.id));
+  return MIGRATION_NOTES
+    .filter(rule => active.has(rule.present) && !active.has(rule.absent))
+    .map(rule => rule.note);
+}
+
 function diagnose({ cwd, sessionId } = {}) {
   const issues = [];
   const lines = [];
@@ -103,6 +126,13 @@ function diagnose({ cwd, sessionId } = {}) {
   lines.push(`Temporary: ${formatStack(state.temporary)}`);
   lines.push(`Effective: ${formatStack(state.effective)}`);
   lines.push(`Presets: ${Object.keys(presets.presets).length}`);
+
+  const notes = migrationNotes(state.effective);
+  if (notes.length) {
+    lines.push('Notes:');
+    for (const note of notes) lines.push(`- ${note}`);
+  }
+
   if (issues.length) {
     lines.push('Problems:');
     for (const issue of issues) lines.push(`- ${issue}`);

@@ -213,10 +213,17 @@ asked for. Its document-side counterpart is the de-tell pass in
 ## Composition Contract
 
 Masq treats profiles as ordered overlays, not new authorities or identities.
-Each profile declares a `kind`. A `presentation` profile changes how a response
-reads and never changes what it asserts. A `conduct` profile changes how work is
-done and reported, within the tighter limits described under Working Conduct
-above.
+Each profile declares a `kind` that bounds what it may change:
+
+| Kind | Changes | Never |
+| --- | --- | --- |
+| `presentation` | wording, register, structure, compression | what the response asserts, or detail the reader needs to act |
+| `conduct` | effort, sequencing, report contents | permissions, confirmations, safety checks, facts |
+| `policy` | required checks, clarifications, refusals, content limits | loosens anything, it may only tighten |
+
+Precedence runs within a kind. A later presentation profile owns the surface
+register, a later conduct profile wins a direct conduct conflict, and policy
+requirements sit outside stack precedence with the strictest one applying.
 
 - Apply profiles from first to last.
 - Preserve every non-conflicting trait.

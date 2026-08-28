@@ -51,7 +51,7 @@ for (const skill of ['persona', 'afterdark']) {
   const skillPath = path.join(root, 'skills', skill, 'SKILL.md');
   assert(fs.existsSync(skillPath), `missing skill: skills/${skill}/SKILL.md`);
   const text = fs.readFileSync(skillPath, 'utf8');
-  assert(text.startsWith('---\n'), `skill frontmatter missing: ${skill}`);
+  assert(/^---\r?\n/.test(text), `skill frontmatter missing: ${skill}`);
   assert(new RegExp(`^name:\\s*${skill}\\s*$`, 'm').test(text), `skill name mismatch: ${skill}`);
   assert(new RegExp(`^version:\\s*${plugin.version.replace(/\./g, '\\.')}\\s*$`, 'm').test(text), `skill version mismatch: ${skill}`);
 }

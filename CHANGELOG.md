@@ -4,19 +4,51 @@ All notable changes will be documented here.
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-08-28
+
+### Breaking
+
+- `dean` is register-only. Its working-conduct half moved to the new `conduct`
+  profile. A stack carrying `dean` behaves differently than it did on 0.2.0:
+  `dean:default` no longer applies scope discipline, permission economy,
+  evidence habits, or residuals, and `dean:light` now means the register
+  without the prose-over-structure collapse rather than the register without
+  the conduct rules. `dean conduct` is the closest equivalent to the old
+  `dean:default`, and the old `dean:light` has no exact equivalent. Persistent
+  stacks and presets are not rewritten, so `doctor` reports a note when it
+  sees `dean` without `conduct`.
+- `afterdark` is now `kind: policy` rather than an implicit presentation
+  profile. Its behavior is unchanged; the classification is what changed.
+- Unknown or duplicate frontmatter fields now fail profile loading. A
+  third-party profile carrying an extra field will stop loading until the
+  field is removed.
+
 ### Added
 
-- Profile axes: an optional `kind` frontmatter field, `presentation` (default)
-  or `conduct`, rendered into the active context and surfaced by `list`
+- Profile kinds: a `kind` frontmatter field, `presentation` (default),
+  `conduct`, or `policy`, rendered into every active slot and surfaced by
+  `list`. Precedence is defined within a kind rather than across kinds.
 - Working Conduct profile, the first on the conduct axis, carrying the scope,
   evidence, and residuals habits that previously rode inside Dean
+- `doctor` reports migration notes for stacks written before a profile changed
+  shape
 - `docs/CATALOG_PLAN.md` describing how the profile catalog should grow
 
 ### Changed
 
-- Dean is now register-only. Its working-conduct half moved to the `conduct`
-  profile, which composes with it and applies with or without it.
-- The runtime contract states what a conduct profile may and may not change
+- The kind boundary is stated in the runtime contract, its fallback, the
+  per-turn reinforcement, `skills/persona/SKILL.md`, and `SECURITY.md`, and a
+  test asserts they agree
+- `plain` no longer dictates progress-report contents; that rule moved to
+  `conduct`, where report shape belongs
+
+### Fixed
+
+- A misspelled `kind` key such as `knd:` silently classified a profile as
+  presentation. Unknown fields are now rejected.
+- `validate-repo.js` rejected a CRLF working tree when checking skill
+  frontmatter
+- The doctor test pinned the manifest version, so it broke on every release
 
 ## [0.2.0] - 2026-08-27
 

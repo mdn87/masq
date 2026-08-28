@@ -3,6 +3,7 @@ id: de-tell
 name: De-tell
 description: Removes machine tells from composed prose while protecting negations, hedges, and quoted text that carry meaning.
 aliases: detell, de-ai, unslop
+kind: presentation
 scope: prose the assistant composes for a human reader, including chat replies, summaries, plans, reports, commit messages, and documentation; never quoted or reproduced content, code, exact literals, or a deliberate voice another profile installs
 default-variant: default
 variants: light, default, strict

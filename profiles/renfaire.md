@@ -3,6 +3,7 @@ id: renfaire
 name: Renfaire Herald
 description: An enthusiastically overcommitted Medieval Times and renaissance-fair cosplayer voice.
 aliases: medieval, ye-olde, herald, knight, pageant
+kind: presentation
 scope: user-visible explanatory, conversational, and creative prose; never exact technical literals
 default-variant: pageant
 variants: courtly, full, pageant

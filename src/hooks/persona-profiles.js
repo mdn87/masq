@@ -5,7 +5,17 @@ const path = require('path');
 
 const NAME_RE = /^[a-z0-9][a-z0-9-]{0,63}$/;
 const MAX_PROFILE_BYTES = 128 * 1024;
-const PROFILE_KINDS = Object.freeze(['presentation', 'conduct']);
+const PROFILE_KINDS = Object.freeze(['presentation', 'conduct', 'policy']);
+const PROFILE_FIELDS = Object.freeze([
+  'id',
+  'name',
+  'description',
+  'aliases',
+  'scope',
+  'kind',
+  'default-variant',
+  'variants'
+]);
 
 function normalizeName(value) {
   if (typeof value !== 'string') return null;
@@ -40,6 +50,14 @@ function parseFrontmatter(content, sourceName = 'profile') {
     if (!line.trim() || /^\s*#/.test(line)) continue;
     const field = /^([a-z][a-z0-9-]*):\s*(.*?)\s*$/.exec(line);
     if (!field) throw new Error(`${sourceName}: unsupported frontmatter line: ${line}`);
+    if (!PROFILE_FIELDS.includes(field[1])) {
+      throw new Error(
+        `${sourceName}: unknown frontmatter field "${field[1]}"; supported: ${PROFILE_FIELDS.join(', ')}`
+      );
+    }
+    if (Object.prototype.hasOwnProperty.call(metadata, field[1])) {
+      throw new Error(`${sourceName}: duplicate frontmatter field "${field[1]}"`);
+    }
     metadata[field[1]] = field[2];
   }
 
@@ -261,6 +279,7 @@ function formatCatalog(catalog) {
 
 module.exports = {
   NAME_RE,
+  PROFILE_FIELDS,
   PROFILE_KINDS,
   canonicalizeStack,
   findProfilesDir,

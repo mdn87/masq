@@ -3,6 +3,7 @@ id: afterdark
 name: Afterdark
 description: Adult consensual intimate-message drafting with controlled levels of directness.
 aliases: intimate, intimate-messaging, sexting
+kind: policy
 scope: adult consensual intimate-message drafting or rewriting only
 default-variant: suggestive
 variants: flirty, suggestive, direct

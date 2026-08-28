@@ -1,7 +1,7 @@
 {
   "name": "masq",
-  "version": "0.2.0",
-  "description": "Stackable Claude Code persona profiles with variants, ordered composition, and persistent activation.",
+  "version": "0.3.0",
+  "description": "Stackable Claude Code persona profiles covering register, working conduct, and content policy, with variants, ordered composition, and persistent activation.",
   "author": {
     "name": "mdn87",
     "url": "https://github.com/mdn87"

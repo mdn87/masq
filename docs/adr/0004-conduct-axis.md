@@ -2,7 +2,9 @@
 
 ## Status
 
-Accepted.
+Superseded by ADR 0005, which adds a third kind, defines precedence within a
+kind, and handles the Dean break. The two-kind model below is kept for the
+reasoning that produced it.
 
 ## Context
 

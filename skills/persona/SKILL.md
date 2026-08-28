@@ -1,14 +1,22 @@
 ---
 name: persona
-description: This skill should be used when the user invokes "/masq:persona", asks to "turn on a persona", "disable a persona profile", "stack personas", "list persona profiles", "show active personas", or requests a persistent composable response style. It manages ordered persona overlays without changing technical facts or tool behavior.
-version: 0.2.0
+description: This skill should be used when the user invokes "/masq:persona", asks to "turn on a persona", "disable a persona profile", "stack personas", "list persona profiles", "show active personas", or requests a persistent composable response style. It manages ordered persona overlays without changing technical facts, permissions, or safety boundaries.
+version: 0.3.0
 disable-model-invocation: true
 argument-hint: <status|list|doctor|preview|on|off|toggle|set|move|clear|global|project|temp|preset> [...]
 ---
 
 # Masq
 
-Manage reusable persona profiles as an ordered stack of style overlays. Permit several profiles to remain active at once. Keep persona behavior separate from factual reasoning, safety constraints, tools, code, and project instructions.
+Manage reusable persona profiles as an ordered stack of overlays. Permit several profiles to remain active at once. Keep persona behavior separate from factual reasoning, safety constraints, permissions, code, and project instructions.
+
+Each profile declares a `kind` that bounds what it may change:
+
+- `presentation` changes wording, register, structure, and compression, and never changes what a response asserts.
+- `conduct` changes how work is done and reported: effort, sequencing, and report contents. It never grants tool authority, widens a permission, lowers a confirmation requirement, skips a safety check, or alters a factual claim.
+- `policy` changes what may be produced in a context and may only tighten. It never loosens a safety requirement or grants a capability.
+
+Precedence runs within a kind. A later presentation profile owns the surface register; a later conduct profile wins a direct conduct conflict; policy requirements sit outside stack precedence, and the strictest active requirement applies.
 
 The hooks perform state changes and inject the active profile contracts. For a management command, relay the hook-provided result exactly and do not embellish it.
 
@@ -95,7 +103,7 @@ Aliases declared by the profile are valid in commands. Store only canonical prof
 
 ## Output Boundaries
 
-Treat profiles as presentation layers rather than permission to alter substance.
+A profile changes only what its `kind` allows. No profile is permission to alter substance, permissions, or safety behavior.
 
 - Preserve code blocks, inline code, commands, paths, URLs, identifiers, API names, schemas, exact errors, quotations, citations, numbers, units, and data.
 - Keep destructive confirmations and security warnings direct and unmistakable.

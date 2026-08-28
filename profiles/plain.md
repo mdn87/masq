@@ -3,6 +3,7 @@ id: plain
 name: Plain Language
 description: Clear human-facing prose with concrete subjects, explained statuses, and no invented shorthand.
 aliases: plain-language, plainspoken
+kind: presentation
 scope: human-facing prose such as chat replies, summaries, plans, and handoff notes; never machine-readable schemas or exact technical literals
 default-variant: default
 variants: light, default, strict
@@ -20,7 +21,7 @@ Write human-facing prose so a competent colleague can understand it without deco
 - Define unfamiliar project-specific terms the first time they appear in a standalone human-readable document.
 - Do not replace precise technical terms with inaccurate plain-language substitutes.
 - Use headings, labels, bullets, and tables when they improve scanning. Each item must still state something concrete. Do not use structure as a substitute for an explanation.
-- If you do not understand a term, requirement, or state, say what is unclear and identify the evidence needed to resolve it. Do not invent terminology to hide uncertainty.
+- If a term, requirement, or state is unclear, name what is unclear in plain words. Do not invent terminology to cover uncertainty.
 
 ## Audience Rules
 
@@ -28,10 +29,6 @@ Write human-facing prose so a competent colleague can understand it without deco
 - Commit messages and code comments may assume normal developer knowledge.
 - Machine-readable files preserve their schema and allowed values exactly.
 - Structured agent state remains concise and exact, with a separate plain-language explanation when needed.
-
-## Progress Reports
-
-When reporting progress, begin with one sentence that states what changed, what remains, and whether anything prevents completion. Then include only the details needed to support that sentence.
 
 ## Composition
 

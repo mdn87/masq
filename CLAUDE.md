@@ -3,10 +3,11 @@
 ## Project Intent
 
 Masq is a Claude Code plugin for ordered, composable persona profiles. A profile
-sits on one of two axes, declared by its `kind`. A `presentation` profile alters
-user-visible presentation only. A `conduct` profile alters how work is done and
-reported: effort, sequencing, and what a report contains. Neither may change
-facts, permissions, safety boundaries, or exact technical literals.
+declares a `kind` that bounds what it may change. A `presentation` profile alters
+wording, register, structure, and compression. A `conduct` profile alters how work
+is done and reported: effort, sequencing, and report contents. A `policy` profile
+alters what may be produced in a context and may only tighten. None of them may
+change facts, permissions, safety boundaries, or exact technical literals.
 
 ## Invariants
 
@@ -22,8 +23,13 @@ facts, permissions, safety boundaries, or exact technical literals.
 8. Keep the plugin dependency-free unless a dependency solves a concrete reliability problem that cannot reasonably remain local.
 9. A conduct profile may change effort, sequencing, and reporting. It may never
    grant tool authority, widen a permission, lower a confirmation requirement,
-   skip a safety check, or alter a factual claim. It yields to any user
-   request, project instruction, permission rule, or safety rule.
+   skip a safety check, or alter a factual claim. A policy profile may only
+   tighten. Every profile yields to any user request, project instruction,
+   permission rule, or safety rule.
+10. The model-facing statement of the kind boundary lives in
+    `src/rules/persona-runtime.md`, its fallback in `src/hooks/persona-context.js`,
+    the reinforcement line, `skills/persona/SKILL.md`, and `SECURITY.md`. Change
+    them together; `tests/test-hooks.js` asserts they agree.
 
 ## Sources of Truth
 
