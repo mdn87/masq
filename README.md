@@ -13,12 +13,12 @@ The name is clipped from the courtly theatrical tradition of costumes, roles, sp
 A single global personality toggle cannot express combinations such as:
 
 ```text
-afterdark:suggestive + renfaire:pageant
+dean:default + audience:expert + conduct:strict
 ```
 
 Masq keeps an ordered stack. Every profile contributes its non-conflicting traits. A later profile wins only a direct style conflict. Contextual profiles remain dormant outside their declared scope.
 
-In the example above, Afterdark supplies adult-consent boundaries and intimate-message intent. Renfaire supplies the absurd courtly delivery. During ordinary technical work, Afterdark stays dormant while Renfaire can still style the surrounding explanation.
+In the example above, Dean sets the register: point first, prose over structure. Audience sets how much gets glossed for an expert reader without touching the register. Conduct changes what a completion report must contain, and may never widen a permission or skip a check. Each profile owns one axis, so the three compose without fighting.
 
 ## Commands
 
@@ -60,11 +60,11 @@ Shorthand activation:
 Examples:
 
 ```text
-/masq:persona on renfaire
-/masq:persona on afterdark:suggestive
-/masq:persona set afterdark:suggestive renfaire:pageant
-/masq:persona move afterdark last
-/masq:persona off renfaire
+/masq:persona on dean
+/masq:persona on audience:expert
+/masq:persona set dean:default audience:expert conduct:strict
+/masq:persona move conduct last
+/masq:persona off dean
 /masq:persona clear
 /masq:persona project set plain:strict caveman:lite
 /masq:persona temp on renfaire:courtly
@@ -81,7 +81,7 @@ Simple natural-language controls are also recognized:
 
 ```text
 turn on the medieval persona
-turn off the afterdark profile
+turn off the caveman profile
 show the active persona stack
 clear all personas
 ```
@@ -109,18 +109,6 @@ renfaire:pageant
 ```
 
 The default is `renfaire:pageant`.
-
-### Afterdark
-
-A contextual adult intimate-message profile with controlled levels of directness.
-
-```text
-afterdark:flirty
-afterdark:suggestive
-afterdark:direct
-```
-
-Afterdark remains non-graphic, consent-aware, and dormant outside adult intimate-message drafting or revision.
 
 ### Plain Language
 
@@ -227,6 +215,19 @@ composes under any voice profile and strips only filler that no active profile
 asked for. Its document-side counterpart is the de-tell pass in
 [tali](https://github.com/mdn87/tali).
 
+### Afterdark
+
+A contextual adult intimate-message profile with controlled levels of directness.
+
+```text
+afterdark:flirty
+afterdark:suggestive
+afterdark:direct
+```
+
+Afterdark remains non-graphic, consent-aware, and dormant outside adult intimate-message drafting or revision.
+
+
 ## Composition Contract
 
 Masq treats profiles as ordered overlays, not new authorities or identities.
@@ -288,7 +289,7 @@ read-only.
 Seed an empty installation with a default stack:
 
 ```powershell
-$env:MASQ_DEFAULT_STACK = "afterdark:suggestive,renfaire:pageant"
+$env:MASQ_DEFAULT_STACK = "dean:default,conduct:default"
 claude --plugin-dir .
 ```
 
