@@ -4,6 +4,33 @@ All notable changes will be documented here.
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-09-27
+
+### Fixed
+
+- **A plugin update no longer needs a Claude Code restart to take effect.**
+  Claude Code resolves `${CLAUDE_PLUGIN_ROOT}` once per session, so after
+  `claude plugin update masq@masq` a running session kept executing the old
+  cache directory: new profiles came back as `unknown profile` and hook fixes did
+  not apply until every session was restarted. Hooks are fresh processes on
+  every event, so the manifest now routes each hook through
+  `src/hooks/launch.js`, which reads `installed_plugins.json` and delegates to
+  the installed copy whenever it differs from the pinned one. Profiles, hook
+  code, and the runtime contract all come from the installed copy on the next
+  prompt. Skill files are still read at session start, so a new slash command
+  documented in `SKILL.md` shows up after a restart even though the hook already
+  handles it.
+- The launcher never redirects a `claude --plugin-dir .` checkout: delegation
+  happens only when the pinned root is itself under the plugin cache. It only
+  delegates to a directory whose manifest is named `masq` and that contains the
+  requested hook, and falls back to the pinned copy on any failure.
+  `MASQ_LIVE_ROOT=<path>` forces a target; `MASQ_NO_RELAUNCH=1` disables it.
+- `doctor` prints a `Launcher:` line naming the pinned version and path and the
+  copy actually running, so a stale session is visible instead of mysterious.
+- The one session that cannot benefit is the one already running the pre-0.7.0
+  hooks when 0.7.0 is installed. That session's manifest points straight at the
+  old scripts. Restart once; after that no restart is needed for later updates.
+
 ### Corrected
 
 - **No profile has been shown to change behavior at p < 0.05.** All count-bearing

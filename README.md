@@ -329,6 +329,22 @@ claude plugin marketplace add mdn87/masq
 claude plugin install masq@masq
 ```
 
+### Updating
+
+```powershell
+claude plugin update masq@masq
+```
+
+Claude Code pins a plugin's directory once per session. Since 0.7.0 the masq
+hooks run through `src/hooks/launch.js`, which checks `installed_plugins.json`
+on every hook event and delegates to the installed copy when it differs from
+the pinned one. New profiles and hook fixes therefore apply on the next prompt
+in every open session; only a new slash command in `SKILL.md` waits for a
+restart. `/masq:persona doctor` prints a `Launcher:` line showing which copy is
+running. The launcher leaves `claude --plugin-dir .` checkouts alone;
+`MASQ_LIVE_ROOT=<path>` points a checkout at another copy on purpose and
+`MASQ_NO_RELAUNCH=1` turns delegation off.
+
 ## Repository Layout
 
 ```text

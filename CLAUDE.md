@@ -42,6 +42,7 @@ change facts, permissions, safety boundaries, or exact technical literals.
 
 - `profiles/*.md` - profile metadata, common rules, and variants
 - `src/rules/persona-runtime.md` - global composition contract
+- `src/hooks/launch.js` - hook entry point; delegates to the currently installed masq copy so plugin updates apply without a session restart
 - `src/hooks/persona-mode.js` - commands, natural-language activation, and stack mutation
 - `src/hooks/persona-session.js` - startup persistence and default-stack behavior
 - `src/hooks/persona-session-end.js` - temporary session cleanup

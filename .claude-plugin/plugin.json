@@ -1,6 +1,6 @@
 {
   "name": "masq",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Stackable Claude Code persona profiles covering register, working conduct, and content policy, with variants, ordered composition, and persistent activation.",
   "author": {
     "name": "mdn87",
@@ -20,7 +20,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/src/hooks/persona-session.js\" --data-dir \"${CLAUDE_PLUGIN_DATA}\"",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/src/hooks/launch.js\" persona-session.js --data-dir \"${CLAUDE_PLUGIN_DATA}\"",
             "timeout": 5
           }
         ]
@@ -31,7 +31,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/src/hooks/persona-mode.js\" --data-dir \"${CLAUDE_PLUGIN_DATA}\"",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/src/hooks/launch.js\" persona-mode.js --data-dir \"${CLAUDE_PLUGIN_DATA}\"",
             "timeout": 5
           }
         ]
@@ -42,7 +42,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/src/hooks/persona-session-end.js\" --data-dir \"${CLAUDE_PLUGIN_DATA}\"",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/src/hooks/launch.js\" persona-session-end.js --data-dir \"${CLAUDE_PLUGIN_DATA}\"",
             "timeout": 5
           }
         ]

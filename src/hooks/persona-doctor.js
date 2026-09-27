@@ -136,6 +136,13 @@ function diagnose({ cwd, sessionId } = {}) {
     lines.push('Catalog: unavailable');
   }
   lines.push(`Manifest: ${manifestVersion}, ${hooksPresent ? 'required hooks present' : 'required hooks incomplete'}`);
+  const launchedFrom = String(process.env.MASQ_LAUNCHED_FROM || '').trim();
+  if (launchedFrom) {
+    const fromVersion = String(process.env.MASQ_LAUNCHED_FROM_VERSION || 'unknown').trim();
+    lines.push(`Launcher: session pinned to ${fromVersion} at ${launchedFrom}; running ${manifestVersion} from ${pluginRoot}`);
+  } else {
+    lines.push(`Launcher: running the session's pinned copy at ${pluginRoot}`);
+  }
   lines.push(`Data directory: ${dataDir} (${dataStatus})`);
   lines.push(`Project: ${canonicalProjectPath(cwd)}`);
   lines.push(`Global: ${formatStack(state.global)}`);
