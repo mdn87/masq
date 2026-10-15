@@ -1,0 +1,4 @@
+{
+  "description": "Optional native Masq controls; legacy hooks still compose persona context.",
+  "modules": ["./register.js"]
+}

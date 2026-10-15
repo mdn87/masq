@@ -22,6 +22,51 @@ In the example above, Dean sets the register: point first, prose over structure.
 
 ## Commands
 
+On Claude Code 2.1.287 or later, `/masq status`, `/masq set plain dean`,
+`/masq move plain last`, and `/masq temp set caveman` run immediately without
+a model turn. They use the same command core and state as the ordinary hooks.
+The band above the prompt shows the last captured stack. Changes apply at the
+next prompt hook; an already running response keeps its existing context.
+Preview remains `/masq:persona preview` because it needs a model response.
+
+The native controls are optional. Disabling mods leaves the commands below and
+the existing context hooks available. Mod reload resets the display; status
+reads persistent state again. Clear/resume use the ordinary session hooks'
+existing temporary-state rules. A failed or timed-out mutation is never retried
+automatically: inspect status first.
+
+### Portable command
+
+From this checkout, use Node 18+ with explicit store, project and session identity:
+
+```text
+node src/cli.js --data-dir /absolute/masq-data --cwd /absolute/project --session-id SESSION --harness codex --json -- set plain dean
+node src/cli.js --data-dir /absolute/masq-data --cwd /absolute/project --session-id SESSION --harness codex -- status
+```
+
+On Windows, use absolute Windows paths and quote paths with spaces. Omit `--json`
+for text. `package.json` also exposes the `masq` executable for local package use.
+This command manages profiles; integrating their context into another harness
+still requires that harness's supported adapter.
+
+`claude-code` preserves the existing store layout. Other harnesses use
+`<data-dir>/harnesses/<harness>`; `--shared-store` explicitly shares persistent
+preferences and presets while temporary sessions retain a harness prefix.
+Status is read-only. The CLI does not mark a selection as already injected.
+
+The Claude mod resolves the loaded plugin's exact registry identity for its
+data directory (`masq-inline` for a development checkout). It refuses ambiguous
+cached installations. `MASQ_DATA_DIR` and `CLAUDE_PLUGIN_DATA` remain explicit
+overrides. Ordinary CLI `--data-dir` always wins over inherited defaults.
+
+The controls were tested on Windows with Claude Code 2.1.296 using native event
+and rendering tests plus an interactive terminal. Desktop drawing is covered
+by the event harness; a live Desktop installation and macOS launch remain
+separate qualification checks. Run `npm test` and, when Claude is installed,
+`npm run test:mods`.
+
+### Legacy Claude commands
+
 Claude Code namespaces plugin skills with the plugin name:
 
 ```text

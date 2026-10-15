@@ -1,7 +1,7 @@
 ---
 name: persona
 description: This skill should be used when the user invokes "/masq:persona", asks to "turn on a persona", "disable a persona profile", "stack personas", "list persona profiles", "show active personas", or requests a persistent composable response style. It manages ordered persona overlays without changing technical facts, permissions, or safety boundaries.
-version: 0.7.0
+version: 0.8.0
 disable-model-invocation: true
 argument-hint: <status|list|doctor|preview|on|off|toggle|set|move|clear|global|project|temp|preset> [...]
 ---
@@ -21,6 +21,10 @@ Precedence runs within a kind. A later presentation profile owns the surface reg
 The hooks perform state changes and inject the active profile contracts. For a management command, relay the hook-provided result exactly and do not embellish it.
 
 ## Commands
+
+When mods are enabled, the user can run `/masq` with the same management
+arguments for an immediate result. The mod handles that command; do not repeat
+its mutation. Preview continues to use `/masq:persona preview` and a model turn.
 
 ```text
 /masq:persona status
