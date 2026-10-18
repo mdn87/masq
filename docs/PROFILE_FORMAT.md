@@ -112,7 +112,7 @@ This exists because stating requirements as persona prose did not work. A
 conduct profile's required content disappeared whenever any presentation profile
 was stacked with it, and two attempts to fix it by restating the rule — once in
 the runtime contract, once beside the rendered slots — changed nothing
-measurable. `evals/composition/01` has the numbers.
+measurable. `evals/composition/01-conduct-under-register.md` has the numbers.
 
 A `presentation` profile may not declare a `## Requirements` section; loading one
 fails. Binding output content is what separates the other two kinds from
