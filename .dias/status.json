@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "projectId": "masq",
+  "projectLabel": "Masq",
+  "assessmentState": "scored",
+  "assessmentScope": "current-milestone",
+  "percentComplete": 90,
+  "milestonePhase": "operational-proof",
+  "portfolioGroup": "agent-platform",
+  "displayPriority": 500,
+  "assessedAt": "2026-09-27T20:26:10.000Z",
+  "confidence": "reported",
+  "currentMilestone": "Installable persona plugin at 0.7.0: scopes, presets, doctor, conduct and audience axes, machine-checked evals, and hook updates that apply without a restart.",
+  "remainingSummary": "Engine is stable and tested; no profile effect is significant at p<0.05 and the eval format cannot see delivery. Pick a real host, add delivery checks, then demonstrate or bound.",
+  "nextChipId": "masq:prepare-real-profile-host",
+  "source": {
+    "label": "Reassessed from masq git log, CHANGELOG 0.7.0, catalog plan open items, and direct test runs on 2026-09-27; prior seed 2026-08-27 and reassessment 2026-09-05.",
+    "updatedAt": "2026-09-27"
+  }
+}

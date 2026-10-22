@@ -7,7 +7,9 @@ coverage/
 .masq-state/
 .Codex/handoff.md
 .Codex/handoff-history/
-.dias/
+.dias/*
+!.dias/chips.json
+!.dias/status.json
 # Claude generates editor configuration and build-specific mod types locally.
 /tsconfig.json
 .claude-plugin/types/

@@ -1,0 +1,314 @@
+{
+  "schemaVersion": 1,
+  "projectId": "masq",
+  "projectLabel": "Masq",
+  "chips": [
+    {
+      "schemaVersion": 1,
+      "chipId": "masq:persona-framework",
+      "projectId": "masq",
+      "title": "Persona framework seeded",
+      "summary": "Stackable persona profiles with ordered conflict resolution; plugin renamed to masq; first plain-language profile.",
+      "stage": "done",
+      "sequence": 10,
+      "prereqs": [],
+      "linkedRunIds": [],
+      "confidence": "reported",
+      "aheadOfPrereqs": null,
+      "timestamps": {
+        "createdAt": "2026-08-13T12:00:00.000Z",
+        "updatedAt": "2026-09-05T03:40:00.000Z"
+      },
+      "evidence": [
+        {
+          "entryId": "masq:persona-framework:authored-2026-09-05",
+          "at": "2026-09-05T03:40:00.000Z",
+          "kind": "created",
+          "message": "Framework seeded and renamed 2026-08-13; plain-language profile added the same day."
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "chipId": "masq:v0-2-profiles",
+      "projectId": "masq",
+      "title": "v0.2 scopes, presets, doctor, voices",
+      "summary": "Scopes, presets, doctor, and voice profiles including dean; CI fails the build on host identifiers.",
+      "stage": "done",
+      "sequence": 20,
+      "prereqs": [
+        "masq:persona-framework"
+      ],
+      "linkedRunIds": [],
+      "confidence": "reported",
+      "aheadOfPrereqs": null,
+      "timestamps": {
+        "createdAt": "2026-08-27T12:00:00.000Z",
+        "updatedAt": "2026-09-05T03:40:00.000Z"
+      },
+      "evidence": [
+        {
+          "entryId": "masq:v0-2-profiles:authored-2026-09-05",
+          "at": "2026-09-05T03:40:00.000Z",
+          "kind": "created",
+          "message": "v0.2 landed 2026-08-27 and folded into the 0.2.0 changelog; host-identifier CI check 2026-08-24 (PR #2)."
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "chipId": "masq:conduct-and-audience-axes",
+      "projectId": "masq",
+      "title": "Conduct and audience axes",
+      "summary": "Conduct axis split out of persona prose, audience profile separating assumed knowledge from registers, kind boundary with precedence.",
+      "stage": "done",
+      "sequence": 30,
+      "prereqs": [
+        "masq:v0-2-profiles"
+      ],
+      "linkedRunIds": [],
+      "confidence": "reported",
+      "aheadOfPrereqs": null,
+      "timestamps": {
+        "createdAt": "2026-08-28T12:00:00.000Z",
+        "updatedAt": "2026-09-05T03:40:00.000Z"
+      },
+      "evidence": [
+        {
+          "entryId": "masq:conduct-and-audience-axes:authored-2026-09-05",
+          "at": "2026-09-05T03:40:00.000Z",
+          "kind": "created",
+          "message": "Landed 2026-08-28."
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "chipId": "masq:machine-checked-evals",
+      "projectId": "masq",
+      "title": "Machine-checked behavioral evals",
+      "summary": "Eval fixtures, live plugin smoke test, machine-checked scoring, two overclaims corrected, hook context-limit bug fixed.",
+      "stage": "done",
+      "sequence": 40,
+      "prereqs": [
+        "masq:conduct-and-audience-axes"
+      ],
+      "linkedRunIds": [],
+      "confidence": "reported",
+      "aheadOfPrereqs": null,
+      "timestamps": {
+        "createdAt": "2026-08-28T12:00:00.000Z",
+        "updatedAt": "2026-09-05T03:40:00.000Z"
+      },
+      "evidence": [
+        {
+          "entryId": "masq:machine-checked-evals:authored-2026-09-05",
+          "at": "2026-09-05T03:40:00.000Z",
+          "kind": "created",
+          "message": "Landed 2026-08-28; the context-limit bug had been silently dropping profiles."
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "chipId": "masq:adjudicate-profile-effect",
+      "projectId": "masq",
+      "title": "Adjudicate 108 eval runs",
+      "summary": "108 runs adjudicated with Fisher exact p; only the two transport comparisons are significant. Negative result recorded honestly, frames doc written.",
+      "stage": "done",
+      "sequence": 50,
+      "prereqs": [
+        "masq:machine-checked-evals"
+      ],
+      "linkedRunIds": [],
+      "confidence": "reported",
+      "aheadOfPrereqs": null,
+      "timestamps": {
+        "createdAt": "2026-08-28T12:00:00.000Z",
+        "updatedAt": "2026-09-27T20:26:00.000Z"
+      },
+      "evidence": [
+        {
+          "entryId": "masq:adjudicate-profile-effect:authored-2026-09-05",
+          "at": "2026-09-05T03:40:00.000Z",
+          "kind": "created",
+          "message": "Adjudication committed 2026-08-28."
+        },
+        {
+          "entryId": "masq:adjudicate-profile-effect:note-2026-09-27",
+          "at": "2026-09-27T20:26:00.000Z",
+          "kind": "note",
+          "message": "0.7.0 changelog restates the bound: every profile verdict is a point estimate at n=2-3; an unclear label was added for undecidable runs."
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "chipId": "masq:hook-launcher-live-update",
+      "projectId": "masq",
+      "title": "0.7.0 hook launcher and renfaire opener fix",
+      "summary": "Hooks route through a launcher that delegates to the installed plugin copy, so updates apply without a restart; doctor names the running copy; renfaire varies its openers.",
+      "stage": "done",
+      "sequence": 60,
+      "prereqs": [
+        "masq:adjudicate-profile-effect"
+      ],
+      "linkedRunIds": [],
+      "confidence": "reported",
+      "aheadOfPrereqs": null,
+      "timestamps": {
+        "createdAt": "2026-09-27T14:52:00.000Z",
+        "updatedAt": "2026-09-27T20:26:00.000Z"
+      },
+      "evidence": [
+        {
+          "entryId": "masq:hook-launcher-live-update:created-2026-09-27",
+          "at": "2026-09-27T20:26:00.000Z",
+          "kind": "created",
+          "message": "Two commits landed 2026-09-27 and shipped as 0.7.0. Launcher, hook, and v0.2 test files all pass when run directly. One pre-0.7.0 session still needs a single restart."
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "chipId": "masq:prepare-real-profile-host",
+      "projectId": "masq",
+      "title": "Prepare a real profile host",
+      "summary": "Choose a real conversation set where a profile should visibly change output, and define the effect size that would count as a demonstration.",
+      "stage": "ready",
+      "sequence": 70,
+      "prereqs": [
+        "masq:hook-launcher-live-update"
+      ],
+      "linkedRunIds": [],
+      "confidence": "reported",
+      "aheadOfPrereqs": null,
+      "timestamps": {
+        "createdAt": "2026-09-05T12:00:00.000Z",
+        "updatedAt": "2026-09-27T20:26:00.000Z"
+      },
+      "evidence": [
+        {
+          "entryId": "masq:prepare-real-profile-host:authored-2026-09-05",
+          "at": "2026-09-05T03:40:00.000Z",
+          "kind": "created",
+          "message": "Named as the next step by the 2026-09-05 status reassessment."
+        },
+        {
+          "entryId": "masq:prepare-real-profile-host:note-2026-09-27",
+          "at": "2026-09-27T20:26:00.000Z",
+          "kind": "note",
+          "message": "No commit has touched this since 2026-08-28; the 2026-09-27 work went to plugin update plumbing instead. Still the next open step."
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "chipId": "masq:delivery-checked-eval-format",
+      "projectId": "masq",
+      "title": "Delivery checks in the eval format",
+      "summary": "Make the fixture format assert that the profile was actually delivered to the model, and extend adjudicated labels past the 45 of 186 run files covered today.",
+      "stage": "planned",
+      "sequence": 80,
+      "prereqs": [
+        "masq:prepare-real-profile-host"
+      ],
+      "linkedRunIds": [],
+      "confidence": "reported",
+      "aheadOfPrereqs": null,
+      "timestamps": {
+        "createdAt": "2026-09-27T20:26:00.000Z",
+        "updatedAt": "2026-09-27T20:26:00.000Z"
+      },
+      "evidence": [
+        {
+          "entryId": "masq:delivery-checked-eval-format:created-2026-09-27",
+          "at": "2026-09-27T20:26:00.000Z",
+          "kind": "created",
+          "message": "Open items 1 and 2 in the catalog plan: the composition result measured truncation because nothing in the format asked whether input was delivered."
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "chipId": "masq:bound-or-demonstrate-effect",
+      "projectId": "masq",
+      "title": "Demonstrate or bound the effect",
+      "summary": "Rerun the evals on the real host with delivery checked; either show a significant effect or document the bound and trim profiles that do nothing measurable.",
+      "stage": "planned",
+      "sequence": 90,
+      "prereqs": [
+        "masq:delivery-checked-eval-format"
+      ],
+      "linkedRunIds": [],
+      "confidence": "reported",
+      "aheadOfPrereqs": null,
+      "timestamps": {
+        "createdAt": "2026-09-05T12:00:00.000Z",
+        "updatedAt": "2026-09-27T20:26:00.000Z"
+      },
+      "evidence": [
+        {
+          "entryId": "masq:bound-or-demonstrate-effect:authored-2026-09-05",
+          "at": "2026-09-05T03:40:00.000Z",
+          "kind": "created",
+          "message": "Exit for the milestone; outcome may be a documented bound rather than a positive effect."
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "chipId": "masq:reviewer-conduct-profile",
+      "projectId": "masq",
+      "title": "Reviewer conduct profile",
+      "summary": "First queued catalog addition: an adversarial working posture that tries to refute findings and names the disconfirming test not run. Gated on a demonstrated profile effect.",
+      "stage": "vague",
+      "sequence": 100,
+      "prereqs": [
+        "masq:bound-or-demonstrate-effect"
+      ],
+      "linkedRunIds": [],
+      "confidence": "unknown",
+      "aheadOfPrereqs": null,
+      "timestamps": {
+        "createdAt": "2026-09-27T20:26:00.000Z",
+        "updatedAt": "2026-09-27T20:26:00.000Z"
+      },
+      "evidence": [
+        {
+          "entryId": "masq:reviewer-conduct-profile:created-2026-09-27",
+          "at": "2026-09-27T20:26:00.000Z",
+          "kind": "created",
+          "message": "Queue item 1 in the catalog plan; its prerequisite (conduct precedence in the runtime contract) is already in place."
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "chipId": "masq:composition-controls",
+      "projectId": "masq",
+      "title": "0.3 composition controls",
+      "summary": "Exclusive groups for profiles that should not coexist, conflict metadata and diagnostics, and named compositions. Roadmap gates this on core behavior proven in real sessions.",
+      "stage": "vague",
+      "sequence": 110,
+      "prereqs": [
+        "masq:reviewer-conduct-profile"
+      ],
+      "linkedRunIds": [],
+      "confidence": "unknown",
+      "aheadOfPrereqs": null,
+      "timestamps": {
+        "createdAt": "2026-09-27T20:26:00.000Z",
+        "updatedAt": "2026-09-27T20:26:00.000Z"
+      },
+      "evidence": [
+        {
+          "entryId": "masq:composition-controls:created-2026-09-27",
+          "at": "2026-09-27T20:26:00.000Z",
+          "kind": "created",
+          "message": "Roadmap 0.3 minus the kind axis, which already shipped. Order after the catalog work is a guess."
+        }
+      ]
+    }
+  ]
+}
