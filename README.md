@@ -10,6 +10,11 @@ The name is clipped from the courtly theatrical tradition of costumes, roles, sp
 
 ## Why Masq
 
+For temporary-persona loss reports, see the
+[compaction and installed-plugin verification](docs/compaction-installation-verification.md).
+It distinguishes lifecycle behavior, a missing installed cache, and existing
+sessions that still require a fresh launch.
+
 A single global personality toggle cannot express combinations such as:
 
 ```text

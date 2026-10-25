@@ -136,6 +136,23 @@ try {
   output = session('resume');
   assert.match(output, /renfaire:courtly \+ caveman:ultra/);
 
+  // Compaction re-injects the full context for the same live session. Preserve
+  // both the temporary selection and lastEffective used by persona consumers.
+  const sessionPath = path.join(dataDir, 'sessions',
+    `${crypto.createHash('sha256').update('session-a').digest('hex')}.json`);
+  const beforeCompact = JSON.parse(fs.readFileSync(sessionPath, 'utf8'));
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    output = session('compact');
+    assert.match(output, /renfaire:courtly \+ caveman:ultra/);
+    const afterCompact = JSON.parse(fs.readFileSync(sessionPath, 'utf8'));
+    assert.deepStrictEqual(afterCompact.active, beforeCompact.active);
+    assert.deepStrictEqual(afterCompact.lastEffective, beforeCompact.lastEffective);
+  }
+  output = prompt('/masq:persona status', projectA, 'session-b');
+  assert.match(output, /Temporary: \(none\)/);
+  output = session('compact');
+  assert.match(output, /renfaire:courtly \+ caveman:ultra/);
+
   run('persona-session-end.js', {
     hook_event_name: 'SessionEnd',
     reason: 'other',
