@@ -78,7 +78,7 @@ outputs live in `evals/runs/`.
 Markdown file quoting a number that the labels do not support. An earlier version
 of this section claimed "every count is recomputed" and "prose cannot drift";
 both were false, and a reviewer caught them. Only cohorts declared in
-`labels.json` are covered — currently 45 of 186 run files. The rest appear in
+`labels.json` are covered — currently 108 of 186 run files. The rest appear in
 fixtures as quoted excerpts, never as counts.
 
 **Labels, not keywords.** Each scored run carries a label and a one-line

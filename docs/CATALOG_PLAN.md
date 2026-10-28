@@ -295,7 +295,7 @@ Still open, in priority order.
    format asks whether the input was delivered, and `npm test` cannot see past
    what masq generates. Delivery checks now exist for one case; they are not
    part of the format.
-2. **Coverage of the scorer is thin.** 45 of 186 run files carry an adjudicated
+2. **Coverage of the scorer is thin.** 108 of 186 run files carry an adjudicated
    label. The rest are quoted in fixtures as excerpts and were hand-read once.
    Any of them could contain the same class of error.
 3. **`policy` in composition has no delivered measurement.** `afterdark/03` was

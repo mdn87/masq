@@ -207,7 +207,7 @@
       "chipId": "masq:delivery-checked-eval-format",
       "projectId": "masq",
       "title": "Delivery checks in the eval format",
-      "summary": "Make the fixture format assert that the profile was actually delivered to the model, and extend adjudicated labels past the 45 of 186 run files covered today.",
+      "summary": "Make the fixture format assert that the profile was actually delivered to the model, and extend adjudicated labels past the 108 of 186 run files covered today.",
       "stage": "planned",
       "sequence": 80,
       "prereqs": [

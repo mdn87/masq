@@ -4,6 +4,31 @@ All notable changes will be documented here.
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-10-15
+
+### Added
+
+- **Portable persona controls.** The command functions moved unchanged out of
+  the Claude prompt hook into a shared core (`src/hooks/persona-command.js`),
+  and `src/cli.js` exposes it as an explicit text or `--json` command, also
+  published as the `masq` executable in `package.json`. Callers pass the store,
+  project, session and harness. `claude-code` keeps the existing store layout,
+  other harnesses get `<data-dir>/harnesses/<harness>`, and `--shared-store`
+  shares persistent preferences and presets only when asked. Status is
+  read-only. (PR #4, `5f25ab8`)
+- **Optional native Claude mod.** On Claude Code 2.1.287 or later, `/masq
+  status`, `/masq set`, `/masq move` and `/masq temp set` run immediately
+  without a model turn, and a band above the prompt shows the last captured
+  stack. The mod resolves the installed plugin's exact data directory, refuses
+  ambiguous cached installations, and never retries a failed or timed-out
+  mutation. Disabling mods leaves the legacy commands and context hooks as they
+  were; preview stays `/masq:persona preview`. (PR #4, `5f25ab8`)
+- Compaction regression tests: temporary personas survive repeated compaction,
+  `lastEffective` is kept, and sessions stay isolated. The docs now separate
+  hook lifecycle from installation health. No runtime or profile behavior
+  changed, and the cause of the historical macOS report is still unproven.
+  (PR #5, `690d422`, 2026-10-25)
+
 ## [0.7.0] - 2026-09-27
 
 ### Fixed
